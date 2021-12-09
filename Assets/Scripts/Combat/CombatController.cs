@@ -18,7 +18,7 @@ public class CombatController : MonoBehaviour
 
     HitCollider currentlyActiveAttack;
 
-    bool inAttackState = false;
+    public bool inAttackState = false;
 
     float queueTimer = 0; //goes to one when queued
 
@@ -122,7 +122,7 @@ public class CombatController : MonoBehaviour
             FinishAttackChain();
     }
 
-    void FinishAttackChain()
+    public void FinishAttackChain()
     {
 
     }
