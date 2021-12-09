@@ -29,6 +29,8 @@ public class HitCollider : MonoBehaviour
 
     public bool followUser = true;
 
+    public bool giveInvFrames = false;
+
     [Header("FX")]
     public vfxObj particles;
     [SerializeField] Follow toFollow;
@@ -77,11 +79,20 @@ public class HitCollider : MonoBehaviour
             if (p.transform == attacker)
                 return;
 
+            if (p.invinsibilityTime > 0)
+                return;
+
             //Calculate laucnh force
             Vector3 angle = transform.forward * Mathf.Sin(launchAngle) + transform.up * Mathf.Cos(launchAngle);
             angle.Normalize();
 
             p.GotHit(damage, enemyStunDuration, angle * launchForce);
+
+            if (giveInvFrames)
+            {
+                //Make enemy invinsible for short time
+                p.invinsibilityTime = 0.5f;
+            }
         }
     }
 }
