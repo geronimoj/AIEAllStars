@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &5535326066878466904
+--- !u!1 &5187554257722664621
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,23 +8,23 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 2129414802542837100}
-  - component: {fileID: 813955326946243910}
-  - component: {fileID: 35716153409201770}
+  - component: {fileID: 1630791098917556377}
+  - component: {fileID: 29071811164854451}
+  - component: {fileID: 815832133748476831}
   m_Layer: 8
-  m_Name: PoundL1
+  m_Name: PoundL3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &2129414802542837100
+--- !u!4 &1630791098917556377
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5535326066878466904}
+  m_GameObject: {fileID: 5187554257722664621}
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.5, y: 0.4, z: 1.5}
@@ -32,26 +32,26 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
---- !u!65 &813955326946243910
+--- !u!65 &29071811164854451
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5535326066878466904}
+  m_GameObject: {fileID: 5187554257722664621}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1.45, z: 0.45}
-  m_Center: {x: 0, y: 1.5, z: 0.57}
---- !u!114 &35716153409201770
+  m_Size: {x: 1, y: 2.72, z: 0.61}
+  m_Center: {x: 0, y: 1.64, z: 1.11}
+--- !u!114 &815832133748476831
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5535326066878466904}
+  m_GameObject: {fileID: 5187554257722664621}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c166fe29759443a4dbf3b581644b7ae4, type: 3}
@@ -59,8 +59,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 3
   enemyStunDuration: 0
-  selfStunDuration: 0.2
-  launchAngle: 20
-  launchForce: 1
+  selfStunDuration: 0.3
+  launchAngle: 90
+  launchForce: 15
   particles: {fileID: 0}
   toFollow: 0
