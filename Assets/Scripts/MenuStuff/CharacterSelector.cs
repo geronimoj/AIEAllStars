@@ -8,6 +8,13 @@ using UnityEngine.UI;
 public class CharacterSelector : MonoBehaviour
 {
     /// <summary>
+    /// The map that has been selected
+    /// </summary>
+    public static SelectableCharacter s_selectedMap = null;
+
+    public static SelectableCharacter s_p1Selected = null;
+    public static SelectableCharacter s_p2Selected = null;
+    /// <summary>
     /// Prefabs for the buttons
     /// </summary>
     [Tooltip("The UI button for selecting a character")]
@@ -29,11 +36,11 @@ public class CharacterSelector : MonoBehaviour
     /// <summary>
     /// The charcaters to select from
     /// </summary>
-    public GameObject[] _characters = new GameObject[0];
+    public SelectableCharacter[] _characters = new SelectableCharacter[0];
     /// <summary>
     /// The maps the players can play on
     /// </summary>
-    public GameObject[] _maps = new GameObject[0];
+    public SelectableCharacter[] _maps = new SelectableCharacter[0];
     /// <summary>
     /// Initialize charcaters
     /// </summary>
@@ -43,11 +50,15 @@ public class CharacterSelector : MonoBehaviour
         SpawnPlayerUI(_p2ButtonParent, false);
         SpawnMapUI(_mapParent);
         GameManager.s_useAI = false;
+
+        s_selectedMap = _maps[0];
+        s_p1Selected = _characters[0];
+        s_p2Selected = _characters[0];
         //Set defaults if null
         if (!GameManager.s_p1Char)
-            GameManager.s_p1Char = _characters[0];
+            GameManager.s_p1Char = _characters[0].Prefab;
         if (!GameManager.s_p2Char)
-            GameManager.s_p2Char = _characters[0];
+            GameManager.s_p2Char = _characters[0].Prefab;
     }
     /// <summary>
     /// Spawns a button for each selectable character
@@ -66,11 +77,11 @@ public class CharacterSelector : MonoBehaviour
             //Setup lambda
             if (isP1)
             {
-                b.onClick.AddListener(() => GameManager.s_p1Char = _characters[index]);
+                b.onClick.AddListener(() => GameManager.s_p1Char = _characters[index].Prefab);
             }
             else
             {
-                b.onClick.AddListener(() => GameManager.s_p2Char = _characters[index]);
+                b.onClick.AddListener(() => GameManager.s_p2Char = _characters[index].Prefab);
             }
         }
     }
@@ -85,7 +96,7 @@ public class CharacterSelector : MonoBehaviour
 
             Button b = button.GetComponent<Button>();
             //Setup lambda
-            b.onClick.AddListener(() => GameManager.s_map = _maps[index]);
+            b.onClick.AddListener(() => GameManager.s_map = _maps[index].Prefab);
         }
     }
     /// <summary>
