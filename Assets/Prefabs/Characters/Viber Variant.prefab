@@ -50,7 +50,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Controls: {fileID: 0}
-  MaxHealth: 10
+  MaxHealth: 100
   MoveSpeed: 3
   Gravity: -39.24
   JumpHeight: 3

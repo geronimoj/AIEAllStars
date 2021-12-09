@@ -50,7 +50,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Controls: {fileID: 11400000, guid: 6a6a1da93ab3deb48a4080b39885542f, type: 2}
-  MaxHealth: 10
+  MaxHealth: 100
   MoveSpeed: 10
   Gravity: -39.24
   JumpHeight: 3
