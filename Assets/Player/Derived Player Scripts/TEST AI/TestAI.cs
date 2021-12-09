@@ -11,8 +11,8 @@ public class TestAI : Player
     protected int MoveInput = 0;
 
     [Space]
-    public TimerData JumpData;
     public TimerData MoveData;
+    public TimerData JumpData;
     public TimerData DashData;
     public TimerData SkillData;
 
