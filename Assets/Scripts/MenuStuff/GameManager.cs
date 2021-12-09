@@ -67,7 +67,7 @@ public class GameManager : MonoBehaviour
             Instantiate(s_p1Char, points[0].transform.position, s_p1Char.transform.rotation);
         //Spawn player 2
         if (points[1])
-            Instantiate(s_p1Char, points[1].transform.position, s_p1Char.transform.rotation);
+            Instantiate(s_p2Char, points[1].transform.position, s_p1Char.transform.rotation);
 
         StartCoroutine(GameStart());
     }
