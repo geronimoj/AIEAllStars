@@ -97,7 +97,6 @@ public class CombatController : MonoBehaviour
                     currentlyActiveAttack.SetAttacker(transform);
 
                     player.canMoveInt++;
-
                 }
 
     }
