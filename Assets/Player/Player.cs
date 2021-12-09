@@ -125,12 +125,12 @@ public class Player : MonoBehaviour
             }
         }
         //Dashing in mid-air
-        if(_dashing && !_isGrounded)
+        if (_dashing && !_isGrounded)
         {
             inputVelocity = Vector3.right * _dashInput * (MoveSpeed * DashMultiplier * AirDashBoost) * Time.deltaTime;
         }
         //Regular movement speed
-        if(!_dashing)
+        if (!_dashing)
         {
             inputVelocity = Vector3.right * _moveInput * MoveSpeed * Time.deltaTime;
         }
@@ -186,11 +186,11 @@ public class Player : MonoBehaviour
     {
         int moveInput = 0;
 
-        if(Input.GetKey(Controls.Right))
+        if (Input.GetKey(Controls.Right))
         {
             moveInput++;
         }
-        if(Input.GetKey(Controls.Left))
+        if (Input.GetKey(Controls.Left))
         {
             moveInput--;
         }
@@ -233,7 +233,6 @@ public class Player : MonoBehaviour
     /// </summary>
     protected virtual void Dash()
     {
-        animator.SetTrigger("Dash");
 
         if (_isGrounded)
         {
@@ -241,6 +240,7 @@ public class Player : MonoBehaviour
         }
         else if (_airCharges > 0)
         {
+            animator.SetTrigger("Dash");
             _velocity.y = 0;
 
             _dashing = true;
@@ -384,11 +384,11 @@ public class Player : MonoBehaviour
 
     protected void ChooseMoveDirection()
     {
-        if(EnemyIsOnLeft())
+        if (EnemyIsOnLeft())
         {
             MoveInput = Random.Range(-2, 2);
 
-            if(MoveInput < -1)
+            if (MoveInput < -1)
             {
                 MoveInput = -1;
             }
@@ -397,7 +397,7 @@ public class Player : MonoBehaviour
         {
             MoveInput = Random.Range(-1, 3);
 
-            if(MoveInput > 1)
+            if (MoveInput > 1)
             {
                 MoveInput = 1;
             }
@@ -434,10 +434,19 @@ public class Player : MonoBehaviour
     {
         if (Enemy().transform.position.x > transform.position.x)
         {
+            if (transform.localScale.x != 30)
+            {
+                transform.localScale = new Vector3(30, transform.localScale.y, transform.localScale.z);
+            }
             return false;
         }
         else
         {
+
+            if (transform.localScale.x != -30)
+            {
+                transform.localScale = new Vector3(-30, transform.localScale.y, transform.localScale.z);
+            }
             return true;
         }
     }
