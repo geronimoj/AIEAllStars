@@ -43,6 +43,10 @@ public class CharacterSelector : MonoBehaviour
     public SelectableCharacter[] _maps = new SelectableCharacter[0];
 
     public SelectedUI p1, p2, map;
+
+    public Transform photoBoothL, photoBoothR;
+
+    private UnityEngine.Events.UnityEvent OnSelectCharacter = new UnityEngine.Events.UnityEvent();
     /// <summary>
     /// Initialize charcaters
     /// </summary>
@@ -59,6 +63,10 @@ public class CharacterSelector : MonoBehaviour
         p1.Target = s_p1Selected;
         p2.Target = s_p2Selected;
         map.Target = s_selectedMap;
+
+        OnSelectCharacter.AddListener(UpdateBoothChar);
+        UpdateBoothChar();
+
         //Set defaults if null
         if (!GameManager.s_p1Char)
             GameManager.s_p1Char = _characters[0].Prefab;
@@ -82,11 +90,11 @@ public class CharacterSelector : MonoBehaviour
             //Setup lambda
             if (isP1)
             {
-                b.onClick.AddListener(() => { GameManager.s_p1Char = _characters[index].Prefab; p1.Target = _characters[index]; });
+                b.onClick.AddListener(() => { GameManager.s_p1Char = _characters[index].Prefab; p1.Target = _characters[index]; s_p1Selected = _characters[index]; OnSelectCharacter.Invoke(); });
             }
             else
             {
-                b.onClick.AddListener(() => { GameManager.s_p2Char = _characters[index].Prefab; p2.Target = _characters[index]; });
+                b.onClick.AddListener(() => { GameManager.s_p2Char = _characters[index].Prefab; p2.Target = _characters[index]; s_p2Selected = _characters[index]; OnSelectCharacter.Invoke(); });
             }
         }
     }
@@ -109,4 +117,25 @@ public class CharacterSelector : MonoBehaviour
     /// </summary>
     /// <param name="useAI"></param>
     public void ToggleAI(bool useAI) => GameManager.s_useAI = useAI;
+
+    private void UpdateBoothChar()
+    {
+        GameObject obj;
+        if (s_p1Selected)
+        {
+            for (byte i = 0; i < photoBoothL.childCount; i++)
+                Destroy(photoBoothL.GetChild(0).gameObject);
+
+            obj = Instantiate(s_p1Selected.Prefab, photoBoothL);
+            obj.transform.localRotation = Quaternion.identity;
+        }
+        if (s_p2Selected)
+        {
+            for (byte i = 0; i < photoBoothR.childCount; i++)
+                Destroy(photoBoothR.GetChild(0).gameObject);
+
+            obj = Instantiate(s_p2Selected.Prefab, photoBoothR);
+            obj.transform.localRotation = Quaternion.identity;
+        }
+    }
 }

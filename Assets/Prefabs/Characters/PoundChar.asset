@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: PoundChar
   m_EditorClassIdentifier: 
   Name: Pound
-  Image: {fileID: 0}
+  Image: {fileID: 8400000, guid: efb1a894f225a4e4e8668061725bf277, type: 2}
   Prefab: {fileID: 1067362304314284897, guid: 74c526c4058119741ae9f17653851628, type: 3}

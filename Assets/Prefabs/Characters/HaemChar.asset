@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: HaemChar
   m_EditorClassIdentifier: 
   Name: Haem
-  Image: {fileID: 0}
+  Image: {fileID: 8400000, guid: 685a7a5f7d477334b8a90607c288d778, type: 2}
   Prefab: {fileID: 6494838325905606745, guid: 6d0036abc8c40734dae4888f9107e7b6, type: 3}
