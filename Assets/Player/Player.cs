@@ -18,10 +18,12 @@ public class Player : MonoBehaviour
     public float MoveSpeed;
 
     CombatController _combatController;
+    CharacterController _characterController;
 
     private void Awake()
     {
         _combatController = GetComponent<CombatController>();
+        _characterController = GetComponent<CharacterController>();
         _currentHealth = MaxHealth;
     }
 
@@ -35,13 +37,13 @@ public class Player : MonoBehaviour
     void Update()
     {
         InputUpdate();
-        
 
+        _characterController.Move(Vector3.right * _moveInput * MoveSpeed * Time.deltaTime);
     }
 
     protected void Move(int moveInput)
     {
-        if (_moveInput + moveInput == 2 || _moveInput - moveInput == -2)
+        if (Mathf.Abs(_moveInput + moveInput) > 1)
         {
             return;
         }
@@ -78,16 +80,27 @@ public class Player : MonoBehaviour
         //Get knockedBack
     }
 
+    /// <summary>
+    /// Checks all of the player's inputs
+    /// </summary>
     private void InputUpdate()
     {
-        if (Input.GetKeyDown(Controls.Left))
+        //If the player isn't pressing either direction, make sure they aren't moving
+        //Mostly a precaution
+        if (Input.GetKey(Controls.Left) == false && Input.GetKey(Controls.Right) == false)
         {
-            Move(-1);
+            _moveInput = 0;
         }
-        if (Input.GetKeyDown(Controls.Right))
+
+        if (Input.GetKeyDown(Controls.Right) || Input.GetKeyUp(Controls.Left))
         {
             Move(1);
         }
+        if (Input.GetKeyDown(Controls.Left) || Input.GetKeyUp(Controls.Right))
+        {
+            Move(-1);
+        }
+
         if (Input.GetKeyDown(Controls.Jump))
         {
             Jump();
