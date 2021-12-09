@@ -211,6 +211,8 @@ public class Player : MonoBehaviour
 
     protected virtual void Jump()
     {
+        _dashing = false;
+
         if (_isGrounded)
         {
             _velocity.y = Mathf.Sqrt(JumpHeight * -2f * Gravity);
