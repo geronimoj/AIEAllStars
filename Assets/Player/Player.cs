@@ -42,7 +42,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void Move(int moveInput)
+    protected void Move(int moveInput)
     {
         if (_moveInput + moveInput == 2 || _moveInput - moveInput == -2)
         {
@@ -52,17 +52,17 @@ public class Player : MonoBehaviour
         _moveInput += moveInput;
     }
 
-    private void Jump()
+    protected virtual void Jump()
     {
 
     }
 
-    private void Dash()
+    protected virtual void Dash()
     {
 
     }
 
-    private void Attack()
+    protected virtual void Attack()
     {
 
     }
