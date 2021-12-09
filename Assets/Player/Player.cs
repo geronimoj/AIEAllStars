@@ -20,9 +20,10 @@ public class Player : MonoBehaviour
     public float DashMultiplier;
     public float JumpHeight = 2f;
     public float AirDashTime = 1f;
+    public int MaxAirActions = 1;
+    int _airCharges = 1;
     int _moveInput;
     int _dashInput = 0;
-    int _airCharges = 1;
     bool _dashing = false;
 
     public Transform GroundCheck;
