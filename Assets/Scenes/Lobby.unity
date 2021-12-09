@@ -163,6 +163,7 @@ MonoBehaviour:
   _characters:
   - {fileID: 11400000, guid: 5410c24067f83e944817ded2c8c42bd5, type: 2}
   - {fileID: 11400000, guid: 1ab12456b496e4745a5fd8640ed7410c, type: 2}
+  - {fileID: 11400000, guid: c61094d2f7b4bd94eac6e8a1b0b10fd4, type: 2}
   _maps:
   - {fileID: 11400000, guid: 982d118ab94ab0a48acd56b919948d97, type: 2}
   - {fileID: 11400000, guid: 10b554152f8d9ed4ba9f0d8873ff229c, type: 2}

@@ -79,6 +79,9 @@ public class Player : MonoBehaviour
             CurrentTime = Random.Range(MinTime, MaxTime);
         }
     }
+
+    public int canMoveInt = 0;
+    public bool CanMove => canMoveInt <= 0;
     #endregion
 
     #region Start/Update
@@ -137,6 +140,9 @@ public class Player : MonoBehaviour
 
         //If moving, walk
         animator.SetFloat("MoveSpeed", _moveInput != 0 ? 1 : 0);
+
+        if (!CanMove)
+            inputVelocity = Vector3.zero;
 
         //Move the character controller based on the player's input
         _characterController.Move(inputVelocity);
