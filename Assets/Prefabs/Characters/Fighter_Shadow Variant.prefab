@@ -87,9 +87,9 @@ MonoBehaviour:
   AirDashTime: 0.15
   AirDashBoost: 2
   MaxAirActions: 1
-  GroundCheck: {fileID: 1991126656}
   Gravity: -39.24
   GroundDistance: 0.1
+  GroundCheck: {fileID: 1991126656}
   GroundMask:
     serializedVersion: 2
     m_Bits: 1024
@@ -109,6 +109,7 @@ MonoBehaviour:
   SkillData:
     MinTime: 0
     MaxTime: 1
+  canMoveInt: 0
 --- !u!114 &1243991087
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -28,10 +28,17 @@ public class Player : MonoBehaviour
     int _dashInput = 0;
     bool _dashing = false;
 
-    public Transform GroundCheck;
     public float Gravity = -9.81f;
     public float GroundDistance = 0.2f;
+    public Transform GroundCheck;
     public LayerMask GroundMask;
+    ///// <summary>
+    ///// The distance between you can be above a character without being pushed back
+    ///// </summary>
+    //public float CharacterDistance = 0.5f;
+    //public Transform CharacterCheck;
+    //public LayerMask CharacterMask;
+
     bool _isGrounded;
     Vector3 _velocity;
 
@@ -128,12 +135,12 @@ public class Player : MonoBehaviour
             }
         }
         //Dashing in mid-air
-        if(_dashing && !_isGrounded)
+        if (_dashing && !_isGrounded)
         {
             inputVelocity = Vector3.right * _dashInput * (MoveSpeed * DashMultiplier * AirDashBoost) * Time.deltaTime;
         }
         //Regular movement speed
-        if(!_dashing)
+        if (!_dashing)
         {
             inputVelocity = Vector3.right * _moveInput * MoveSpeed * Time.deltaTime;
         }
@@ -180,6 +187,8 @@ public class Player : MonoBehaviour
         //Move downwards with their increased gravity
         _characterController.Move(_velocity * Time.deltaTime);
 
+        SlideOffHead();
+
         //Clamps the player to z = 0
         inputVelocity = transform.position;
         inputVelocity.z = 0;
@@ -192,11 +201,11 @@ public class Player : MonoBehaviour
     {
         int moveInput = 0;
 
-        if(Input.GetKey(Controls.Right))
+        if (Input.GetKey(Controls.Right))
         {
             moveInput++;
         }
-        if(Input.GetKey(Controls.Left))
+        if (Input.GetKey(Controls.Left))
         {
             moveInput--;
         }
@@ -239,7 +248,6 @@ public class Player : MonoBehaviour
     /// </summary>
     protected virtual void Dash()
     {
-        animator.SetTrigger("Dash");
 
         if (_isGrounded)
         {
@@ -247,6 +255,7 @@ public class Player : MonoBehaviour
         }
         else if (_airCharges > 0)
         {
+            animator.SetTrigger("Dash");
             _velocity.y = 0;
 
             _dashing = true;
@@ -390,11 +399,11 @@ public class Player : MonoBehaviour
 
     protected void ChooseMoveDirection()
     {
-        if(EnemyIsOnLeft())
+        if (EnemyIsOnLeft())
         {
             MoveInput = Random.Range(-2, 2);
 
-            if(MoveInput < -1)
+            if (MoveInput < -1)
             {
                 MoveInput = -1;
             }
@@ -403,7 +412,7 @@ public class Player : MonoBehaviour
         {
             MoveInput = Random.Range(-1, 3);
 
-            if(MoveInput > 1)
+            if (MoveInput > 1)
             {
                 MoveInput = 1;
             }
@@ -440,10 +449,19 @@ public class Player : MonoBehaviour
     {
         if (Enemy().transform.position.x > transform.position.x)
         {
+            if (transform.localScale.x != 30)
+            {
+                transform.localScale = new Vector3(30, transform.localScale.y, transform.localScale.z);
+            }
             return false;
         }
         else
         {
+
+            if (transform.localScale.x != -30)
+            {
+                transform.localScale = new Vector3(-30, transform.localScale.y, transform.localScale.z);
+            }
             return true;
         }
     }
@@ -468,6 +486,70 @@ public class Player : MonoBehaviour
     protected void FaceLeft()
     {
         transform.eulerAngles = new Vector3(0, 90, 0);
+    }
+
+    void SlideOffHead()
+    {
+        Vector3 _ePos = Enemy().transform.position;
+        Vector3 _pPos = transform.position;
+        float _eGrav = Enemy().GetComponent<Player>()._velocity.y;
+        float _pGrav = _velocity.y;
+
+        //If the player's are too close and above one another
+        if (Mathf.Abs(_ePos.x - _pPos.x) <= 1.3 && Mathf.Abs(_ePos.y - _pPos.y) <= 2)
+        {
+            if(transform.position.x == Enemy().transform.position.x)
+            {
+                if(transform.position.x > 0)
+                {
+                    //Is the enemy above you?
+                    if (_ePos.y > _pPos.y)
+                    {
+                        _characterController.Move(new Vector3(_eGrav / 2 * Time.deltaTime, 0, 0));
+                    }
+                    else
+                    {
+                        _characterController.Move(new Vector3(_pGrav * Time.deltaTime, 0, 0));
+                    }
+                }
+                else
+                {
+                    //Is the enemy above you?
+                    if (_ePos.y > _pPos.y)
+                    {
+                        _characterController.Move(new Vector3((_eGrav * -1) / 2 * Time.deltaTime, 0, 0));
+                    }
+                    else
+                    {
+                        _characterController.Move(new Vector3((_pGrav * -1) * Time.deltaTime, 0, 0));
+                    }
+                }
+            }
+            else if (EnemyIsOnLeft())
+            {
+                //Is the enemy above you?
+                if (_ePos.y > _pPos.y)
+                {
+                    _characterController.Move(new Vector3((_eGrav * -1) / 2 * Time.deltaTime, 0, 0));
+                }
+                else
+                {
+                    _characterController.Move(new Vector3((_pGrav * -1) * Time.deltaTime, 0, 0));
+                }
+            }
+            else
+            {
+                //Is the enemy above you?
+                if (_ePos.y > _pPos.y)
+                {
+                    _characterController.Move(new Vector3(_eGrav / 2 * Time.deltaTime, 0, 0));
+                }
+                else
+                {
+                    _characterController.Move(new Vector3(_pGrav * Time.deltaTime, 0, 0));
+                }
+            }
+        }
     }
     #endregion
 }
