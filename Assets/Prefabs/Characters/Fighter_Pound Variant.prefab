@@ -52,10 +52,10 @@ MonoBehaviour:
   Controls: {fileID: 11400000, guid: 6a6a1da93ab3deb48a4080b39885542f, type: 2}
   MaxHealth: 10
   MoveSpeed: 10
-  Gravity: -9.81
-  JumpHeight: 2
+  Gravity: -39.24
+  JumpHeight: 3
   GroundCheck: {fileID: 2973778552964298180}
-  GroundDistance: 0.2
+  GroundDistance: 0.1
   GroundMask:
     serializedVersion: 2
     m_Bits: 1024
