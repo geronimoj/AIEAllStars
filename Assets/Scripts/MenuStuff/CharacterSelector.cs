@@ -23,9 +23,17 @@ public class CharacterSelector : MonoBehaviour
     [Tooltip("The parent for the buttons")]
     public Transform _p2ButtonParent = null;
     /// <summary>
+    /// The map parent
+    /// </summary>
+    public Transform _mapParent = null;
+    /// <summary>
     /// The charcaters to select from
     /// </summary>
     public GameObject[] _characters = new GameObject[0];
+    /// <summary>
+    /// The maps the players can play on
+    /// </summary>
+    public GameObject[] _maps = new GameObject[0];
     /// <summary>
     /// Initialize charcaters
     /// </summary>
@@ -33,6 +41,7 @@ public class CharacterSelector : MonoBehaviour
     {   //Spawn uI
         SpawnPlayerUI(_p1ButtonParent, true);
         SpawnPlayerUI(_p2ButtonParent, false);
+        SpawnMapUI(_mapParent);
         //Set defaults if null
         if (!GameManager.s_p1Char)
             GameManager.s_p1Char = _characters[0];
@@ -62,6 +71,20 @@ public class CharacterSelector : MonoBehaviour
             {
                 b.onClick.AddListener(() => GameManager.s_p2Char = _characters[index]);
             }
+        }
+    }
+
+    private void SpawnMapUI(Transform parent)
+    {   //Spawn UI
+        for (int i = 0; i < _maps.Length; i++)
+        {   //Store index for lambda
+            int index = i;
+            //Spawn button
+            GameObject button = Instantiate(_characterButtonPrefab.gameObject, parent);
+
+            Button b = button.GetComponent<Button>();
+            //Setup lambda
+            b.onClick.AddListener(() => GameManager.s_map = _maps[index]);
         }
     }
     /// <summary>
