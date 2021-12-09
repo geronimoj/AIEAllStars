@@ -24,6 +24,8 @@ public class GameManager : MonoBehaviour
 
     private SceneLoader _loader = null;
 
+    private Player[] _players = null;
+
     public GameObject _map = null;
 
     public GameObject _defaultCharacter = null;
@@ -75,22 +77,22 @@ public class GameManager : MonoBehaviour
         }
 
         GameObject obj;
-        Player p;
+        _players = new Player[2];
         //Spawn player 1
         if (points[0])
         {
             obj = Instantiate(s_p1Char, points[0].transform.position, s_p1Char.transform.rotation);
-            p = obj.GetComponent<Player>();
+            _players[0] = obj.GetComponent<Player>();
 
-            p.Controls = _p1Input;
+            _players[0].Controls = _p1Input;
         }
         //Spawn player 2
         if (points[1])
         {
             obj = Instantiate(s_p2Char, points[1].transform.position, s_p1Char.transform.rotation);
-            p = obj.GetComponent<Player>();
+            _players[1] = obj.GetComponent<Player>();
 
-            p.Controls = _p2Input;
+            _players[1].Controls = _p2Input;
         }
 
         StartCoroutine(GameStart());
@@ -122,7 +124,29 @@ public class GameManager : MonoBehaviour
     private void GameEnd()
     {
         Debug.LogError("Game End not implemented");
+
+        float winnerHealth = _players[0].CurrentHealth;
+        s_winningPlayer = 0;
+        for (byte i = 1; i < _players.Length; i++)
+        {   //If this player has max health
+            if (_players[1].CurrentHealth > winnerHealth)
+            {   //They are the winner
+                s_winningPlayer = i;
+                winnerHealth = _players[i].CurrentHealth;
+            }
+        }
+
         //Start Game end timer
         StartCoroutine(GameEndTimer());
+    }
+
+    private void Update()
+    {
+        for (byte i = 0; i < _players.Length; i++)
+            if (_players[i].CurrentHealth <= 0)
+            {   //Game has ended
+                GameEnd();
+                return;
+            }
     }
 }
