@@ -165,21 +165,18 @@ public class Player : MonoBehaviour
         {
             Move(MoveInput);
 
-            //if (DistanceFromPlayer() < AttackRange)
-            //{
-            //    Debug.Log("Attack");
-            //    AIAttack();
-            //}
+            if (DistanceFromPlayer() < AttackRange)
+            {
+                AIAttack();
+            }
 
             if (CallTimer(JumpData))
             {
-                Debug.Log("Jump");
                 Jump();
             }
 
             if (CallTimer(DashData))
             {
-                Debug.Log("Dash");
                 Dash();
             }
 
@@ -187,7 +184,6 @@ public class Player : MonoBehaviour
             {
                 if (AISkillCanBeUsed())
                 {
-                    Debug.Log("Skill");
                     Skill();
                 }
             }
@@ -339,6 +335,7 @@ public class Player : MonoBehaviour
 
     protected void AIAttack()
     {
+        Debug.Log("Attack");
         FacePlayer();
         Attack();
     }
@@ -377,7 +374,14 @@ public class Player : MonoBehaviour
 
     protected float DistanceFromPlayer()
     {
-        return Vector3.Distance(transform.position, GameManager.s_p1Char.transform.position);
+        if(transform == GameManager.s_p1Char)
+        {
+            return Vector3.Distance(transform.position, GameManager.s_p2Char.transform.position);
+        }
+        else
+        {
+            return Vector3.Distance(transform.position, GameManager.s_p1Char.transform.position);
+        }
     }
 
     protected bool PlayerIsOnLeft()
