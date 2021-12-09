@@ -86,7 +86,7 @@ public class GameManager : MonoBehaviour
             obj = Instantiate(s_p2Char, points[1].transform.position, s_p1Char.transform.rotation);
             p = obj.GetComponent<Player>();
 
-            p.Controls = _p1Input;
+            p.Controls = _p2Input;
         }
 
         StartCoroutine(GameStart());
