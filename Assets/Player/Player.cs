@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(CombatController))]
 public class Player : MonoBehaviour
 {
     public PlayerInput Controls;
@@ -15,6 +16,13 @@ public class Player : MonoBehaviour
     public float CurrentHealth => _currentHealth;
 
     public float MoveSpeed;
+
+    CombatController _combatController;
+
+    private void Awake()
+    {
+        _combatController = GetComponent<CombatController>();
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -52,7 +60,7 @@ public class Player : MonoBehaviour
 
     protected virtual void Attack()
     {
-
+        _combatController.InputAttack();
     }
 
     protected virtual void Skill()

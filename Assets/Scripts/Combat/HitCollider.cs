@@ -7,7 +7,9 @@ public class HitCollider : MonoBehaviour
 {
     public float damage;
 
-    public float stunDuration;
+    public float enemyStunDuration;
+
+    public float selfStunDuration;
 
     [Tooltip("0 is forwards relative to the character forwards, 90 is up")]
     public float launchAngle;
