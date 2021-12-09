@@ -4,15 +4,20 @@ using UnityEngine;
 
 public class ThePoundPlayer : Player
 {
-    // Start is called before the first frame update
-    void Start()
+    private float _minSpeed = 0;
+
+    public float _maxSpeedAt0HP = 15;
+
+    protected override void Start()
     {
-        
+        base.Start();
+        _minSpeed = MoveSpeed;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+    protected override void Update()
+    {   //Scale move speed with health
+        MoveSpeed = Mathf.Lerp(_maxSpeedAt0HP, _minSpeed, CurrentHealth / MaxHealth);
+        //Base update
+        base.Update();
     }
 }
