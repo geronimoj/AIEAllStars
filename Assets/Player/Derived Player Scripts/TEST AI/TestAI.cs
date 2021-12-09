@@ -7,7 +7,7 @@ public class TestAI : Player
     [Header("AI Customisation")]
 
     [Space]
-    public bool IsAI;
+    public bool IsAI = true;
     protected int MoveInput = 0;
 
     [Space]
@@ -17,14 +17,14 @@ public class TestAI : Player
     public TimerData SkillData;
 
     [Space]
-    public float AttackRange;
+    public float AttackRange = 1;
 
     [System.Serializable]
     public class TimerData
     {
-        public float MinTime;
-        public float MaxTime;
-        protected float CurrentTime;
+        public float MinTime = 3;
+        public float MaxTime = 5;
+        protected float CurrentTime = 0;
 
         public bool CallTimer()
         {
