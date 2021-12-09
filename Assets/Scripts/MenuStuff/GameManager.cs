@@ -173,8 +173,13 @@ public class GameManager : MonoBehaviour
     {
         OnSetupComplete.Invoke();
 
+        for (byte i = 0; i < _players.Length; i++)
+            _players[i].enabled = false;
         Debug.LogError("Player Freezing / Unfreezing not implemented");
         yield return new WaitForSeconds(_startCountDown);
+
+        for (byte i = 0; i < _players.Length; i++)
+            _players[i].enabled = true;
         //Start GameTimer
         StartCoroutine(GameTimer());
     }
@@ -195,7 +200,10 @@ public class GameManager : MonoBehaviour
     /// </summary>
     /// <returns></returns>
     private IEnumerator GameEndTimer()
-    {
+    {   //Disable on game end
+        for (byte i = 0; i < _players.Length; i++)
+            _players[i].enabled = false;
+
         yield return new WaitForSeconds(_endGameTime);
         Debug.LogError("Game End Timer not implemented");
 
