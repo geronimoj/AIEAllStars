@@ -13,9 +13,4 @@ public class RoundUI : MonoBehaviour
     }
 
     public GameObject front = null;
-
-    private void Start()
-    {
-        IsWon = false;
-    }
 }

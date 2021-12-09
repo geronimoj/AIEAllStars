@@ -31,7 +31,7 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// The scores the players have
     /// </summary>
-    public static byte[] s_scores = new byte[0];
+    public static byte[] s_scores = null;
     /// <summary>
     /// Reference to a scene loader for moving to other scenes after game end
     /// </summary>
@@ -91,6 +91,8 @@ public class GameManager : MonoBehaviour
     [HideInInspector]
     public float m_startTime = 0;
 
+    private bool _gameOver = false;
+
     private void Awake()
     {
         s_instance = this;
@@ -98,6 +100,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        _gameOver = false;
         _loader = GetComponent<SceneLoader>();
         SpawnLevel();
     }
@@ -141,7 +144,9 @@ public class GameManager : MonoBehaviour
         CinemachineTargetGroup.Target p1 = new CinemachineTargetGroup.Target() { weight = 1, radius = 2 };
         CinemachineTargetGroup.Target p2 = new CinemachineTargetGroup.Target() { weight = 1, radius = 2 };
         _players = new Player[2];
-        s_scores = new byte[2];
+
+        if (s_scores == null)
+            s_scores = new byte[2];
         //Spawn player 1
         if (points[0])
         {
@@ -205,11 +210,14 @@ public class GameManager : MonoBehaviour
             _players[i].enabled = false;
 
         yield return new WaitForSeconds(_endGameTime);
-        Debug.LogError("Game End Timer not implemented");
 
         if (s_scores[s_winningPlayer] >= _winAmount)
+        {
             //Load the win scene
             _loader.LoadScene("GameWin");
+            //Clear the scores for later
+            s_scores = null;
+        }
         else
             _loader.LoadScene("Game");
     }
@@ -218,7 +226,7 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private void GameEnd()
     {
-        Debug.LogError("Game End not implemented");
+        _gameOver = true;
 
         float winnerHealth = _players[0].CurrentHealth;
         s_winningPlayer = 0;
@@ -242,11 +250,12 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private void Update()
     {
-        for (byte i = 0; i < _players.Length; i++)
-            if (_players[i].CurrentHealth <= 0)
-            {   //Game has ended
-                GameEnd();
-                return;
-            }
+        if (!_gameOver)
+            for (byte i = 0; i < _players.Length; i++)
+                if (_players[i].CurrentHealth <= 0)
+                {   //Game has ended
+                    GameEnd();
+                    return;
+                }
     }
 }

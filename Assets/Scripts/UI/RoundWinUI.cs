@@ -24,6 +24,6 @@ public class RoundWinUI : MonoBehaviour
     public void UpdateUI()
     {
         for (byte i = 0; i < _roundUIs.Count; i++)
-            _roundUIs[i].IsWon = GameManager.s_scores[_player] <= i;
+            _roundUIs[i].IsWon = GameManager.s_scores[_player] > i;
     }
 }
