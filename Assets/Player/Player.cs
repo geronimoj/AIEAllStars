@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(CharacterController))]
 [RequireComponent(typeof(CombatController))]
 public class Player : MonoBehaviour
 {
@@ -15,7 +16,15 @@ public class Player : MonoBehaviour
     /// </summary>
     public float CurrentHealth => _currentHealth;
 
+    [Space]
     public float MoveSpeed;
+    public float Gravity = -9.81f;
+    public float JumpHeight = 2f;
+    bool _isGrounded;
+    public Transform GroundCheck;
+    public float GroundDistance = 0.2f;
+    public LayerMask GroundMask;
+    Vector3 _velocity;
 
     CombatController _combatController;
     CharacterController _characterController;
@@ -36,9 +45,20 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        _isGrounded = Physics.CheckSphere(GroundCheck.position, GroundDistance, GroundMask);
         InputUpdate();
 
         _characterController.Move(Vector3.right * _moveInput * MoveSpeed * Time.deltaTime);
+
+        if(!_isGrounded)
+        {
+            _velocity.y += Gravity * Time.deltaTime;
+            _characterController.Move(_velocity * Time.deltaTime);
+        }
+        else if(_velocity.y < 0)
+        {
+            _velocity.y = 0;
+        }
     }
 
     protected void Move(int moveInput)
@@ -53,7 +73,11 @@ public class Player : MonoBehaviour
 
     protected virtual void Jump()
     {
-
+        if(_isGrounded)
+        {
+            _velocity.y = Mathf.Sqrt(JumpHeight * -2f * Gravity);
+            _isGrounded = false;
+        }
     }
 
     protected virtual void Dash()
