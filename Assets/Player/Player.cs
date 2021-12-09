@@ -9,6 +9,11 @@ public class Player : MonoBehaviour
 
     public float MaxHealth;
     private float _currentHealth;
+    /// <summary>
+    /// Health getter
+    /// </summary>
+    public float CurrentHealth => _currentHealth;
+
     public float MoveSpeed;
 
     // Start is called before the first frame update
