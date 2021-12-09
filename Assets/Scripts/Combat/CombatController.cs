@@ -77,7 +77,7 @@ public class CombatController : MonoBehaviour
     //When you leave the attack animation
     public void ExitAttackState()
     {
-        EndAttack();
+
     }
 
     //The part in the animation where the collider spawns
@@ -98,7 +98,7 @@ public class CombatController : MonoBehaviour
     }
 
     //The part of the animation where the collider destroys
-    public void EndAttack()
+    public void EndAttack(int attack)
     {
         inAttackState = false;
 
@@ -117,5 +117,13 @@ public class CombatController : MonoBehaviour
 
         if (currentlyActiveAttack)
             Destroy(currentlyActiveAttack.gameObject);
+
+        if (attack == 2)
+            FinishAttackChain();
+    }
+
+    void FinishAttackChain()
+    {
+
     }
 }
