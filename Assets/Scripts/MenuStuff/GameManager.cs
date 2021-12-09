@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(SceneLoader))]
 public class GameManager : MonoBehaviour
 {
     /// <summary>
@@ -21,6 +22,8 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public static byte s_winningPlayer = 0;
 
+    private SceneLoader _loader = null;
+
     public GameObject _map = null;
 
     public GameObject _defaultCharacter = null;
@@ -37,6 +40,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        _loader = GetComponent<SceneLoader>();
         SpawnLevel();
     }
 
@@ -111,6 +115,8 @@ public class GameManager : MonoBehaviour
     {
         yield return new WaitForSeconds(_endGameTime);
         Debug.LogError("Game End Timer not implemented");
+        //Load the win scene
+        _loader.LoadScene("GameWin");
     }
 
     private void GameEnd()
