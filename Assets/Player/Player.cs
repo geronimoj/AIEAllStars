@@ -125,7 +125,7 @@ public class Player : MonoBehaviour
         }
 
         //If moving, walk
-        animator.SetFloat("MoveSpeed", inputVelocity.magnitude > 0.1f ? 1 : 0);
+        animator.SetFloat("MoveSpeed", _moveInput != 0 ? 1 : 0);
 
         _characterController.Move(inputVelocity);
 
@@ -264,6 +264,8 @@ public class Player : MonoBehaviour
 
         //Get knockedBack
         _velocity = force;
+
+        animator.SetTrigger("Hit");
     }
 
     /// <summary>

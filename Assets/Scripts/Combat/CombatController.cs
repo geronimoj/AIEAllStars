@@ -77,7 +77,7 @@ public class CombatController : MonoBehaviour
     //When you leave the attack animation
     public void ExitAttackState()
     {
-
+        EndAttack(0);
     }
 
     //The part in the animation where the collider spawns
