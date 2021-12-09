@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(SceneLoader))]
 public class GameManager : MonoBehaviour
 {
     /// <summary>
@@ -16,10 +17,22 @@ public class GameManager : MonoBehaviour
     /// Map to spawn
     /// </summary>
     public static GameObject s_map = null;
+    /// <summary>
+    /// Which player won
+    /// </summary>
+    public static byte s_winningPlayer = 0;
+
+    private SceneLoader _loader = null;
+
+    private Player[] _players = null;
 
     public GameObject _map = null;
 
     public GameObject _defaultCharacter = null;
+
+    public PlayerInput _p1Input = null;
+
+    public PlayerInput _p2Input = null;
 
     public float _maxGameTime = 99;
 
@@ -29,6 +42,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        _loader = GetComponent<SceneLoader>();
         SpawnLevel();
     }
 
@@ -62,12 +76,24 @@ public class GameManager : MonoBehaviour
                 s_p2Char = _defaultCharacter;
         }
 
+        GameObject obj;
+        _players = new Player[2];
         //Spawn player 1
         if (points[0])
-            Instantiate(s_p1Char, points[0].transform.position, s_p1Char.transform.rotation);
+        {
+            obj = Instantiate(s_p1Char, points[0].transform.position, s_p1Char.transform.rotation);
+            _players[0] = obj.GetComponent<Player>();
+
+            _players[0].Controls = _p1Input;
+        }
         //Spawn player 2
         if (points[1])
-            Instantiate(s_p2Char, points[1].transform.position, s_p1Char.transform.rotation);
+        {
+            obj = Instantiate(s_p2Char, points[1].transform.position, s_p1Char.transform.rotation);
+            _players[1] = obj.GetComponent<Player>();
+
+            _players[1].Controls = _p2Input;
+        }
 
         StartCoroutine(GameStart());
     }
@@ -91,12 +117,36 @@ public class GameManager : MonoBehaviour
     {
         yield return new WaitForSeconds(_endGameTime);
         Debug.LogError("Game End Timer not implemented");
+        //Load the win scene
+        _loader.LoadScene("GameWin");
     }
 
     private void GameEnd()
     {
         Debug.LogError("Game End not implemented");
+
+        float winnerHealth = _players[0].CurrentHealth;
+        s_winningPlayer = 0;
+        for (byte i = 1; i < _players.Length; i++)
+        {   //If this player has max health
+            if (_players[1].CurrentHealth > winnerHealth)
+            {   //They are the winner
+                s_winningPlayer = i;
+                winnerHealth = _players[i].CurrentHealth;
+            }
+        }
+
         //Start Game end timer
         StartCoroutine(GameEndTimer());
+    }
+
+    private void Update()
+    {
+        for (byte i = 0; i < _players.Length; i++)
+            if (_players[i].CurrentHealth <= 0)
+            {   //Game has ended
+                GameEnd();
+                return;
+            }
     }
 }

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3497109648286400108}
   - component: {fileID: 2760365482155406918}
   - component: {fileID: 3277470919509370218}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: HaemL3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -58,6 +58,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 5
-  stunDuration: 0.2
+  enemyStunDuration: 0
+  selfStunDuration: 0
   launchAngle: 500
   launchForce: 25

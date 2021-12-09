@@ -2,10 +2,27 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(CombatController))]
 public class Player : MonoBehaviour
 {
     public PlayerInput Controls;
     private int _moveInput;
+
+    public float MaxHealth;
+    private float _currentHealth;
+    /// <summary>
+    /// Health getter
+    /// </summary>
+    public float CurrentHealth => _currentHealth;
+
+    public float MoveSpeed;
+
+    CombatController _combatController;
+
+    private void Awake()
+    {
+        _combatController = GetComponent<CombatController>();
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -15,6 +32,52 @@ public class Player : MonoBehaviour
 
     // Update is called once per frame
     void Update()
+    {
+        InputUpdate();
+        
+
+    }
+
+    protected void Move(int moveInput)
+    {
+        if (_moveInput + moveInput == 2 || _moveInput - moveInput == -2)
+        {
+            return;
+        }
+
+        _moveInput += moveInput;
+    }
+
+    protected virtual void Jump()
+    {
+
+    }
+
+    protected virtual void Dash()
+    {
+
+    }
+
+    protected virtual void Attack()
+    {
+        _combatController.InputAttack();
+    }
+
+    protected virtual void Skill()
+    {
+
+    }
+
+    public void GotHit(float damage, float stunDuration, Vector3 force)
+    {
+        //Take damage
+
+        //Get Stunned
+
+        //Get knockedBack
+    }
+
+    private void InputUpdate()
     {
         if (Input.GetKeyDown(Controls.Left))
         {
@@ -40,35 +103,5 @@ public class Player : MonoBehaviour
         {
             Skill();
         }
-    }
-
-    private void Move(int moveInput)
-    {
-        if (_moveInput + moveInput == 2 || _moveInput - moveInput == -2)
-        {
-            return;
-        }
-
-        _moveInput += moveInput;
-    }
-
-    private void Jump()
-    {
-
-    }
-
-    private void Dash()
-    {
-
-    }
-
-    private void Attack()
-    {
-
-    }
-
-    protected virtual void Skill()
-    {
-
     }
 }
