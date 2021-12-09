@@ -28,6 +28,10 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public static bool s_useAI = false;
     /// <summary>
+    /// The scores the players have
+    /// </summary>
+    public static byte[] s_scores = new byte[0];
+    /// <summary>
     /// Reference to a scene loader for moving to other scenes after game end
     /// </summary>
     private SceneLoader _loader = null;
@@ -64,6 +68,10 @@ public class GameManager : MonoBehaviour
     /// The timer for when the game finishes
     /// </summary>
     public float _endGameTime = 3;
+    /// <summary>
+    /// The number of points required to win
+    /// </summary>
+    public byte _winAmount = 3;
     /// <summary>
     /// Called when the setup is complete
     /// </summary>
@@ -128,6 +136,7 @@ public class GameManager : MonoBehaviour
 
         GameObject obj;
         _players = new Player[2];
+        s_scores = new byte[2];
         //Spawn player 1
         if (points[0])
         {
@@ -152,7 +161,7 @@ public class GameManager : MonoBehaviour
     /// </summary>
     /// <returns></returns>
     private IEnumerator GameStart()
-    {   
+    {
         OnSetupComplete.Invoke();
 
         Debug.LogError("Player Freezing / Unfreezing not implemented");
@@ -180,8 +189,12 @@ public class GameManager : MonoBehaviour
     {
         yield return new WaitForSeconds(_endGameTime);
         Debug.LogError("Game End Timer not implemented");
-        //Load the win scene
-        _loader.LoadScene("GameWin");
+
+        if (s_scores[s_winningPlayer] >= _winAmount)
+            //Load the win scene
+            _loader.LoadScene("GameWin");
+        else
+            _loader.LoadScene("Game");
     }
     /// <summary>
     /// Call to end the game
@@ -200,6 +213,8 @@ public class GameManager : MonoBehaviour
                 winnerHealth = _players[i].CurrentHealth;
             }
         }
+        //Give the winning player points
+        s_scores[s_winningPlayer]++;
 
         OnGameEnd.Invoke();
         //Start Game end timer
