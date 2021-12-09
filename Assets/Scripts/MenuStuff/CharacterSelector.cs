@@ -57,12 +57,10 @@ public class CharacterSelector : MonoBehaviour
             if (isP1)
             {
                 b.onClick.AddListener(() => GameManager.s_p1Char = _characters[index]);
-                Debug.Log("P1" + _characters[index].name);
             }
             else
             {
                 b.onClick.AddListener(() => GameManager.s_p2Char = _characters[index]);
-                Debug.Log("P2" + _characters[index].name);
             }
         }
     }

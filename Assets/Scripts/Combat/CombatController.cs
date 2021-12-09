@@ -69,7 +69,7 @@ public class CombatController : MonoBehaviour
     }
 
     //When you enter the attack animation
-    public void EnterAttackState(int attack)
+    public void EnterAttackState()
     {
 
     }
