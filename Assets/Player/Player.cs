@@ -469,14 +469,18 @@ public class Player : MonoBehaviour
 
     protected GameObject Enemy()
     {
-        if (gameObject == GameManager.s_instance._players[0].gameObject)
+        if (GameManager.s_instance != null)
         {
-            return GameManager.s_instance._players[1].gameObject;
+            if (gameObject == GameManager.s_instance._players[0].gameObject)
+            {
+                return GameManager.s_instance._players[1].gameObject;
+            }
+            else
+            {
+                return GameManager.s_instance._players[0].gameObject;
+            }
         }
-        else
-        {
-            return GameManager.s_instance._players[0].gameObject;
-        }
+        return null;
     }
 
     protected bool EnemyIsOnLeft()
