@@ -16,10 +16,18 @@ public class GameManager : MonoBehaviour
     /// Map to spawn
     /// </summary>
     public static GameObject s_map = null;
+    /// <summary>
+    /// Which player won
+    /// </summary>
+    public static byte s_winningPlayer = 0;
 
     public GameObject _map = null;
 
     public GameObject _defaultCharacter = null;
+
+    public PlayerInput _p1Input = null;
+
+    public PlayerInput _p2Input = null;
 
     public float _maxGameTime = 99;
 
@@ -62,12 +70,24 @@ public class GameManager : MonoBehaviour
                 s_p2Char = _defaultCharacter;
         }
 
+        GameObject obj;
+        Player p;
         //Spawn player 1
         if (points[0])
-            Instantiate(s_p1Char, points[0].transform.position, s_p1Char.transform.rotation);
+        {
+            obj = Instantiate(s_p1Char, points[0].transform.position, s_p1Char.transform.rotation);
+            p = obj.GetComponent<Player>();
+
+            p.Controls = _p1Input;
+        }
         //Spawn player 2
         if (points[1])
-            Instantiate(s_p2Char, points[1].transform.position, s_p1Char.transform.rotation);
+        {
+            obj = Instantiate(s_p2Char, points[1].transform.position, s_p1Char.transform.rotation);
+            p = obj.GetComponent<Player>();
+
+            p.Controls = _p2Input;
+        }
 
         StartCoroutine(GameStart());
     }
