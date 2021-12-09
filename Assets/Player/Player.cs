@@ -305,8 +305,10 @@ public class Player : MonoBehaviour
     public void StunForDuration(float stunDuration)
     {
         canMoveInt++;
-        StartCoroutine(WaitBeforeUnStun(stunDuration));
 
+        _dashing = false;
+
+        StartCoroutine(WaitBeforeUnStun(stunDuration));
     }
 
     IEnumerator WaitBeforeUnStun(float time)
