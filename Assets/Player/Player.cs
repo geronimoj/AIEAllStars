@@ -4,8 +4,14 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    CombatController combatController;
     public PlayerInput Controls;
     private int _moveInput;
+
+    private void Awake()
+    {
+        combatController = GetComponent<CombatController>();
+    }
 
     // Start is called before the first frame update
     void Start()

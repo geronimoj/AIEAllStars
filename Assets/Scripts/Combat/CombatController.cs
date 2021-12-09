@@ -5,6 +5,13 @@ using UnityEngine;
 [RequireComponent(typeof(Animator))]
 public class CombatController : MonoBehaviour
 {
+    //on first attack input, will do single light
+    //when second pressed, attack will queue for x seconds
+    //if nothing is queued when attack ends, enter selfStun
+    //if something queued, unqueue it and start next attack
+
+
+
     Animator animator;
 
     public HitCollider[] attacks;
@@ -13,24 +20,43 @@ public class CombatController : MonoBehaviour
 
     bool inAttackState = false;
 
+    float queueTimer = 0; //goes to one when queued
+
     private void Awake()
     {
         animator = GetComponent<Animator>();
+
+        inAttackState = false;
+        queueTimer = 0;
     }
 
+    [ContextMenu("Attack")]
     public void InputAttack()
     {
         //Check if in hitstun
 
+
+        //If we are already attacking and want to queue another
         if (inAttackState)
+        {
+            queueTimer = 1;
             return;
+        }
+
+        inAttackState = true;
 
         //Change the animation to be the next attack
         animator.SetTrigger("Attack");
     }
 
+    private void Update()
+    {
+        if(queueTimer > 0)
+            queueTimer -= Time.deltaTime;
+    }
+
     //When you enter the attack animation
-    public void EnterAttackState()
+    public void EnterAttackState(int attack)
     {
 
     }
@@ -44,8 +70,6 @@ public class CombatController : MonoBehaviour
     //The part in the animation where the collider spawns
     public void StartAttack(int attack)
     {
-        inAttackState = true;
-
         //If we can make a valid attack
         if (attacks != null)
             if (attacks.Length > attack)
@@ -64,7 +88,12 @@ public class CombatController : MonoBehaviour
         {
             Destroy(currentlyActiveAttack.gameObject);
         }
+
+        if(queueTimer > 0)
+        {
+            queueTimer = 0;
+
+            InputAttack();
+        }
     }
-
-
 }
