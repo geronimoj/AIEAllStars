@@ -93,7 +93,7 @@ MonoBehaviour:
   GroundMask:
     serializedVersion: 2
     m_Bits: 1024
-  IsAI: 1
+  IsAI: 0
   MoveData:
     MinTime: 0
     MaxTime: 1
