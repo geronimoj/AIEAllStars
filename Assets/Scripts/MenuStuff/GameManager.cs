@@ -175,7 +175,7 @@ public class GameManager : MonoBehaviour
 
         for (byte i = 0; i < _players.Length; i++)
             _players[i].enabled = false;
-        Debug.LogError("Player Freezing / Unfreezing not implemented");
+
         yield return new WaitForSeconds(_startCountDown);
 
         for (byte i = 0; i < _players.Length; i++)

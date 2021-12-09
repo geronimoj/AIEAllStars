@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[DefaultExecutionOrder(1)]
 public class RoundWinUI : MonoBehaviour
 {
     public RoundUI _roundPrefab = null;
