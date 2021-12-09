@@ -4,14 +4,12 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    CombatController combatController;
     public PlayerInput Controls;
     private int _moveInput;
 
-    private void Awake()
-    {
-        combatController = GetComponent<CombatController>();
-    }
+    public float MaxHealth;
+    private float _currentHealth;
+    public float MoveSpeed;
 
     // Start is called before the first frame update
     void Start()
@@ -22,30 +20,9 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(Controls.Left))
-        {
-            Move(-1);
-        }
-        if (Input.GetKeyDown(Controls.Right))
-        {
-            Move(1);
-        }
-        if (Input.GetKeyDown(Controls.Jump))
-        {
-            Jump();
-        }
-        if (Input.GetKeyDown(Controls.Dash))
-        {
-            Dash();
-        }
-        if (Input.GetKeyDown(Controls.Attack))
-        {
-            Attack();
-        }
-        if (Input.GetKeyDown(Controls.Skill))
-        {
-            Skill();
-        }
+        InputUpdate();
+        
+
     }
 
     protected void Move(int moveInput)
@@ -76,5 +53,33 @@ public class Player : MonoBehaviour
     protected virtual void Skill()
     {
 
+    }
+
+    private void InputUpdate()
+    {
+        if (Input.GetKeyDown(Controls.Left))
+        {
+            Move(-1);
+        }
+        if (Input.GetKeyDown(Controls.Right))
+        {
+            Move(1);
+        }
+        if (Input.GetKeyDown(Controls.Jump))
+        {
+            Jump();
+        }
+        if (Input.GetKeyDown(Controls.Dash))
+        {
+            Dash();
+        }
+        if (Input.GetKeyDown(Controls.Attack))
+        {
+            Attack();
+        }
+        if (Input.GetKeyDown(Controls.Skill))
+        {
+            Skill();
+        }
     }
 }
