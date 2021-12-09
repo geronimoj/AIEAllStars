@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using Cinemachine;
 
 [RequireComponent(typeof(SceneLoader))]
 public class GameManager : MonoBehaviour
@@ -85,6 +86,8 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public UnityEvent OnGameEnd;
 
+    public CinemachineTargetGroup group;
+
     [HideInInspector]
     public float m_startTime = 0;
 
@@ -135,6 +138,8 @@ public class GameManager : MonoBehaviour
         }
 
         GameObject obj;
+        CinemachineTargetGroup.Target p1 = new CinemachineTargetGroup.Target() { weight = 1, radius = 2 };
+        CinemachineTargetGroup.Target p2 = new CinemachineTargetGroup.Target() { weight = 1, radius = 2 };
         _players = new Player[2];
         s_scores = new byte[2];
         //Spawn player 1
@@ -144,6 +149,7 @@ public class GameManager : MonoBehaviour
             _players[0] = obj.GetComponent<Player>();
 
             _players[0].Controls = _p1Input;
+            p1.target = obj.transform;
         }
         //Spawn player 2
         if (points[1])
@@ -152,7 +158,10 @@ public class GameManager : MonoBehaviour
             _players[1] = obj.GetComponent<Player>();
 
             _players[1].Controls = _p2Input;
+            p2.target = obj.transform;
         }
+
+        group.m_Targets = new CinemachineTargetGroup.Target[2] { p1, p2 };
 
         StartCoroutine(GameStart());
     }
