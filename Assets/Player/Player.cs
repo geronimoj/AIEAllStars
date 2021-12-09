@@ -211,6 +211,8 @@ public class Player : MonoBehaviour
     /// </summary>
     protected virtual void Dash()
     {
+        animator.SetTrigger("Dash");
+
         if (_isGrounded)
         {
             _dashing = true;
