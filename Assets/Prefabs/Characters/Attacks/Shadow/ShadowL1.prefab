@@ -43,8 +43,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 0.74, z: 0.94}
-  m_Center: {x: 0, y: 1.9, z: 1.03}
+  m_Size: {x: 1, y: 0.73999995, z: 1.0281467}
+  m_Center: {x: 0.00000005298163, y: 1.9, z: 1.0740739}
 --- !u!114 &4813866490001391870
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -62,5 +62,7 @@ MonoBehaviour:
   selfStunDuration: 0.2
   launchAngle: 0
   launchForce: 10
+  followUser: 1
+  giveInvFrames: 0
   particles: {fileID: 0}
   toFollow: 0
