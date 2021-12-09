@@ -407,12 +407,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _players: []
   _defaultMap: {fileID: 3255042372439953065, guid: df27c10a9d4091a4f865c4c38a680a54, type: 3}
-  _defaultCharacter: {fileID: 4025760358880584263, guid: e800077db6d49674e912497c144f9e7b, type: 3}
+  _defaultCharacter: {fileID: 2755054507247575172, guid: bc68eb63b2690934f832fc267cfdf160, type: 3}
   _p1Input: {fileID: 11400000, guid: 6a6a1da93ab3deb48a4080b39885542f, type: 2}
   _p2Input: {fileID: 11400000, guid: e47640bd4853c754ca8c3174a62cef24, type: 2}
   _maxGameTime: 99
   _startCountDown: 3
   _endGameTime: 3
+  _winAmount: 3
   OnSetupComplete:
     m_PersistentCalls:
       m_Calls: []
