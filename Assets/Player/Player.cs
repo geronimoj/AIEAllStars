@@ -89,6 +89,8 @@ public class Player : MonoBehaviour
 
     public int canMoveInt = 0;
     public bool CanMove => canMoveInt <= 0;
+
+    public float invinsibilityTime = 0;
     #endregion
 
     #region Start/Update
@@ -110,6 +112,9 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     protected virtual void Update()
     {
+        if (invinsibilityTime > 0)
+            invinsibilityTime -= Time.deltaTime;
+
         //Check if the player is grounded
         _isGrounded = Physics.CheckSphere(GroundCheck.position, GroundDistance, GroundMask);
 

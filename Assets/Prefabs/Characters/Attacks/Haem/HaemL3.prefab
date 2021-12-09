@@ -63,5 +63,6 @@ MonoBehaviour:
   launchAngle: -80
   launchForce: 15
   followUser: 1
+  giveInvFrames: 1
   particles: {fileID: 0}
   toFollow: 0
