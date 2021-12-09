@@ -16,6 +16,8 @@ public class RoundWinUI : MonoBehaviour
     {
         for (byte i = 0; i < GameManager.s_instance._winAmount; i++)
             _roundUIs.Add(Instantiate(_roundPrefab, _uiParent));
+        //Update the UI
+        UpdateUI();
     }
 
     public void UpdateUI()
