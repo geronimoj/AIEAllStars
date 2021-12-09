@@ -120,29 +120,32 @@ public class Player : MonoBehaviour
 
         Vector3 inputVelocity = Vector3.zero;
 
-        //Change movement speed if player is dashing/Check that the player is still dashing
-        if (_dashing && _isGrounded)
+        if (CanMove)
         {
-            //If you're still pressing the same direction, keep dashing
-            if (_dashInput == _moveInput)
+            //Change movement speed if player is dashing/Check that the player is still dashing
+            if (_dashing && _isGrounded)
             {
-                inputVelocity = Vector3.right * _moveInput * (MoveSpeed * DashMultiplier) * Time.deltaTime;
+                //If you're still pressing the same direction, keep dashing
+                if (_dashInput == _moveInput)
+                {
+                    inputVelocity = Vector3.right * _moveInput * (MoveSpeed * DashMultiplier) * Time.deltaTime;
+                }
+                else
+                {
+                    _dashing = false;
+                    _dashInput = 0;
+                }
             }
-            else
+            //Dashing in mid-air
+            if (_dashing && !_isGrounded)
             {
-                _dashing = false;
-                _dashInput = 0;
+                inputVelocity = Vector3.right * _dashInput * (MoveSpeed * DashMultiplier * AirDashBoost) * Time.deltaTime;
             }
-        }
-        //Dashing in mid-air
-        if (_dashing && !_isGrounded)
-        {
-            inputVelocity = Vector3.right * _dashInput * (MoveSpeed * DashMultiplier * AirDashBoost) * Time.deltaTime;
-        }
-        //Regular movement speed
-        if (!_dashing)
-        {
-            inputVelocity = Vector3.right * _moveInput * MoveSpeed * Time.deltaTime;
+            //Regular movement speed
+            if (!_dashing)
+            {
+                inputVelocity = Vector3.right * _moveInput * MoveSpeed * Time.deltaTime;
+            }
         }
 
         //If moving, walk
@@ -228,7 +231,7 @@ public class Player : MonoBehaviour
                     break;
             }
         }
-        
+
         _moveInput = moveInput;
     }
 
@@ -516,9 +519,9 @@ public class Player : MonoBehaviour
         //If the player's are too close and above one another
         if (Mathf.Abs(_ePos.x - _pPos.x) <= 1.3 && Mathf.Abs(_ePos.y - _pPos.y) <= 2)
         {
-            if(transform.position.x == Enemy().transform.position.x)
+            if (transform.position.x == Enemy().transform.position.x)
             {
-                if(transform.position.x > 0)
+                if (transform.position.x > 0)
                 {
                     //Is the enemy above you?
                     if (_ePos.y > _pPos.y)
