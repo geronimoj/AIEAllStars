@@ -23,7 +23,7 @@ public class LoadSceneAfterTime : MonoBehaviour
         if (!_loader)
             _loader = GetComponent<SceneLoader>();
         //Load scene after timer
-        LoadScene();
+        StartCoroutine(LoadScene());
     }
     /// <summary>
     /// Loads the target scene after waitTime
@@ -33,6 +33,6 @@ public class LoadSceneAfterTime : MonoBehaviour
     {
         yield return new WaitForSeconds(m_waitTime);
         //Load scene
-        _loader.LoadScene("Lobby");
+        _loader.LoadScene(m_targetScene);
     }
 }

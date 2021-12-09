@@ -423,7 +423,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa079283acdfe294c9e3334999cb26d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_targetScene: 
+  m_targetScene: Lobby
   m_waitTime: 5
 --- !u!114 &1372838861
 MonoBehaviour:
