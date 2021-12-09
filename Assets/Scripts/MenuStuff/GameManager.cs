@@ -153,6 +153,7 @@ public class GameManager : MonoBehaviour
     /// <returns></returns>
     private IEnumerator GameTimer()
     {
+        m_startTime = Time.time;
         yield return new WaitForSeconds(_maxGameTime);
         //End game if its not already over
         GameEnd();
