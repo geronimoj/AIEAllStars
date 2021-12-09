@@ -281,10 +281,12 @@ public class Player : MonoBehaviour
 
         if (Input.GetKeyDown(Controls.Right) || Input.GetKeyUp(Controls.Left))
         {
+            FaceRight();
             Move(1);
         }
         if (Input.GetKeyDown(Controls.Left) || Input.GetKeyUp(Controls.Right))
         {
+            FaceLeft();
             Move(-1);
         }
 
@@ -412,11 +414,11 @@ public class Player : MonoBehaviour
 
     protected void FaceRight()
     {
-        transform.eulerAngles = new Vector3(transform.eulerAngles.x, 180, transform.eulerAngles.z);
+        transform.eulerAngles = new Vector3(0, -90, 0);
     }
 
     protected void FaceLeft()
     {
-        transform.eulerAngles = new Vector3(transform.eulerAngles.x, 0, transform.eulerAngles.z);
+        transform.eulerAngles = new Vector3(0, 90, 0);
     }
 }
