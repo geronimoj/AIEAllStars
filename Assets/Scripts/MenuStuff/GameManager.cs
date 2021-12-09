@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 [RequireComponent(typeof(SceneLoader))]
 public class GameManager : MonoBehaviour
@@ -63,6 +64,18 @@ public class GameManager : MonoBehaviour
     /// The timer for when the game finishes
     /// </summary>
     public float _endGameTime = 3;
+    /// <summary>
+    /// Called when the setup is complete
+    /// </summary>
+    public UnityEvent OnSetupComplete;
+    /// <summary>
+    /// Called when the game starts
+    /// </summary>
+    public UnityEvent OnGameStart;
+    /// <summary>
+    /// Called when the game ends
+    /// </summary>
+    public UnityEvent OnGameEnd;
 
     [HideInInspector]
     public float m_startTime = 0;
@@ -139,8 +152,8 @@ public class GameManager : MonoBehaviour
     /// </summary>
     /// <returns></returns>
     private IEnumerator GameStart()
-    {   //Set start time
-        m_startTime = Time.time;
+    {   
+        OnSetupComplete.Invoke();
 
         Debug.LogError("Player Freezing / Unfreezing not implemented");
         yield return new WaitForSeconds(_startCountDown);
@@ -153,6 +166,7 @@ public class GameManager : MonoBehaviour
     /// <returns></returns>
     private IEnumerator GameTimer()
     {
+        OnGameStart.Invoke();
         m_startTime = Time.time;
         yield return new WaitForSeconds(_maxGameTime);
         //End game if its not already over
@@ -187,6 +201,7 @@ public class GameManager : MonoBehaviour
             }
         }
 
+        OnGameEnd.Invoke();
         //Start Game end timer
         StartCoroutine(GameEndTimer());
     }
