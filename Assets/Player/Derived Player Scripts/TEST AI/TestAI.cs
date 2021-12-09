@@ -7,7 +7,7 @@ public class TestAI : Player
     [Header("AI Customisation")]
 
     [Space]
-    public bool IsAI;
+    public bool IsAI = true;
     protected int MoveInput = 0;
 
     [Space]
@@ -17,14 +17,14 @@ public class TestAI : Player
     public TimerData SkillData;
 
     [Space]
-    public float AttackRange;
+    public float AttackRange = 1;
 
     [System.Serializable]
     public class TimerData
     {
-        public float MinTime;
-        public float MaxTime;
-        protected float CurrentTime;
+        public float MinTime = 3;
+        public float MaxTime = 5;
+        protected float CurrentTime = 0;
 
         public bool CallTimer()
         {
@@ -53,15 +53,21 @@ public class TestAI : Player
         {
             Move(MoveInput);
 
-            AIAttack();
+            if (DistanceFromPlayer() < AttackRange)
+            {
+                Debug.Log("Attack");
+                AIAttack();
+            }
 
             if (CallTimer(JumpData))
             {
+                Debug.Log("Jump");
                 Jump();
             }
 
             if (CallTimer(DashData))
             {
+                Debug.Log("Dash");
                 Dash();
             }
 
@@ -69,6 +75,7 @@ public class TestAI : Player
             {
                 if (AISkillCanBeUsed())
                 {
+                    Debug.Log("Skill");
                     Skill();
                 }
             }
@@ -100,11 +107,8 @@ public class TestAI : Player
 
     protected void AIAttack()
     {
-        if (DistanceFromPlayer() < AttackRange)
-        {
-            FacePlayer();
-            Attack();
-        }
+        FacePlayer();
+        Attack();
     }
 
     protected void ChooseMoveDirection()
@@ -129,7 +133,7 @@ public class TestAI : Player
 
     public bool CallTimer(TimerData Timer)
     {
-        if (Timer.CallTimer())
+        if (!Timer.CallTimer())
         {
             return false;
         }
