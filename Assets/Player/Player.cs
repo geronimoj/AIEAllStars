@@ -21,6 +21,7 @@ public class Player : MonoBehaviour
     public float DashMultiplier;
     public float JumpHeight = 2f;
     public float AirDashTime = 1f;
+    public float AirDashBoost = 2f;
     public int MaxAirActions = 1;
     int _airCharges = 1;
     int _moveInput;
@@ -126,7 +127,7 @@ public class Player : MonoBehaviour
         //Dashing in mid-air
         if(_dashing && !_isGrounded)
         {
-            inputVelocity = Vector3.right * _dashInput * (MoveSpeed * DashMultiplier ) * Time.deltaTime;
+            inputVelocity = Vector3.right * _dashInput * (MoveSpeed * DashMultiplier * AirDashBoost) * Time.deltaTime;
         }
         //Regular movement speed
         if(!_dashing)
@@ -181,14 +182,35 @@ public class Player : MonoBehaviour
     #endregion
 
     #region Actions
-    protected void Move(int moveInput)
+    protected void Move()
     {
-        if (Mathf.Abs(_moveInput + moveInput) > 1)
+        int moveInput = 0;
+
+        if(Input.GetKey(Controls.Right))
         {
-            return;
+            moveInput++;
+        }
+        if(Input.GetKey(Controls.Left))
+        {
+            moveInput--;
         }
 
-        _moveInput += moveInput;
+        switch (moveInput)
+        {
+            case -1:
+                FaceLeft();
+                break;
+
+            case 0:
+                FaceEnemy();
+                break;
+
+            case 1:
+                FaceRight();
+                break;
+        }
+
+        _moveInput = moveInput;
     }
 
     protected virtual void Jump()
@@ -265,15 +287,9 @@ public class Player : MonoBehaviour
             FaceEnemy();
         }
 
-        if (Input.GetKeyDown(Controls.Right))// || Input.GetKeyUp(Controls.Left))
+        if (Input.GetKey(Controls.Right) || Input.GetKey(Controls.Left))
         {
-            FaceRight();
-            Move(1);
-        }
-        if (Input.GetKeyDown(Controls.Left))// || Input.GetKeyUp(Controls.Right))
-        {
-            FaceLeft();
-            Move(-1);
+            Move();
         }
 
         if (Input.GetKeyDown(Controls.Jump))
@@ -335,7 +351,7 @@ public class Player : MonoBehaviour
 
     private void AIUpdate()
     {
-        Move(MoveInput);
+        _moveInput = MoveInput;
 
         if (CallTimer(MoveData))
         {
@@ -385,22 +401,6 @@ public class Player : MonoBehaviour
             {
                 MoveInput = 1;
             }
-        }
-
-
-        switch (MoveInput)
-        {
-            case -1:
-                FaceLeft();
-                break;
-
-            case 0:
-                FaceEnemy();
-                break;
-
-            case 1:
-                FaceRight();
-                break;
         }
     }
     #endregion
