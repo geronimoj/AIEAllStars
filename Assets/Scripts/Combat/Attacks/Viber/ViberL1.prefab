@@ -61,6 +61,6 @@ MonoBehaviour:
   enemyStunDuration: 0.5
   selfStunDuration: 0.2
   launchAngle: 0
-  launchForce: 0
+  launchForce: 5
   particles: {fileID: 0}
   toFollow: 0
