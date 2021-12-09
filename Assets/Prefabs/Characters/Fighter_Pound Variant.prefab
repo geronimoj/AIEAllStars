@@ -56,7 +56,7 @@ MonoBehaviour:
   JumpHeight: 3
   AirDashTime: 0.25
   MaxAirActions: 1
-  GroundCheck: {fileID: 6711437162063891314, guid: 5e1d6100ba87b1744905d8756a0b7667, type: 3}
+  GroundCheck: {fileID: 2973778552964298180}
   Gravity: -39.24
   GroundDistance: 0.1
   GroundMask:
