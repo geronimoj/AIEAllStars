@@ -199,7 +199,7 @@ MonoBehaviour:
   MoveSpeed: 6
   DashMultiplier: 2
   JumpHeight: 3
-  AirDashTime: 1
+  AirDashTime: 0.25
   GroundCheck: {fileID: 6711437162063891314}
   Gravity: -39.24
   GroundDistance: 0.1
