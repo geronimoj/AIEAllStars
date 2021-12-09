@@ -194,6 +194,21 @@ public class Player : MonoBehaviour
             moveInput--;
         }
 
+        switch (moveInput)
+        {
+            case -1:
+                FaceLeft();
+                break;
+
+            case 0:
+                FaceEnemy();
+                break;
+
+            case 1:
+                FaceRight();
+                break;
+        }
+
         _moveInput = moveInput;
     }
 
@@ -333,7 +348,7 @@ public class Player : MonoBehaviour
 
     private void AIUpdate()
     {
-        Move(MoveInput);
+        _moveInput = MoveInput;
 
         if (CallTimer(MoveData))
         {
@@ -383,22 +398,6 @@ public class Player : MonoBehaviour
             {
                 MoveInput = 1;
             }
-        }
-
-
-        switch (MoveInput)
-        {
-            case -1:
-                FaceLeft();
-                break;
-
-            case 0:
-                FaceEnemy();
-                break;
-
-            case 1:
-                FaceRight();
-                break;
         }
     }
     #endregion
