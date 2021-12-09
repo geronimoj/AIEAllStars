@@ -14,6 +14,6 @@ public class WinUI : MonoBehaviour
     private void Start()
     {
         _text = GetComponent<TextMeshProUGUI>();
-        _text.text = "P" + GameManager.s_winningPlayer + " Well Played!";
+        _text.text = "P" + GameManager.s_winningPlayer + " WINS";
     }
 }

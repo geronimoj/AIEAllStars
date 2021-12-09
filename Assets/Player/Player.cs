@@ -20,6 +20,7 @@ public class Player : MonoBehaviour
     public float MoveSpeed;
     public float Gravity = -9.81f;
     public float JumpHeight = 2f;
+    int _airCharges = 1;
     bool _isGrounded;
     public Transform GroundCheck;
     public float GroundDistance = 0.2f;
@@ -50,15 +51,24 @@ public class Player : MonoBehaviour
 
         _characterController.Move(Vector3.right * _moveInput * MoveSpeed * Time.deltaTime);
 
-        if(!_isGrounded)
+        if (!_isGrounded)
         {
             _velocity.y += Gravity * Time.deltaTime;
-            _characterController.Move(_velocity * Time.deltaTime);
         }
-        else if(_velocity.y < 0)
+        else
         {
-            _velocity.y = 0;
+            if (_airCharges != 1)
+            {
+                _airCharges = 1;
+            }
+
+            if (_velocity.y < 0)
+            {
+                _velocity.y = 0;
+            }
         }
+
+        _characterController.Move(_velocity * Time.deltaTime);
     }
 
     protected void Move(int moveInput)
@@ -73,10 +83,14 @@ public class Player : MonoBehaviour
 
     protected virtual void Jump()
     {
-        if(_isGrounded)
+        if (_isGrounded)
         {
             _velocity.y = Mathf.Sqrt(JumpHeight * -2f * Gravity);
-            _isGrounded = false;
+        }
+        else if (!_isGrounded && _airCharges > 0)
+        {
+            _velocity.y = Mathf.Sqrt(JumpHeight * -2f * Gravity);
+            _airCharges--;
         }
     }
 
