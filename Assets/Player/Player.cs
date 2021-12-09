@@ -91,6 +91,9 @@ public class Player : MonoBehaviour
     public bool CanMove => canMoveInt <= 0;
 
     public float invinsibilityTime = 0;
+
+    SkinnedMeshRenderer mesh;
+    Material invincibleGlow;
     #endregion
 
     #region Start/Update
@@ -101,6 +104,9 @@ public class Player : MonoBehaviour
         _currentHealth = MaxHealth;
 
         animator = GetComponent<Animator>();
+
+        mesh = GetComponentInChildren<SkinnedMeshRenderer>();
+        invincibleGlow = Resources.Load<Material>("WhiteGlow") as Material;
     }
 
     // Start is called before the first frame update
@@ -112,8 +118,21 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     protected virtual void Update()
     {
+        Material[] matArray = mesh.materials;
         if (invinsibilityTime > 0)
+        {
             invinsibilityTime -= Time.deltaTime;
+
+            if (invincibleGlow)
+            {
+                matArray[1] = invincibleGlow;
+            }
+        }
+        else
+        {
+            matArray[1] = null;
+        }
+        mesh.materials = matArray;
 
         //Check if the player is grounded
         _isGrounded = Physics.CheckSphere(GroundCheck.position, GroundDistance, GroundMask);
