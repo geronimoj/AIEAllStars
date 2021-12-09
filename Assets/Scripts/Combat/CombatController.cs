@@ -91,7 +91,7 @@ public class CombatController : MonoBehaviour
                     if (currentlyActiveAttack)
                         Destroy(currentlyActiveAttack.gameObject);
 
-                    currentlyActiveAttack = Instantiate(attacks[attack], transform.position, attacks[attack].transform.rotation * Quaternion.Euler(transform.forward));
+                    currentlyActiveAttack = Instantiate(attacks[attack], transform.position, Quaternion.LookRotation(transform.forward*-1, Vector3.up));
 
                     currentlyActiveAttack.SetAttacker(transform);
                 }

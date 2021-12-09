@@ -6,6 +6,7 @@ using UnityEngine;
 [RequireComponent(typeof(CombatController))]
 public class Player : MonoBehaviour
 {
+    #region Variables
     public PlayerInput Controls;
 
     public float MaxHealth;
@@ -77,8 +78,9 @@ public class Player : MonoBehaviour
             CurrentTime = Random.Range(MinTime, MaxTime);
         }
     }
+    #endregion
 
-
+    #region Start/Update
     private void Awake()
     {
         _combatController = GetComponent<CombatController>();
@@ -97,6 +99,7 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     protected virtual void Update()
     {
+        //Check if the player is grounded
         _isGrounded = Physics.CheckSphere(GroundCheck.position, GroundDistance, GroundMask);
 
         if (!IsAI)
@@ -109,6 +112,7 @@ public class Player : MonoBehaviour
         //Change movement speed if player is dashing/Check that the player is still dashing
         if (_dashing && _isGrounded)
         {
+            //If you're still pressing the same direction, keep dashing
             if (_dashInput == _moveInput)
             {
                 inputVelocity = Vector3.right * _moveInput * (MoveSpeed * DashMultiplier) * Time.deltaTime;
@@ -119,10 +123,12 @@ public class Player : MonoBehaviour
                 _dashInput = 0;
             }
         }
+        //Dashing in mid-air
         if(_dashing && !_isGrounded)
         {
             inputVelocity = Vector3.right * _dashInput * (MoveSpeed * DashMultiplier ) * Time.deltaTime;
         }
+        //Regular movement speed
         if(!_dashing)
         {
             inputVelocity = Vector3.right * _moveInput * MoveSpeed * Time.deltaTime;
@@ -131,6 +137,7 @@ public class Player : MonoBehaviour
         //If moving, walk
         animator.SetFloat("MoveSpeed", _moveInput != 0 ? 1 : 0);
 
+        //Move the character controller based on the player's input
         _characterController.Move(inputVelocity);
 
         animator.SetBool("Grounded", _isGrounded);
@@ -139,32 +146,41 @@ public class Player : MonoBehaviour
         {
             if (!_dashing)
             {
+                //If not grounded or air dashing, apply gravity
                 _velocity.y += Gravity * Time.deltaTime;
             }
         }
+        //If you are grounded...
         else
         {
+            //Used to prevent knockback sliding + sticking to the floor during knockback
             _velocity.x = Mathf.MoveTowards(_velocity.x, 0, Time.deltaTime * 15);
             _velocity.z = Mathf.MoveTowards(_velocity.z, 0, Time.deltaTime * 15);
 
+            //Reset midair actions
             if (_airCharges != 1)
             {
-                _airCharges = 1;
+                _airCharges = MaxAirActions;
             }
 
+            //Reset gravity's changes to velocity
             if (_velocity.y < 0)
             {
                 _velocity.y = 0;
             }
         }
 
+        //Move downwards with their increased gravity
         _characterController.Move(_velocity * Time.deltaTime);
 
+        //Clamps the player to z = 0
         inputVelocity = transform.position;
         inputVelocity.z = 0;
         transform.position = inputVelocity;
     }
+    #endregion
 
+    #region Actions
     protected void Move(int moveInput)
     {
         if (Mathf.Abs(_moveInput + moveInput) > 1)
@@ -234,6 +250,87 @@ public class Player : MonoBehaviour
         animator.SetTrigger("Hit");
     }
 
+    /// <summary>
+    /// Checks all of the player's inputs
+    /// </summary>
+    private void InputUpdate()
+    {
+        //If the player isn't pressing either direction, make sure they aren't moving
+        //Mostly a precaution
+        if (Input.GetKey(Controls.Left) == false && Input.GetKey(Controls.Right) == false)
+        {
+            _moveInput = 0;
+            FaceEnemy();
+        }
+
+        if (Input.GetKeyDown(Controls.Right))// || Input.GetKeyUp(Controls.Left))
+        {
+            FaceRight();
+            Move(1);
+        }
+        if (Input.GetKeyDown(Controls.Left))// || Input.GetKeyUp(Controls.Right))
+        {
+            FaceLeft();
+            Move(-1);
+        }
+
+        if (Input.GetKeyDown(Controls.Jump))
+        {
+            Jump();
+        }
+        if (Input.GetKeyDown(Controls.Dash))
+        {
+            Dash();
+        }
+        if (Input.GetKeyDown(Controls.Attack))
+        {
+            FaceEnemy();
+            Attack();
+        }
+        if (Input.GetKeyDown(Controls.Skill))
+        {
+            FaceEnemy();
+            Skill();
+        }
+    }
+
+    IEnumerator EndAirDash(float dashTime)
+    {
+        yield return new WaitForSeconds(dashTime);
+
+        if (!_isGrounded && _dashing)
+        {
+            _dashing = false;
+            _dashInput = 0;
+        }
+    }
+    #endregion
+
+    #region AI
+    protected virtual bool AISkillCanBeUsed()
+    {
+        //Need to override in each different character. This is the trigger for each different character to use the skill. It also has to line up with the timer hitting 0.
+        //some characters wont need triggers and therefore will just have return true
+        //example trigger
+
+        int trigger = Random.Range(0, 2);
+
+        if (trigger == 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    protected void AIAttack()
+    {
+        FaceEnemy();
+        Attack();
+    }
+
     private void AIUpdate()
     {
         Move(MoveInput);
@@ -267,82 +364,6 @@ public class Player : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Checks all of the player's inputs
-    /// </summary>
-    private void InputUpdate()
-    {
-        //If the player isn't pressing either direction, make sure they aren't moving
-        //Mostly a precaution
-        if (Input.GetKey(Controls.Left) == false && Input.GetKey(Controls.Right) == false)
-        {
-            _moveInput = 0;
-        }
-
-        if (Input.GetKeyDown(Controls.Right) || Input.GetKeyUp(Controls.Left))
-        {
-            FaceRight();
-            Move(1);
-        }
-        if (Input.GetKeyDown(Controls.Left) || Input.GetKeyUp(Controls.Right))
-        {
-            FaceLeft();
-            Move(-1);
-        }
-
-        if (Input.GetKeyDown(Controls.Jump))
-        {
-            Jump();
-        }
-        if (Input.GetKeyDown(Controls.Dash))
-        {
-            Dash();
-        }
-        if (Input.GetKeyDown(Controls.Attack))
-        {
-            Attack();
-        }
-        if (Input.GetKeyDown(Controls.Skill))
-        {
-            Skill();
-        }
-    }
-
-    IEnumerator EndAirDash(float dashTime)
-    {
-        yield return new WaitForSeconds(dashTime);
-
-        if (!_isGrounded && _dashing)
-        {
-            _dashing = false;
-            _dashInput = 0;
-        }
-    }
-
-    protected virtual bool AISkillCanBeUsed()
-    {
-        //Need to override in each different character. This is the trigger for each different character to use the skill. It also has to line up with the timer hitting 0.
-        //some characters wont need triggers and therefore will just have return true
-        //example trigger
-
-        int trigger = Random.Range(0, 2);
-
-        if (trigger == 0)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-    protected void AIAttack()
-    {
-        FacePlayer();
-        Attack();
-    }
-
     protected void ChooseMoveDirection()
     {
         if(EnemyIsOnLeft())
@@ -372,7 +393,7 @@ public class Player : MonoBehaviour
                 break;
 
             case 0:
-                FacePlayer();
+                FaceEnemy();
                 break;
 
             case 1:
@@ -380,7 +401,9 @@ public class Player : MonoBehaviour
                 break;
         }
     }
+    #endregion
 
+    #region Misc
     public bool CallTimer(TimerData Timer)
     {
         if (!Timer.CallTimer())
@@ -417,7 +440,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    protected void FacePlayer()
+    protected void FaceEnemy()
     {
         if (EnemyIsOnLeft())
         {
@@ -438,4 +461,5 @@ public class Player : MonoBehaviour
     {
         transform.eulerAngles = new Vector3(0, 90, 0);
     }
+    #endregion
 }
