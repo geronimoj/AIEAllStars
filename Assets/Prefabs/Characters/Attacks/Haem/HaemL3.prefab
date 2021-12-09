@@ -58,7 +58,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 14
-  enemyStunDuration: 0.7
+  enemyStunDuration: 0.4
   selfStunDuration: 0
   launchAngle: -80
   launchForce: 15
