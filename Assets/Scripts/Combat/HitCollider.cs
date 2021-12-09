@@ -16,10 +16,25 @@ public class HitCollider : MonoBehaviour
 
     public float launchForce;
 
+    Transform attacker;
+    public void SetAttacker(Transform me)
+    {
+        attacker = me;
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         //Check if the other is a character, and if so hit them
+        Player p = other.GetComponent<Player>();
 
+        if (p)
+        {
+            if (p.transform == attacker)
+                return;
 
+            //Calculate laucnh force
+
+            p.GotHit(damage, enemyStunDuration, Vector3.zero);
+        }
     }
 }

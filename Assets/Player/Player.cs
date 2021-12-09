@@ -63,6 +63,15 @@ public class Player : MonoBehaviour
 
     }
 
+    public void GotHit(float damage, float stunDuration, Vector3 force)
+    {
+        //Take damage
+
+        //Get Stunned
+
+        //Get knockedBack
+    }
+
     private void InputUpdate()
     {
         if (Input.GetKeyDown(Controls.Left))
