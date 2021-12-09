@@ -43,8 +43,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 2.72, z: 0.61}
-  m_Center: {x: 0, y: 1.64, z: 1.11}
+  m_Size: {x: 1, y: 3.11, z: 0.61}
+  m_Center: {x: 0, y: 1.74, z: 1.11}
 --- !u!114 &815832133748476831
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -57,7 +57,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c166fe29759443a4dbf3b581644b7ae4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 3
+  damage: 17
   enemyStunDuration: 1
   selfStunDuration: 0.3
   launchAngle: 45
