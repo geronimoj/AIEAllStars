@@ -498,7 +498,34 @@ public class Player : MonoBehaviour
         //If the player's are too close and above one another
         if (Mathf.Abs(_ePos.x - _pPos.x) <= 1.3 && Mathf.Abs(_ePos.y - _pPos.y) <= 2)
         {
-            if (EnemyIsOnLeft())
+            if(transform.position.x == Enemy().transform.position.x)
+            {
+                if(transform.position.x > 0)
+                {
+                    //Is the enemy above you?
+                    if (_ePos.y > _pPos.y)
+                    {
+                        _characterController.Move(new Vector3(_eGrav / 2 * Time.deltaTime, 0, 0));
+                    }
+                    else
+                    {
+                        _characterController.Move(new Vector3(_pGrav * Time.deltaTime, 0, 0));
+                    }
+                }
+                else
+                {
+                    //Is the enemy above you?
+                    if (_ePos.y > _pPos.y)
+                    {
+                        _characterController.Move(new Vector3((_eGrav * -1) / 2 * Time.deltaTime, 0, 0));
+                    }
+                    else
+                    {
+                        _characterController.Move(new Vector3((_pGrav * -1) * Time.deltaTime, 0, 0));
+                    }
+                }
+            }
+            else if (EnemyIsOnLeft())
             {
                 //Is the enemy above you?
                 if (_ePos.y > _pPos.y)
