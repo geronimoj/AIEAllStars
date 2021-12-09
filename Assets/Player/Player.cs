@@ -279,12 +279,12 @@ public class Player : MonoBehaviour
             _moveInput = 0;
         }
 
-        if (Input.GetKeyDown(Controls.Right) || Input.GetKeyUp(Controls.Left))
+        if (Input.GetKeyDown(Controls.Right))// || Input.GetKeyUp(Controls.Left))
         {
             FaceRight();
             Move(1);
         }
-        if (Input.GetKeyDown(Controls.Left) || Input.GetKeyUp(Controls.Right))
+        if (Input.GetKeyDown(Controls.Left))// || Input.GetKeyUp(Controls.Right))
         {
             FaceLeft();
             Move(-1);
