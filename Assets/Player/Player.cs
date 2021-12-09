@@ -181,14 +181,20 @@ public class Player : MonoBehaviour
     #endregion
 
     #region Actions
-    protected void Move(int moveInput)
+    protected void Move()
     {
-        if (Mathf.Abs(_moveInput + moveInput) > 1)
+        int moveInput = 0;
+
+        if(Input.GetKey(Controls.Right))
         {
-            return;
+            moveInput++;
+        }
+        if(Input.GetKey(Controls.Left))
+        {
+            moveInput--;
         }
 
-        _moveInput += moveInput;
+        _moveInput = moveInput;
     }
 
     protected virtual void Jump()
@@ -263,15 +269,9 @@ public class Player : MonoBehaviour
             FaceEnemy();
         }
 
-        if (Input.GetKeyDown(Controls.Right) || Input.GetKeyUp(Controls.Left))
+        if (Input.GetKey(Controls.Right) || Input.GetKey(Controls.Left))
         {
-            FaceRight();
-            Move(1);
-        }
-        if (Input.GetKeyDown(Controls.Left) || Input.GetKeyUp(Controls.Right))
-        {
-            FaceLeft();
-            Move(-1);
+            Move();
         }
 
         if (Input.GetKeyDown(Controls.Jump))
