@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Animator))]
+[RequireComponent(typeof(Animator), typeof(Player))]
 public class CombatController : MonoBehaviour
 {
     //on first attack input, will do single light
@@ -10,7 +10,7 @@ public class CombatController : MonoBehaviour
     //if nothing is queued when attack ends, enter selfStun
     //if something queued, unqueue it and start next attack
 
-
+    Player player;
 
     Animator animator;
 
@@ -32,6 +32,7 @@ public class CombatController : MonoBehaviour
     private void Awake()
     {
         animator = GetComponent<Animator>();
+        player = GetComponent<Player>();
 
         inAttackState = false;
         queueTimer = 0;
@@ -41,10 +42,8 @@ public class CombatController : MonoBehaviour
     public void InputAttack()
     {
         //Check if in hitstun
-
-
         //If we are already attacking and want to queue another
-        if (inAttackState)
+        if (inAttackState || player.CanMove == false)
         {
             queueTimer = 1;
             return;
@@ -94,12 +93,17 @@ public class CombatController : MonoBehaviour
                     currentlyActiveAttack = Instantiate(attacks[attack], transform.position, Quaternion.LookRotation(transform.forward*-1, Vector3.up));
 
                     currentlyActiveAttack.SetAttacker(transform);
+
+                    player.canMoveInt++;
+
                 }
+
     }
 
     //The part of the animation where the collider destroys
     public void EndAttack(int attack)
     {
+
         inAttackState = false;
 
         if (queueTimer > 0)
@@ -116,8 +120,11 @@ public class CombatController : MonoBehaviour
         }
 
         if (currentlyActiveAttack)
-            Destroy(currentlyActiveAttack.gameObject);
+        {
+            player.canMoveInt--;
 
+            Destroy(currentlyActiveAttack.gameObject);
+        }
         if (attack == 2)
             FinishAttackChain();
     }
