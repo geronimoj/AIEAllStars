@@ -21,6 +21,7 @@ public class Player : MonoBehaviour
     public float DashMultiplier;
     public float JumpHeight = 2f;
     public float AirDashTime = 1f;
+    public float AirDashBoost = 2f;
     public int MaxAirActions = 1;
     int _airCharges = 1;
     int _moveInput;
@@ -126,7 +127,7 @@ public class Player : MonoBehaviour
         //Dashing in mid-air
         if(_dashing && !_isGrounded)
         {
-            inputVelocity = Vector3.right * _dashInput * (MoveSpeed * DashMultiplier ) * Time.deltaTime;
+            inputVelocity = Vector3.right * _dashInput * (MoveSpeed * DashMultiplier * AirDashBoost) * Time.deltaTime;
         }
         //Regular movement speed
         if(!_dashing)
