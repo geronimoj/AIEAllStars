@@ -201,35 +201,42 @@ public class Player : MonoBehaviour
     {
         int moveInput = 0;
 
-        if (Input.GetKey(Controls.Right))
+        if (CanMove)
         {
-            moveInput++;
+            if (Input.GetKey(Controls.Right))
+            {
+                moveInput++;
+            }
+            if (Input.GetKey(Controls.Left))
+            {
+                moveInput--;
+            }
+
+
+            switch (moveInput)
+            {
+                case -1:
+                    FaceLeft();
+                    break;
+
+                case 0:
+                    FaceEnemy();
+                    break;
+
+                case 1:
+                    FaceRight();
+                    break;
+            }
         }
-        if (Input.GetKey(Controls.Left))
-        {
-            moveInput--;
-        }
-
-        switch (moveInput)
-        {
-            case -1:
-                FaceLeft();
-                break;
-
-            case 0:
-                FaceEnemy();
-                break;
-
-            case 1:
-                FaceRight();
-                break;
-        }
-
+        
         _moveInput = moveInput;
     }
 
     protected virtual void Jump()
     {
+        if (!CanMove)
+            return;
+
         _dashing = false;
 
         if (_isGrounded)
@@ -248,6 +255,8 @@ public class Player : MonoBehaviour
     /// </summary>
     protected virtual void Dash()
     {
+        if (!CanMove)
+            return;
 
         if (_isGrounded)
         {
@@ -282,11 +291,20 @@ public class Player : MonoBehaviour
         _currentHealth -= damage;
 
         //Get Stunned
+        canMoveInt++;
+        StartCoroutine(WaitBeforeUnStun(stunDuration));
 
         //Get knockedBack
         _velocity = force;
 
         animator.SetTrigger("Hit");
+    }
+
+    IEnumerator WaitBeforeUnStun(float time)
+    {
+        yield return new WaitForSeconds(time);
+
+        canMoveInt--;
     }
 
     /// <summary>
