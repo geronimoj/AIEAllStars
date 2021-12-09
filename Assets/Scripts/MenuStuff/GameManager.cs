@@ -21,23 +21,41 @@ public class GameManager : MonoBehaviour
     /// Which player won
     /// </summary>
     public static byte s_winningPlayer = 0;
-
+    /// <summary>
+    /// Reference to a scene loader for moving to other scenes after game end
+    /// </summary>
     private SceneLoader _loader = null;
-
+    /// <summary>
+    /// The players in the game
+    /// </summary>
     private Player[] _players = null;
-
-    public GameObject _map = null;
-
+    /// <summary>
+    /// The default map
+    /// </summary>
+    public GameObject _defaultMap = null;
+    /// <summary>
+    /// Default player character if none is assigned
+    /// </summary>
     public GameObject _defaultCharacter = null;
-
+    /// <summary>
+    /// Input object for player 1
+    /// </summary>
     public PlayerInput _p1Input = null;
-
+    /// <summary>
+    /// Input object for player 2
+    /// </summary>
     public PlayerInput _p2Input = null;
-
+    /// <summary>
+    /// The maximum game time
+    /// </summary>
     public float _maxGameTime = 99;
-
+    /// <summary>
+    /// The count down timer for the game start
+    /// </summary>
     public float _startCountDown = 3;
-
+    /// <summary>
+    /// The timer for when the game finishes
+    /// </summary>
     public float _endGameTime = 3;
 
     private void Start()
@@ -45,11 +63,13 @@ public class GameManager : MonoBehaviour
         _loader = GetComponent<SceneLoader>();
         SpawnLevel();
     }
-
+    /// <summary>
+    /// Spawns the level and gets the spawn points. This then tells players to spawn
+    /// </summary>
     private void SpawnLevel()
     {
         if (!s_map)
-            s_map = _map;
+            s_map = _defaultMap;
         //Spawn map
         GameObject map = GameObject.Instantiate(s_map, Vector3.zero, s_map.transform.rotation);
         //Get spawn points
@@ -60,7 +80,10 @@ public class GameManager : MonoBehaviour
         else//Spawn players
             SpawnPlayers(points);
     }
-
+    /// <summary>
+    /// Spawns the 2 players in
+    /// </summary>
+    /// <param name="points"></param>
     private void SpawnPlayers(SpawnPoint[] points)
     {   //Do nothing
         if (points.Length < 2)
@@ -97,7 +120,10 @@ public class GameManager : MonoBehaviour
 
         StartCoroutine(GameStart());
     }
-
+    /// <summary>
+    /// Called after both players have been spawned
+    /// </summary>
+    /// <returns></returns>
     private IEnumerator GameStart()
     {
         Debug.LogError("Player Freezing / Unfreezing not implemented");
@@ -105,14 +131,20 @@ public class GameManager : MonoBehaviour
         //Start GameTimer
         StartCoroutine(GameTimer());
     }
-
+    /// <summary>
+    /// The timer for the game. When it reaches 0, game ends reguardless
+    /// </summary>
+    /// <returns></returns>
     private IEnumerator GameTimer()
     {
         yield return new WaitForSeconds(_maxGameTime);
         //End game if its not already over
         GameEnd();
     }
-
+    /// <summary>
+    /// Timer for the game end
+    /// </summary>
+    /// <returns></returns>
     private IEnumerator GameEndTimer()
     {
         yield return new WaitForSeconds(_endGameTime);
@@ -120,7 +152,9 @@ public class GameManager : MonoBehaviour
         //Load the win scene
         _loader.LoadScene("GameWin");
     }
-
+    /// <summary>
+    /// Call to end the game
+    /// </summary>
     private void GameEnd()
     {
         Debug.LogError("Game End not implemented");
@@ -139,7 +173,9 @@ public class GameManager : MonoBehaviour
         //Start Game end timer
         StartCoroutine(GameEndTimer());
     }
-
+    /// <summary>
+    /// Checks if either players have died
+    /// </summary>
     private void Update()
     {
         for (byte i = 0; i < _players.Length; i++)
