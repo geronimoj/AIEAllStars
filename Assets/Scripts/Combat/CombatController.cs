@@ -88,7 +88,12 @@ public class CombatController : MonoBehaviour
             if (attacks.Length > attack)
                 if (attacks[attack] != null)
                 {
+                    if (currentlyActiveAttack)
+                        Destroy(currentlyActiveAttack.gameObject);
+
                     currentlyActiveAttack = Instantiate(attacks[attack], transform.position, attacks[attack].transform.rotation * Quaternion.Euler(transform.forward));
+
+                    currentlyActiveAttack.SetAttacker(transform);
                 }
     }
 
@@ -97,7 +102,7 @@ public class CombatController : MonoBehaviour
     {
         inAttackState = false;
 
-        if(queueTimer > 0)
+        if (queueTimer > 0)
         {
             queueTimer = 0;
 
