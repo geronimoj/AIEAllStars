@@ -16,6 +16,10 @@ public class GameManager : MonoBehaviour
     /// Map to spawn
     /// </summary>
     public static GameObject s_map = null;
+    /// <summary>
+    /// Which player won
+    /// </summary>
+    public static byte s_winningPlayer = 0;
 
     public GameObject _map = null;
 
