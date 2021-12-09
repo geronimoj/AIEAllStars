@@ -194,24 +194,6 @@ public class Player : MonoBehaviour
         inputVelocity.z = 0;
         transform.position = inputVelocity;
     }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (!_isGrounded)
-        {
-            if (other.gameObject.CompareTag("Wall"))
-            {
-                if (other.transform.position.x > transform.position.x)
-                {
-                    _characterController.Move(new Vector3(_velocity.y * Time.deltaTime, 0, 0));
-                }
-                else
-                {
-                    _characterController.Move(new Vector3((_velocity.y * -1) * Time.deltaTime, 0, 0));
-                }
-            }
-        }
-    }
     #endregion
 
     #region Actions
