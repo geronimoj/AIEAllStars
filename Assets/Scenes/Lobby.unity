@@ -486,6 +486,9 @@ MonoBehaviour:
   _characters:
   - {fileID: 4025760358880584263, guid: e800077db6d49674e912497c144f9e7b, type: 3}
   - {fileID: 5898576823695154485, guid: dbcb916fffba5cf41b9f4dd90e1c1c43, type: 3}
+  - {fileID: 4025760358880584263, guid: e800077db6d49674e912497c144f9e7b, type: 3}
+  - {fileID: 5898576823695154485, guid: dbcb916fffba5cf41b9f4dd90e1c1c43, type: 3}
+  - {fileID: 4025760358880584263, guid: e800077db6d49674e912497c144f9e7b, type: 3}
   - {fileID: 5898576823695154485, guid: dbcb916fffba5cf41b9f4dd90e1c1c43, type: 3}
 --- !u!114 &858379024
 MonoBehaviour:
