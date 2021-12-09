@@ -6,10 +6,15 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     public PlayerInput Controls;
-    int _moveInput;
+    private int _moveInput;
 
     public float MaxHealth;
-    float _currentHealth;
+    private float _currentHealth;
+    /// <summary>
+    /// Health getter
+    /// </summary>
+    public float CurrentHealth => _currentHealth;
+
     public float MoveSpeed;
 
     CombatController _combatController;
@@ -61,6 +66,15 @@ public class Player : MonoBehaviour
     protected virtual void Skill()
     {
 
+    }
+
+    public void GotHit(float damage, float stunDuration, Vector3 force)
+    {
+        //Take damage
+
+        //Get Stunned
+
+        //Get knockedBack
     }
 
     private void InputUpdate()
