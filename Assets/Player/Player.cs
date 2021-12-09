@@ -347,36 +347,39 @@ public class Player : MonoBehaviour
     /// </summary>
     private void InputUpdate()
     {
-        //If the player isn't pressing either direction, make sure they aren't moving
-        //Mostly a precaution
-        if (Input.GetKey(Controls.Left) == false && Input.GetKey(Controls.Right) == false)
+        if (Controls != null)
         {
-            _moveInput = 0;
-            FaceEnemy();
-        }
+            //If the player isn't pressing either direction, make sure they aren't moving
+            //Mostly a precaution
+            if (Input.GetKey(Controls.Left) == false && Input.GetKey(Controls.Right) == false)
+            {
+                _moveInput = 0;
+                FaceEnemy();
+            }
 
-        if (Input.GetKey(Controls.Right) || Input.GetKey(Controls.Left))
-        {
-            Move();
-        }
+            if (Input.GetKey(Controls.Right) || Input.GetKey(Controls.Left))
+            {
+                Move();
+            }
 
-        if (Input.GetKeyDown(Controls.Jump))
-        {
-            Jump();
-        }
-        if (Input.GetKeyDown(Controls.Dash))
-        {
-            Dash();
-        }
-        if (Input.GetKeyDown(Controls.Attack))
-        {
-            FaceEnemy();
-            Attack();
-        }
-        if (Input.GetKeyDown(Controls.Skill))
-        {
-            FaceEnemy();
-            Skill();
+            if (Input.GetKeyDown(Controls.Jump))
+            {
+                Jump();
+            }
+            if (Input.GetKeyDown(Controls.Dash))
+            {
+                Dash();
+            }
+            if (Input.GetKeyDown(Controls.Attack))
+            {
+                FaceEnemy();
+                Attack();
+            }
+            if (Input.GetKeyDown(Controls.Skill))
+            {
+                FaceEnemy();
+                Skill();
+            }
         }
     }
 
@@ -504,23 +507,26 @@ public class Player : MonoBehaviour
 
     protected bool EnemyIsOnLeft()
     {
-        if (Enemy().transform.position.x > transform.position.x)
+        if (Enemy() != null)
         {
-            if (transform.localScale.x != 30)
+            if (Enemy().transform.position.x > transform.position.x)
             {
-                transform.localScale = new Vector3(30, transform.localScale.y, transform.localScale.z);
+                if (transform.localScale.x != 30)
+                {
+                    transform.localScale = new Vector3(30, transform.localScale.y, transform.localScale.z);
+                }
+                return false;
             }
-            return false;
-        }
-        else
-        {
-
-            if (transform.localScale.x != -30)
+            else
             {
-                transform.localScale = new Vector3(-30, transform.localScale.y, transform.localScale.z);
+                if (transform.localScale.x != -30)
+                {
+                    transform.localScale = new Vector3(-30, transform.localScale.y, transform.localScale.z);
+                }
+                return true;
             }
-            return true;
         }
+        return false;
     }
 
     protected void FaceEnemy()
@@ -547,29 +553,44 @@ public class Player : MonoBehaviour
 
     void SlideOffHead()
     {
-        Vector3 _ePos = Enemy().transform.position;
-        Vector3 _pPos = transform.position;
-        float _eGrav = Enemy().GetComponent<Player>()._velocity.y;
-        float _pGrav = _velocity.y;
-
-        //If the player's are too close and above one another
-        if (Mathf.Abs(_ePos.x - _pPos.x) <= 1.3 && Mathf.Abs(_ePos.y - _pPos.y) <= 2)
+        if (Enemy() != null)
         {
-            if (transform.position.x == Enemy().transform.position.x)
+            Vector3 _ePos = Enemy().transform.position;
+            Vector3 _pPos = transform.position;
+            float _eGrav = Enemy().GetComponent<Player>()._velocity.y;
+            float _pGrav = _velocity.y;
+
+            //If the player's are too close and above one another
+            if (Mathf.Abs(_ePos.x - _pPos.x) <= 1.3 && Mathf.Abs(_ePos.y - _pPos.y) <= 2)
             {
-                if (transform.position.x > 0)
+                if (transform.position.x == Enemy().transform.position.x)
                 {
-                    //Is the enemy above you?
-                    if (_ePos.y > _pPos.y)
+                    if (transform.position.x > 0)
                     {
-                        _characterController.Move(new Vector3(_eGrav / 2 * Time.deltaTime, 0, 0));
+                        //Is the enemy above you?
+                        if (_ePos.y > _pPos.y)
+                        {
+                            _characterController.Move(new Vector3(_eGrav / 2 * Time.deltaTime, 0, 0));
+                        }
+                        else
+                        {
+                            _characterController.Move(new Vector3(_pGrav * Time.deltaTime, 0, 0));
+                        }
                     }
                     else
                     {
-                        _characterController.Move(new Vector3(_pGrav * Time.deltaTime, 0, 0));
+                        //Is the enemy above you?
+                        if (_ePos.y > _pPos.y)
+                        {
+                            _characterController.Move(new Vector3((_eGrav * -1) / 2 * Time.deltaTime, 0, 0));
+                        }
+                        else
+                        {
+                            _characterController.Move(new Vector3((_pGrav * -1) * Time.deltaTime, 0, 0));
+                        }
                     }
                 }
-                else
+                else if (EnemyIsOnLeft())
                 {
                     //Is the enemy above you?
                     if (_ePos.y > _pPos.y)
@@ -581,29 +602,17 @@ public class Player : MonoBehaviour
                         _characterController.Move(new Vector3((_pGrav * -1) * Time.deltaTime, 0, 0));
                     }
                 }
-            }
-            else if (EnemyIsOnLeft())
-            {
-                //Is the enemy above you?
-                if (_ePos.y > _pPos.y)
-                {
-                    _characterController.Move(new Vector3((_eGrav * -1) / 2 * Time.deltaTime, 0, 0));
-                }
                 else
                 {
-                    _characterController.Move(new Vector3((_pGrav * -1) * Time.deltaTime, 0, 0));
-                }
-            }
-            else
-            {
-                //Is the enemy above you?
-                if (_ePos.y > _pPos.y)
-                {
-                    _characterController.Move(new Vector3(_eGrav / 2 * Time.deltaTime, 0, 0));
-                }
-                else
-                {
-                    _characterController.Move(new Vector3(_pGrav * Time.deltaTime, 0, 0));
+                    //Is the enemy above you?
+                    if (_ePos.y > _pPos.y)
+                    {
+                        _characterController.Move(new Vector3(_eGrav / 2 * Time.deltaTime, 0, 0));
+                    }
+                    else
+                    {
+                        _characterController.Move(new Vector3(_pGrav * Time.deltaTime, 0, 0));
+                    }
                 }
             }
         }
