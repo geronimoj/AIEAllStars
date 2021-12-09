@@ -56,6 +56,8 @@ public class CombatController : MonoBehaviour
 
         //Change the animation to be the next attack
         animator.SetTrigger("Attack");
+
+        player.StunForDuration(0.3f);
     }
 
     private void Update()
@@ -95,8 +97,6 @@ public class CombatController : MonoBehaviour
                     //currentlyActiveAttack.transform.SetParent(transform);
 
                     currentlyActiveAttack.SetAttacker(transform);
-
-                    player.canMoveInt++;
                 }
 
     }
@@ -122,8 +122,6 @@ public class CombatController : MonoBehaviour
 
         if (currentlyActiveAttack)
         {
-            player.canMoveInt--;
-
             Destroy(currentlyActiveAttack.gameObject);
         }
         if (attack == 2)

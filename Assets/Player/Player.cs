@@ -294,13 +294,19 @@ public class Player : MonoBehaviour
         _currentHealth -= damage;
 
         //Get Stunned
-        canMoveInt++;
-        StartCoroutine(WaitBeforeUnStun(stunDuration));
+        StunForDuration(stunDuration);
 
         //Get knockedBack
         _velocity = force;
 
         animator.SetTrigger("Hit");
+    }
+
+    public void StunForDuration(float stunDuration)
+    {
+        canMoveInt++;
+        StartCoroutine(WaitBeforeUnStun(stunDuration));
+
     }
 
     IEnumerator WaitBeforeUnStun(float time)
