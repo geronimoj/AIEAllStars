@@ -147,7 +147,7 @@ public class GameManager : MonoBehaviour
         {
             obj = Instantiate(s_p1Char, points[0].transform.position, s_p1Char.transform.rotation);
             _players[0] = obj.GetComponent<Player>();
-
+            _players[0].IsAI = false;
             _players[0].Controls = _p1Input;
             p1.target = obj.transform;
         }
@@ -156,7 +156,7 @@ public class GameManager : MonoBehaviour
         {
             obj = Instantiate(s_p2Char, points[1].transform.position, s_p1Char.transform.rotation);
             _players[1] = obj.GetComponent<Player>();
-
+            _players[1].IsAI = s_useAI;
             _players[1].Controls = _p2Input;
             p2.target = obj.transform;
         }
