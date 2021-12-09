@@ -46,17 +46,15 @@ public class Player : MonoBehaviour
     [Space]
     public TimerData MoveData;
     public TimerData JumpData;
+    public TimerData AttackData;
     public TimerData DashData;
     public TimerData SkillData;
-
-    [Space]
-    public float AttackRange = 1;
 
     [System.Serializable]
     public class TimerData
     {
-        public float MinTime = 3;
-        public float MaxTime = 5;
+        public float MinTime = 0;
+        public float MaxTime = 1;
         protected float CurrentTime = 0;
 
         public bool CallTimer()
@@ -99,7 +97,12 @@ public class Player : MonoBehaviour
     protected virtual void Update()
     {
         _isGrounded = Physics.CheckSphere(GroundCheck.position, GroundDistance, GroundMask);
-        InputUpdate();
+
+        if (!IsAI)
+            InputUpdate();
+        else
+            AIUpdate();
+
         Vector3 inputVelocity = Vector3.zero;
 
         //Change movement speed if player is dashing/Check that the player is still dashing
@@ -159,40 +162,6 @@ public class Player : MonoBehaviour
         inputVelocity = transform.position;
         inputVelocity.z = 0;
         transform.position = inputVelocity;
-
-
-        if (IsAI)
-        {
-            Move(MoveInput);
-
-            if (DistanceFromPlayer() < AttackRange)
-            {
-                AIAttack();
-            }
-
-            if (CallTimer(JumpData))
-            {
-                Jump();
-            }
-
-            if (CallTimer(DashData))
-            {
-                Dash();
-            }
-
-            if (CallTimer(SkillData))
-            {
-                if (AISkillCanBeUsed())
-                {
-                    Skill();
-                }
-            }
-
-            if (CallTimer(MoveData))
-            {
-                ChooseMoveDirection();
-            }
-        }
     }
 
     protected void Move(int moveInput)
@@ -264,14 +233,44 @@ public class Player : MonoBehaviour
         animator.SetTrigger("Hit");
     }
 
+    private void AIUpdate()
+    {
+        Move(MoveInput);
+
+        if (CallTimer(MoveData))
+        {
+            ChooseMoveDirection();
+        }
+
+        if (CallTimer(AttackData))
+        {
+            AIAttack();
+        }
+
+        if (CallTimer(JumpData))
+        {
+            Jump();
+        }
+
+        if (CallTimer(DashData))
+        {
+            Dash();
+        }
+
+        if (CallTimer(SkillData))
+        {
+            if (AISkillCanBeUsed())
+            {
+                Skill();
+            }
+        }
+    }
+
     /// <summary>
     /// Checks all of the player's inputs
     /// </summary>
     private void InputUpdate()
     {
-        if (IsAI)
-            return;
-
         //If the player isn't pressing either direction, make sure they aren't moving
         //Mostly a precaution
         if (Input.GetKey(Controls.Left) == false && Input.GetKey(Controls.Right) == false)
@@ -339,14 +338,31 @@ public class Player : MonoBehaviour
 
     protected void AIAttack()
     {
-        Debug.Log("Attack");
         FacePlayer();
         Attack();
     }
 
     protected void ChooseMoveDirection()
     {
-        MoveInput = Random.Range(-1, 2);
+        if(EnemyIsOnLeft())
+        {
+            MoveInput = Random.Range(-2, 2);
+
+            if(MoveInput < -1)
+            {
+                MoveInput = -1;
+            }
+        }
+        else
+        {
+            MoveInput = Random.Range(-1, 3);
+
+            if(MoveInput > 1)
+            {
+                MoveInput = 1;
+            }
+        }
+
 
         switch (MoveInput)
         {
@@ -376,21 +392,21 @@ public class Player : MonoBehaviour
         }
     }
 
-    protected float DistanceFromPlayer()
+    protected GameObject Enemy()
     {
-        if(transform == GameManager.s_p1Char)
+        if (gameObject == GameManager.s_instance._players[0].gameObject)
         {
-            return Vector3.Distance(transform.position, GameManager.s_p2Char.transform.position);
+            return GameManager.s_instance._players[1].gameObject;
         }
         else
         {
-            return Vector3.Distance(transform.position, GameManager.s_p1Char.transform.position);
+            return GameManager.s_instance._players[0].gameObject;
         }
     }
 
-    protected bool PlayerIsOnLeft()
+    protected bool EnemyIsOnLeft()
     {
-        if (GameManager.s_p1Char.transform.position.x > transform.position.x)
+        if (Enemy().transform.position.x > transform.position.x)
         {
             return false;
         }
@@ -402,7 +418,7 @@ public class Player : MonoBehaviour
 
     protected void FacePlayer()
     {
-        if (PlayerIsOnLeft())
+        if (EnemyIsOnLeft())
         {
             FaceLeft();
         }
