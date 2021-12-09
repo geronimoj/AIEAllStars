@@ -22,6 +22,13 @@ public class CombatController : MonoBehaviour
 
     float queueTimer = 0; //goes to one when queued
 
+    float attackCooldown = 0; // when greater than zero, cannot attack
+
+
+    [Header("Other")]
+    [Tooltip("optional point")]
+    public Transform weaponPoint;
+
     private void Awake()
     {
         animator = GetComponent<Animator>();
@@ -43,6 +50,9 @@ public class CombatController : MonoBehaviour
             return;
         }
 
+        if (attackCooldown > 0)
+            return;
+
         inAttackState = true;
 
         //Change the animation to be the next attack
@@ -53,10 +63,13 @@ public class CombatController : MonoBehaviour
     {
         if(queueTimer > 0)
             queueTimer -= Time.deltaTime;
+
+        if (attackCooldown > 0)
+            attackCooldown -= Time.deltaTime;
     }
 
     //When you enter the attack animation
-    public void EnterAttackState(int attack)
+    public void EnterAttackState()
     {
 
     }
@@ -84,16 +97,20 @@ public class CombatController : MonoBehaviour
     {
         inAttackState = false;
 
-        if (currentlyActiveAttack)
-        {
-            Destroy(currentlyActiveAttack.gameObject);
-        }
-
         if(queueTimer > 0)
         {
             queueTimer = 0;
 
             InputAttack();
         }
+        else
+        {
+            //Don't let the player input attacks for x seconds
+            if (currentlyActiveAttack)
+                attackCooldown = currentlyActiveAttack.selfStunDuration;
+        }
+
+        if (currentlyActiveAttack)
+            Destroy(currentlyActiveAttack.gameObject);
     }
 }

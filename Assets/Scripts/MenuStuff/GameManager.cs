@@ -1,10 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 [RequireComponent(typeof(SceneLoader))]
 public class GameManager : MonoBehaviour
 {
+    public static GameManager s_instance = null;
     /// <summary>
     /// Player 1s Character
     /// </summary>
@@ -22,13 +24,18 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public static byte s_winningPlayer = 0;
     /// <summary>
+    /// Does the game contain AI
+    /// </summary>
+    public static bool s_useAI = false;
+    /// <summary>
     /// Reference to a scene loader for moving to other scenes after game end
     /// </summary>
     private SceneLoader _loader = null;
     /// <summary>
     /// The players in the game
     /// </summary>
-    private Player[] _players = null;
+    [HideInInspector]
+    public Player[] _players = null;
     /// <summary>
     /// The default map
     /// </summary>
@@ -57,6 +64,26 @@ public class GameManager : MonoBehaviour
     /// The timer for when the game finishes
     /// </summary>
     public float _endGameTime = 3;
+    /// <summary>
+    /// Called when the setup is complete
+    /// </summary>
+    public UnityEvent OnSetupComplete;
+    /// <summary>
+    /// Called when the game starts
+    /// </summary>
+    public UnityEvent OnGameStart;
+    /// <summary>
+    /// Called when the game ends
+    /// </summary>
+    public UnityEvent OnGameEnd;
+
+    [HideInInspector]
+    public float m_startTime = 0;
+
+    private void Awake()
+    {
+        s_instance = this;
+    }
 
     private void Start()
     {
@@ -125,7 +152,9 @@ public class GameManager : MonoBehaviour
     /// </summary>
     /// <returns></returns>
     private IEnumerator GameStart()
-    {
+    {   
+        OnSetupComplete.Invoke();
+
         Debug.LogError("Player Freezing / Unfreezing not implemented");
         yield return new WaitForSeconds(_startCountDown);
         //Start GameTimer
@@ -137,6 +166,8 @@ public class GameManager : MonoBehaviour
     /// <returns></returns>
     private IEnumerator GameTimer()
     {
+        OnGameStart.Invoke();
+        m_startTime = Time.time;
         yield return new WaitForSeconds(_maxGameTime);
         //End game if its not already over
         GameEnd();
@@ -170,6 +201,7 @@ public class GameManager : MonoBehaviour
             }
         }
 
+        OnGameEnd.Invoke();
         //Start Game end timer
         StartCoroutine(GameEndTimer());
     }
