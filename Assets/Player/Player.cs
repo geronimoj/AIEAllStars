@@ -28,10 +28,17 @@ public class Player : MonoBehaviour
     int _dashInput = 0;
     bool _dashing = false;
 
-    public Transform GroundCheck;
     public float Gravity = -9.81f;
     public float GroundDistance = 0.2f;
+    public Transform GroundCheck;
     public LayerMask GroundMask;
+    ///// <summary>
+    ///// The distance between you can be above a character without being pushed back
+    ///// </summary>
+    //public float CharacterDistance = 0.5f;
+    //public Transform CharacterCheck;
+    //public LayerMask CharacterMask;
+
     bool _isGrounded;
     Vector3 _velocity;
 
@@ -180,10 +187,30 @@ public class Player : MonoBehaviour
         //Move downwards with their increased gravity
         _characterController.Move(_velocity * Time.deltaTime);
 
+        SlideOffHead();
+
         //Clamps the player to z = 0
         inputVelocity = transform.position;
         inputVelocity.z = 0;
         transform.position = inputVelocity;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (!_isGrounded)
+        {
+            if (other.gameObject.CompareTag("Wall"))
+            {
+                if (other.transform.position.x > transform.position.x)
+                {
+                    _characterController.Move(new Vector3(_velocity.y * Time.deltaTime, 0, 0));
+                }
+                else
+                {
+                    _characterController.Move(new Vector3((_velocity.y * -1) * Time.deltaTime, 0, 0));
+                }
+            }
+        }
     }
     #endregion
 
@@ -477,6 +504,43 @@ public class Player : MonoBehaviour
     protected void FaceLeft()
     {
         transform.eulerAngles = new Vector3(0, 90, 0);
+    }
+
+    void SlideOffHead()
+    {
+        Vector3 _ePos = Enemy().transform.position;
+        Vector3 _pPos = transform.position;
+        float _eGrav = Enemy().GetComponent<Player>()._velocity.y;
+        float _pGrav = _velocity.y;
+
+        //If the player's are too close and above one another
+        if (Mathf.Abs(_ePos.x - _pPos.x) <= 1.3 && Mathf.Abs(_ePos.y - _pPos.y) <= 2)
+        {
+            if (EnemyIsOnLeft())
+            {
+                //Is the enemy above you?
+                if (_ePos.y > _pPos.y)
+                {
+                    _characterController.Move(new Vector3((_eGrav * -1) / 2 * Time.deltaTime, 0, 0));
+                }
+                else
+                {
+                    _characterController.Move(new Vector3((_pGrav * -1) * Time.deltaTime, 0, 0));
+                }
+            }
+            else
+            {
+                //Is the enemy above you?
+                if (_ePos.y > _pPos.y)
+                {
+                    _characterController.Move(new Vector3(_eGrav / 2 * Time.deltaTime, 0, 0));
+                }
+                else
+                {
+                    _characterController.Move(new Vector3(_pGrav * Time.deltaTime, 0, 0));
+                }
+            }
+        }
     }
     #endregion
 }

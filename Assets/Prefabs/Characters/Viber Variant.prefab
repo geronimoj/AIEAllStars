@@ -57,9 +57,9 @@ MonoBehaviour:
   AirDashTime: 0.15
   AirDashBoost: 2
   MaxAirActions: 1
-  GroundCheck: {fileID: 6949718113878019716}
   Gravity: -39.24
   GroundDistance: 0.1
+  GroundCheck: {fileID: 6949718113878019716}
   GroundMask:
     serializedVersion: 2
     m_Bits: 1024
@@ -98,6 +98,20 @@ MonoBehaviour:
   - {fileID: 5005982092393700281, guid: c79e1a1ac83f2994181e3df84109402d, type: 3}
   inAttackState: 0
   weaponPoint: {fileID: 0}
+--- !u!136 &8147626460382567118
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2755054507247575172}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 0.02
+  m_Height: 0.02
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.01, z: 0}
 --- !u!1 &4618927436698529090
 GameObject:
   m_ObjectHideFlags: 0
