@@ -1303,5 +1303,9 @@ PrefabInstance:
       propertyPath: m_Name
       value: Fighter_Pound Variant
       objectReference: {fileID: 0}
+    - target: {fileID: 1067362304314284897, guid: 74c526c4058119741ae9f17653851628, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 74c526c4058119741ae9f17653851628, type: 3}
