@@ -165,6 +165,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 1ab12456b496e4745a5fd8640ed7410c, type: 2}
   _maps:
   - {fileID: 11400000, guid: 982d118ab94ab0a48acd56b919948d97, type: 2}
+  - {fileID: 11400000, guid: 10b554152f8d9ed4ba9f0d8873ff229c, type: 2}
+  - {fileID: 11400000, guid: dd2868eb491ffc543b252ddd60338cdc, type: 2}
+  - {fileID: 11400000, guid: 11341fe874f163743b4de2931930f165, type: 2}
   p1: {fileID: 858379028}
   p2: {fileID: 858379027}
   map: {fileID: 858379026}
@@ -588,6 +591,10 @@ PrefabInstance:
     - target: {fileID: 4341872624650577143, guid: 2df765439771ec349af99a60d30ea860, type: 3}
       propertyPath: m_Name
       value: CharacterSelect_Canvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 4341872624650577143, guid: 2df765439771ec349af99a60d30ea860, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4341872624834931594, guid: 2df765439771ec349af99a60d30ea860, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
