@@ -66,4 +66,9 @@ public class CharacterSelector : MonoBehaviour
             }
         }
     }
+    /// <summary>
+    /// Apply to ToggleField to change if the game should use AI
+    /// </summary>
+    /// <param name="useAI"></param>
+    public void ToggleAI(bool useAI) => GameManager.s_useAI = useAI;
 }

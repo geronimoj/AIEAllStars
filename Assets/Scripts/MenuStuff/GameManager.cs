@@ -23,6 +23,10 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public static byte s_winningPlayer = 0;
     /// <summary>
+    /// Does the game contain AI
+    /// </summary>
+    public static bool s_useAI = false;
+    /// <summary>
     /// Reference to a scene loader for moving to other scenes after game end
     /// </summary>
     private SceneLoader _loader = null;
@@ -135,7 +139,9 @@ public class GameManager : MonoBehaviour
     /// </summary>
     /// <returns></returns>
     private IEnumerator GameStart()
-    {
+    {   //Set start time
+        m_startTime = Time.time;
+
         Debug.LogError("Player Freezing / Unfreezing not implemented");
         yield return new WaitForSeconds(_startCountDown);
         //Start GameTimer
