@@ -5,10 +5,13 @@ using UnityEngine;
 [RequireComponent(typeof(Collider))]
 public class HitCollider : MonoBehaviour
 {
+    [Tooltip("damage this attack will do")]
     public float damage;
 
+    [Tooltip("how long it will stun the person hit for")]
     public float enemyStunDuration;
 
+    [Tooltip("if another input isn't pressed, you will be unable to attack again for this amount of time")]
     public float selfStunDuration;
 
     [Tooltip("0 is forwards relative to the character forwards, 90 is up")]
@@ -33,8 +36,10 @@ public class HitCollider : MonoBehaviour
                 return;
 
             //Calculate laucnh force
+            Vector3 angle = transform.forward * Mathf.Sin(launchAngle) + transform.up * Mathf.Cos(launchAngle);
+            angle.Normalize();
 
-            p.GotHit(damage, enemyStunDuration, Vector3.zero);
+            p.GotHit(damage, enemyStunDuration, angle * launchForce);
         }
     }
 }
