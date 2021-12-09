@@ -30,11 +30,15 @@ public class Player : MonoBehaviour
     CombatController _combatController;
     CharacterController _characterController;
 
+    Animator animator;
+
     private void Awake()
     {
         _combatController = GetComponent<CombatController>();
         _characterController = GetComponent<CharacterController>();
         _currentHealth = MaxHealth;
+
+        animator = GetComponent<Animator>();
     }
 
     // Start is called before the first frame update
@@ -49,7 +53,14 @@ public class Player : MonoBehaviour
         _isGrounded = Physics.CheckSphere(GroundCheck.position, GroundDistance, GroundMask);
         InputUpdate();
 
-        _characterController.Move(Vector3.right * _moveInput * MoveSpeed * Time.deltaTime);
+        Vector3 inputVelocity = Vector3.right * _moveInput * MoveSpeed * Time.deltaTime;
+
+        //If moving, walk
+        animator.SetFloat("MoveSpeed", inputVelocity.magnitude > 0.1f ? 1 : 0);
+
+        _characterController.Move(inputVelocity);
+
+        animator.SetBool("Grounded", _isGrounded);
 
         if (!_isGrounded)
         {
@@ -57,6 +68,9 @@ public class Player : MonoBehaviour
         }
         else
         {
+            _velocity.x = 0;
+            _velocity.z = 0;
+
             if (_airCharges != 1)
             {
                 _airCharges = 1;
@@ -112,10 +126,12 @@ public class Player : MonoBehaviour
     public void GotHit(float damage, float stunDuration, Vector3 force)
     {
         //Take damage
+        _currentHealth -= damage;
 
         //Get Stunned
 
         //Get knockedBack
+        _velocity = force;
     }
 
     /// <summary>

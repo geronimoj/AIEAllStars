@@ -60,7 +60,7 @@ MonoBehaviour:
   damage: 3
   enemyStunDuration: 0
   selfStunDuration: 0.3
-  launchAngle: 90
+  launchAngle: 60
   launchForce: 15
   particles: {fileID: 0}
   toFollow: 0
