@@ -354,6 +354,18 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
       value: MainMenu
       objectReference: {fileID: 0}
+    - target: {fileID: 2359659838831579156, guid: 2df765439771ec349af99a60d30ea860, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 858379023}
+    - target: {fileID: 2359659838831579156, guid: 2df765439771ec349af99a60d30ea860, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ToggleAI
+      objectReference: {fileID: 0}
+    - target: {fileID: 2359659838831579156, guid: 2df765439771ec349af99a60d30ea860, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3746188939693922576, guid: 2df765439771ec349af99a60d30ea860, type: 3}
       propertyPath: m_IsActive
       value: 0
