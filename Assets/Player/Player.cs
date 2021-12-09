@@ -6,10 +6,10 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     public PlayerInput Controls;
-    private int _moveInput;
+    int _moveInput;
 
     public float MaxHealth;
-    private float _currentHealth;
+    float _currentHealth;
     public float MoveSpeed;
 
     CombatController _combatController;
