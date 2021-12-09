@@ -22,6 +22,7 @@ public class Player : MonoBehaviour
     private void Awake()
     {
         _combatController = GetComponent<CombatController>();
+        _currentHealth = MaxHealth;
     }
 
     // Start is called before the first frame update
