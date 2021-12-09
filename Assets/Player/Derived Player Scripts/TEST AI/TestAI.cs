@@ -11,8 +11,8 @@ public class TestAI : Player
     protected int MoveInput = 0;
 
     [Space]
-    public TimerData JumpData;
     public TimerData MoveData;
+    public TimerData JumpData;
     public TimerData DashData;
     public TimerData SkillData;
 
@@ -53,15 +53,21 @@ public class TestAI : Player
         {
             Move(MoveInput);
 
-            AIAttack();
+            if (DistanceFromPlayer() < AttackRange)
+            {
+                Debug.Log("Attack");
+                AIAttack();
+            }
 
             if (CallTimer(JumpData))
             {
+                Debug.Log("Jump");
                 Jump();
             }
 
             if (CallTimer(DashData))
             {
+                Debug.Log("Dash");
                 Dash();
             }
 
@@ -69,6 +75,7 @@ public class TestAI : Player
             {
                 if (AISkillCanBeUsed())
                 {
+                    Debug.Log("Skill");
                     Skill();
                 }
             }
@@ -100,11 +107,8 @@ public class TestAI : Player
 
     protected void AIAttack()
     {
-        if (DistanceFromPlayer() < AttackRange)
-        {
-            FacePlayer();
-            Attack();
-        }
+        FacePlayer();
+        Attack();
     }
 
     protected void ChooseMoveDirection()
@@ -129,7 +133,7 @@ public class TestAI : Player
 
     public bool CallTimer(TimerData Timer)
     {
-        if (Timer.CallTimer())
+        if (!Timer.CallTimer())
         {
             return false;
         }
