@@ -7,7 +7,6 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     public PlayerInput Controls;
-    int _moveInput;
 
     public float MaxHealth;
     float _currentHealth;
@@ -18,13 +17,19 @@ public class Player : MonoBehaviour
 
     [Space]
     public float MoveSpeed;
-    public float Gravity = -9.81f;
+    public float DashMultiplier;
     public float JumpHeight = 2f;
+    public float AirDashTime = 1f;
+    int _moveInput;
+    int _dashInput = 0;
     int _airCharges = 1;
-    bool _isGrounded;
+    bool _dashing = false;
+
     public Transform GroundCheck;
+    public float Gravity = -9.81f;
     public float GroundDistance = 0.2f;
     public LayerMask GroundMask;
+    bool _isGrounded;
     Vector3 _velocity;
 
     CombatController _combatController;
@@ -48,12 +53,33 @@ public class Player : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    protected virtual void Update()
     {
         _isGrounded = Physics.CheckSphere(GroundCheck.position, GroundDistance, GroundMask);
         InputUpdate();
+        Vector3 inputVelocity = Vector3.zero;
 
-        Vector3 inputVelocity = Vector3.right * _moveInput * MoveSpeed * Time.deltaTime;
+        //Change movement speed if player is dashing/Check that the player is still dashing
+        if (_dashing && _isGrounded)
+        {
+            if (_dashInput == _moveInput)
+            {
+                inputVelocity = Vector3.right * _moveInput * (MoveSpeed * DashMultiplier) * Time.deltaTime;
+            }
+            else
+            {
+                _dashing = false;
+                _dashInput = 0;
+            }
+        }
+        if(_dashing && !_isGrounded)
+        {
+            inputVelocity = Vector3.right * _dashInput * (MoveSpeed * DashMultiplier ) * Time.deltaTime;
+        }
+        if(!_dashing)
+        {
+            inputVelocity = Vector3.right * _moveInput * MoveSpeed * Time.deltaTime;
+        }
 
         //If moving, walk
         animator.SetFloat("MoveSpeed", inputVelocity.magnitude > 0.1f ? 1 : 0);
@@ -64,12 +90,15 @@ public class Player : MonoBehaviour
 
         if (!_isGrounded)
         {
-            _velocity.y += Gravity * Time.deltaTime;
+            if (!_dashing)
+            {
+                _velocity.y += Gravity * Time.deltaTime;
+            }
         }
         else
         {
-            _velocity.x = 0;
-            _velocity.z = 0;
+            _velocity.x = Mathf.MoveTowards(_velocity.x, 0, Time.deltaTime * 15);
+            _velocity.z = Mathf.MoveTowards(_velocity.z, 0, Time.deltaTime * 15);
 
             if (_airCharges != 1)
             {
@@ -83,6 +112,10 @@ public class Player : MonoBehaviour
         }
 
         _characterController.Move(_velocity * Time.deltaTime);
+
+        inputVelocity = transform.position;
+        inputVelocity.z = 0;
+        transform.position = inputVelocity;
     }
 
     protected void Move(int moveInput)
@@ -108,9 +141,25 @@ public class Player : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Make the player dash, and save the direction the player was inputting when they dashed
+    /// </summary>
     protected virtual void Dash()
     {
+        if (_isGrounded)
+        {
+            _dashing = true;
+        }
+        else if (_airCharges > 0)
+        {
+            _velocity.y = 0;
 
+            _dashing = true;
+            _airCharges--;
+            StartCoroutine(EndAirDash(AirDashTime));
+        }
+
+        _dashInput = _moveInput;
     }
 
     protected virtual void Attack()
@@ -170,6 +219,17 @@ public class Player : MonoBehaviour
         if (Input.GetKeyDown(Controls.Skill))
         {
             Skill();
+        }
+    }
+
+    IEnumerator EndAirDash(float dashTime)
+    {
+        yield return new WaitForSeconds(dashTime);
+
+        if (!_isGrounded && _dashing)
+        {
+            _dashing = false;
+            _dashInput = 0;
         }
     }
 }
