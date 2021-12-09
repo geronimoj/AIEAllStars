@@ -91,7 +91,7 @@ public class HitCollider : MonoBehaviour
             if (giveInvFrames)
             {
                 //Make enemy invinsible for short time
-                p.invinsibilityTime = 0.3f;
+                p.invinsibilityTime = 1.0f;
             }
         }
     }
