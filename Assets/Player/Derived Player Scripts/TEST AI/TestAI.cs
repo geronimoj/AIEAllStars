@@ -4,12 +4,19 @@ using UnityEngine;
 
 public class TestAI : Player
 {
-    public bool IsAI;
+    [Header("AI Customisation")]
 
+    [Space]
+    public bool IsAI;
+    protected int MoveInput = 0;
+
+    [Space]
     public TimerData JumpData;
     public TimerData MoveData;
+    public TimerData DashData;
+    public TimerData SkillData;
 
-    protected int MoveInput;
+    [Space]
     public float AttackRange;
 
     [System.Serializable]
@@ -44,6 +51,8 @@ public class TestAI : Player
     {
         if (IsAI)
         {
+            Move(MoveInput);
+
             AIAttack();
 
             if (CallTimer(JumpData))
@@ -51,12 +60,41 @@ public class TestAI : Player
                 Jump();
             }
 
+            if (CallTimer(DashData))
+            {
+                Dash();
+            }
+
+            if (CallTimer(SkillData))
+            {
+                if (AISkillCanBeUsed())
+                {
+                    Skill();
+                }
+            }
+
             if (CallTimer(MoveData))
             {
                 ChooseMoveDirection();
             }
+        }
+    }
 
-            Move(MoveInput);
+    protected virtual bool AISkillCanBeUsed()
+    {
+        //Need to override in each different character. This is the trigger for each different character to use the skill. It also has to line up with the timer hitting 0.
+        //some characters wont need triggers and therefore will just have return true
+        //example trigger
+
+        int trigger = Random.Range(0, 2);
+
+        if(trigger == 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
 
@@ -72,6 +110,21 @@ public class TestAI : Player
     protected void ChooseMoveDirection()
     {
         MoveInput = Random.Range(-1, 2);
+
+        switch(MoveInput)
+        {
+            case -1:
+                FaceLeft();
+                break;
+
+            case 0:
+                FacePlayer();
+                break;
+
+            case 1:
+                FaceRight();
+                break;
+        }
     }
 
     public bool CallTimer(TimerData Timer)
