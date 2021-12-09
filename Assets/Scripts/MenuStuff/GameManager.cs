@@ -5,6 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(SceneLoader))]
 public class GameManager : MonoBehaviour
 {
+    public static GameManager s_instance = null;
     /// <summary>
     /// Player 1s Character
     /// </summary>
@@ -22,13 +23,18 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public static byte s_winningPlayer = 0;
     /// <summary>
+    /// Does the game contain AI
+    /// </summary>
+    public static bool s_useAI = false;
+    /// <summary>
     /// Reference to a scene loader for moving to other scenes after game end
     /// </summary>
     private SceneLoader _loader = null;
     /// <summary>
     /// The players in the game
     /// </summary>
-    private Player[] _players = null;
+    [HideInInspector]
+    public Player[] _players = null;
     /// <summary>
     /// The default map
     /// </summary>
@@ -57,6 +63,14 @@ public class GameManager : MonoBehaviour
     /// The timer for when the game finishes
     /// </summary>
     public float _endGameTime = 3;
+
+    [HideInInspector]
+    public float m_startTime = 0;
+
+    private void Awake()
+    {
+        s_instance = this;
+    }
 
     private void Start()
     {
@@ -125,7 +139,9 @@ public class GameManager : MonoBehaviour
     /// </summary>
     /// <returns></returns>
     private IEnumerator GameStart()
-    {
+    {   //Set start time
+        m_startTime = Time.time;
+
         Debug.LogError("Player Freezing / Unfreezing not implemented");
         yield return new WaitForSeconds(_startCountDown);
         //Start GameTimer
@@ -137,6 +153,7 @@ public class GameManager : MonoBehaviour
     /// <returns></returns>
     private IEnumerator GameTimer()
     {
+        m_startTime = Time.time;
         yield return new WaitForSeconds(_maxGameTime);
         //End game if its not already over
         GameEnd();
