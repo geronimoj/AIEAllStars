@@ -29,7 +29,8 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// The players in the game
     /// </summary>
-    private Player[] _players = null;
+    [HideInInspector]
+    public Player[] _players = null;
     /// <summary>
     /// The default map
     /// </summary>
