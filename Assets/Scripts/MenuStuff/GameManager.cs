@@ -5,6 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(SceneLoader))]
 public class GameManager : MonoBehaviour
 {
+    public static GameManager s_instance = null;
     /// <summary>
     /// Player 1s Character
     /// </summary>
@@ -57,6 +58,14 @@ public class GameManager : MonoBehaviour
     /// The timer for when the game finishes
     /// </summary>
     public float _endGameTime = 3;
+
+    [HideInInspector]
+    public float m_startTime = 0;
+
+    private void Awake()
+    {
+        s_instance = this;
+    }
 
     private void Start()
     {
