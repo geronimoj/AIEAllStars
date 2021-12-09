@@ -5,6 +5,14 @@ using UnityEngine;
 [RequireComponent(typeof(Collider))]
 public class HitCollider : MonoBehaviour
 {
+    enum Follow
+    {
+        none,
+        torso,
+        weapon,
+        collider,
+    }
+
     [Tooltip("damage this attack will do")]
     public float damage;
 
@@ -19,10 +27,42 @@ public class HitCollider : MonoBehaviour
 
     public float launchForce;
 
+    [Header("FX")]
+    public vfxObj particles;
+    [SerializeField] Follow toFollow;
+    vfxObj partInstance;
+
     Transform attacker;
     public void SetAttacker(Transform me)
     {
         attacker = me;
+    }
+
+    private void Awake()
+    {
+        if (!particles)
+            return;
+
+        partInstance = Instantiate(particles, transform.position + particles.transform.position, particles.transform.rotation);
+
+        switch (toFollow)
+        {
+            case Follow.none:
+                break;
+            case Follow.torso:
+                partInstance.transform.SetParent(attacker);
+                break;
+            case Follow.weapon:
+                CombatController cc = attacker.GetComponent<CombatController>();
+                if (cc)
+                {
+                    partInstance.transform.SetParent(cc.weaponPoint);
+                }
+                break;
+            case Follow.collider:
+                partInstance.transform.SetParent(transform);
+                break;
+        }
     }
 
     private void OnTriggerEnter(Collider other)

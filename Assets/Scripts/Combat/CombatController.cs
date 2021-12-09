@@ -24,6 +24,11 @@ public class CombatController : MonoBehaviour
 
     float attackCooldown = 0; // when greater than zero, cannot attack
 
+
+    [Header("Other")]
+    [Tooltip("optional point")]
+    public Transform weaponPoint;
+
     private void Awake()
     {
         animator = GetComponent<Animator>();
@@ -106,8 +111,6 @@ public class CombatController : MonoBehaviour
         }
 
         if (currentlyActiveAttack)
-        {
             Destroy(currentlyActiveAttack.gameObject);
-        }
     }
 }
