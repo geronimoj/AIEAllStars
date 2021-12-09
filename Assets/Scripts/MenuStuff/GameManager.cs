@@ -17,6 +17,8 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public static GameObject s_map = null;
 
+    public GameObject _map = null;
+
     public GameObject _defaultCharacter = null;
 
     public float _maxGameTime = 99;
@@ -31,7 +33,10 @@ public class GameManager : MonoBehaviour
     }
 
     private void SpawnLevel()
-    {   //Spawn map
+    {
+        if (!s_map)
+            s_map = _map;
+        //Spawn map
         GameObject map = GameObject.Instantiate(s_map, Vector3.zero, s_map.transform.rotation);
         //Get spawn points
         SpawnPoint[] points = map.GetComponentsInChildren<SpawnPoint>();

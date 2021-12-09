@@ -483,7 +483,10 @@ MonoBehaviour:
   _characterButtonPrefab: {fileID: 7980117601258039613, guid: c14dd9e33769f424bb84a5e76e225960, type: 3}
   _p1ButtonParent: {fileID: 215261461}
   _p2ButtonParent: {fileID: 568617837}
-  _characters: []
+  _characters:
+  - {fileID: 4025760358880584263, guid: e800077db6d49674e912497c144f9e7b, type: 3}
+  - {fileID: 4025760358880584263, guid: e800077db6d49674e912497c144f9e7b, type: 3}
+  - {fileID: 4025760358880584263, guid: e800077db6d49674e912497c144f9e7b, type: 3}
 --- !u!114 &858379024
 MonoBehaviour:
   m_ObjectHideFlags: 0
