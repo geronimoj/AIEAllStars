@@ -132,6 +132,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 998149750}
+  - component: {fileID: 998149752}
   - component: {fileID: 998149751}
   m_Layer: 0
   m_Name: GameManager
@@ -173,6 +174,18 @@ MonoBehaviour:
   _maxGameTime: 99
   _startCountDown: 3
   _endGameTime: 3
+--- !u!114 &998149752
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 998149749}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7915221e9036dda4483f9f2fdd55cd7b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1620952567
 GameObject:
   m_ObjectHideFlags: 0
