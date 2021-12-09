@@ -94,7 +94,8 @@ public class CombatController : MonoBehaviour
 
                     currentlyActiveAttack = Instantiate(attacks[attack], transform.position, Quaternion.LookRotation(transform.forward*-1, Vector3.up));
 
-                    //currentlyActiveAttack.transform.SetParent(transform);
+                    if(currentlyActiveAttack.followUser)
+                        currentlyActiveAttack.transform.SetParent(transform);
 
                     currentlyActiveAttack.SetAttacker(transform);
                 }

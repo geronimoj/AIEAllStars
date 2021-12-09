@@ -27,6 +27,8 @@ public class HitCollider : MonoBehaviour
 
     public float launchForce;
 
+    public bool followUser = true;
+
     [Header("FX")]
     public vfxObj particles;
     [SerializeField] Follow toFollow;
