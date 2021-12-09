@@ -42,6 +42,7 @@ public class CharacterSelector : MonoBehaviour
         SpawnPlayerUI(_p1ButtonParent, true);
         SpawnPlayerUI(_p2ButtonParent, false);
         SpawnMapUI(_mapParent);
+        GameManager.s_useAI = false;
         //Set defaults if null
         if (!GameManager.s_p1Char)
             GameManager.s_p1Char = _characters[0];
