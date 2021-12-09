@@ -623,6 +623,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6711437162409962752, guid: 5e1d6100ba87b1744905d8756a0b7667, type: 3}
+      propertyPath: DashMultiplier
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 6711437162409962753, guid: 5e1d6100ba87b1744905d8756a0b7667, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
