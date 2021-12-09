@@ -181,6 +181,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attacks: []
+  inAttackState: 0
   weaponPoint: {fileID: 0}
 --- !u!114 &6711437162409962752
 MonoBehaviour:
@@ -206,3 +207,19 @@ MonoBehaviour:
   GroundMask:
     serializedVersion: 2
     m_Bits: 1024
+  IsAI: 0
+  MoveData:
+    MinTime: 0
+    MaxTime: 1
+  JumpData:
+    MinTime: 0
+    MaxTime: 1
+  AttackData:
+    MinTime: 0
+    MaxTime: 1
+  DashData:
+    MinTime: 0
+    MaxTime: 1
+  SkillData:
+    MinTime: 0
+    MaxTime: 1

@@ -49,16 +49,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57abb5e1607a4524196ce9bb8c842894, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Controls: {fileID: 11400000, guid: 6a6a1da93ab3deb48a4080b39885542f, type: 2}
+  Controls: {fileID: 0}
   MaxHealth: 100
-  MoveSpeed: 10
-  Gravity: -39.24
+  MoveSpeed: 6
+  DashMultiplier: 2
   JumpHeight: 3
-  GroundCheck: {fileID: 2973778552964298180}
+  AirDashTime: 0.25
+  MaxAirActions: 1
+  GroundCheck: {fileID: 6711437162063891314, guid: 5e1d6100ba87b1744905d8756a0b7667, type: 3}
+  Gravity: -39.24
   GroundDistance: 0.1
   GroundMask:
     serializedVersion: 2
     m_Bits: 1024
+  IsAI: 0
+  MoveData:
+    MinTime: 0
+    MaxTime: 1
+  JumpData:
+    MinTime: 0
+    MaxTime: 1
+  AttackData:
+    MinTime: 0
+    MaxTime: 1
+  DashData:
+    MinTime: 0
+    MaxTime: 1
+  SkillData:
+    MinTime: 0
+    MaxTime: 1
 --- !u!114 &1066839159
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -75,6 +94,7 @@ MonoBehaviour:
   - {fileID: 35716153409201770, guid: 1dd0a92754e2c2244a5f49d6efbd6dec, type: 3}
   - {fileID: 2865457478167489482, guid: 24ae0e56db041964d961da3f70d9a106, type: 3}
   - {fileID: 815832133748476831, guid: 8878e773587dea94c9bd17d00beec825, type: 3}
+  inAttackState: 0
   weaponPoint: {fileID: 0}
 --- !u!1 &3567061712051921795
 GameObject:
