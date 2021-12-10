@@ -94,8 +94,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Controls: {fileID: 0}
   MaxHealth: 100
-  MoveSpeed: 8
-  DashMultiplier: 3
+  MoveSpeed: 10
+  DashMultiplier: 4
   JumpHeight: 3
   AirDashTime: 0.15
   AirDashBoost: 2
@@ -255,7 +255,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 866250d5d6c12e242ba37bdaac17676e, type: 3}
       propertyPath: m_Name
-      value: Viber Variant
+      value: Fighter_Viber Variant
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 866250d5d6c12e242ba37bdaac17676e, type: 3}
       propertyPath: m_Layer
