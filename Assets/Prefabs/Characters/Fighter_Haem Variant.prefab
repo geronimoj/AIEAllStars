@@ -67,7 +67,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &627448738
+--- !u!114 &627448739
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -76,7 +76,25 @@ MonoBehaviour:
   m_GameObject: {fileID: 6494838325905606745}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 57abb5e1607a4524196ce9bb8c842894, type: 3}
+  m_Script: {fileID: 11500000, guid: 4a07654633e24fc4cad3e5e04d566c13, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attacks:
+  - {fileID: 5920567677936516786, guid: 9488d9a3571caec4c98f1848a0953c53, type: 3}
+  - {fileID: 8231240543827053994, guid: 247d6b929aae706428639fa3957128d6, type: 3}
+  - {fileID: 7326256640101550672, guid: 7e31c9ba7d7aa3d47b0f921b7161cf3c, type: 3}
+  inAttackState: 0
+  weaponPoint: {fileID: 0}
+--- !u!114 &944706442580865063
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6494838325905606745}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1bd078bd6d99f054ea9e76484f2427d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Controls: {fileID: 11400000, guid: 6a6a1da93ab3deb48a4080b39885542f, type: 2}
@@ -87,7 +105,7 @@ MonoBehaviour:
   AirDashTime: 0.15
   AirDashBoost: 2
   MaxAirActions: 1
-  Gravity: -39.24
+  Gravity: -39
   GroundDistance: 0.1
   GroundCheck: {fileID: 99268111}
   GroundMask:
@@ -111,24 +129,7 @@ MonoBehaviour:
     MaxTime: 1
   canMoveInt: 0
   invinsibilityTime: 0
---- !u!114 &627448739
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6494838325905606745}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4a07654633e24fc4cad3e5e04d566c13, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  attacks:
-  - {fileID: 5920567677936516786, guid: 9488d9a3571caec4c98f1848a0953c53, type: 3}
-  - {fileID: 8231240543827053994, guid: 247d6b929aae706428639fa3957128d6, type: 3}
-  - {fileID: 7326256640101550672, guid: 7e31c9ba7d7aa3d47b0f921b7161cf3c, type: 3}
-  inAttackState: 0
-  weaponPoint: {fileID: 0}
+  specialCollider: {fileID: 2621084630983885642, guid: ed52256057d16964d8c63ec0d743f828, type: 3}
 --- !u!1001 &6260888426724160776
 PrefabInstance:
   m_ObjectHideFlags: 0

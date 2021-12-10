@@ -312,7 +312,7 @@ public class Player : MonoBehaviour
 
     }
 
-    public void GotHit(float damage, float stunDuration, Vector3 force)
+    public void GotHit(float damage, float stunDuration, Vector3 force, bool playAnim = true)
     {
         //Take damage
         _currentHealth -= damage;
@@ -323,7 +323,8 @@ public class Player : MonoBehaviour
         //Get knockedBack
         _velocity = force;
 
-        animator.SetTrigger("Hit");
+        if(playAnim)
+            animator.SetTrigger("Hit");
     }
 
     public void StunForDuration(float stunDuration)
