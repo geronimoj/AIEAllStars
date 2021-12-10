@@ -156,10 +156,15 @@ public class CharacterSelector : MonoBehaviour
     {
         if (s_selectedMap)
         {
-            for (byte i = 0; i < mapBooth.childCount; i++)
-                Destroy(mapBooth.GetChild(0).gameObject);
+            DestroyCurrentMap();
 
             Instantiate(s_selectedMap.Prefab, mapBooth);
         }
+    }
+
+    public void DestroyCurrentMap()
+    {
+        for (byte i = 0; i < mapBooth.childCount; i++)
+            Destroy(mapBooth.GetChild(0).gameObject);
     }
 }
