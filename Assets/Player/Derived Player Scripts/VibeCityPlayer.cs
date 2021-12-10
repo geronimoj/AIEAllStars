@@ -43,4 +43,9 @@ public class VibeCityPlayer : Player
 
         base.Update();
     }
+
+    public void FailGrapple()
+    {
+        canMoveInt--;
+    }
 }
