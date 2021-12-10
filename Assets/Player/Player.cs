@@ -274,18 +274,26 @@ public class Player : MonoBehaviour
         if (_isGrounded)
         {
             _velocity.y = Mathf.Sqrt(JumpHeight * -2f * Gravity);
+
+            if (jumpParticles)
+            {
+                vfxObj instance = Instantiate(jumpParticles, transform.position + jumpParticles.transform.position, jumpParticles.transform.rotation);
+                instance.Initialise();
+            }
         }
         else if (!_isGrounded && _airCharges > 0)
         {
             _velocity.y = Mathf.Sqrt(JumpHeight * -2f * Gravity);
             _airCharges--;
+
+            if (jumpParticles)
+            {
+                vfxObj instance = Instantiate(jumpParticles, transform.position + jumpParticles.transform.position, jumpParticles.transform.rotation);
+                instance.Initialise();
+            }
         }
 
-        if (jumpParticles)
-        {
-            vfxObj instance = Instantiate(jumpParticles, transform.position + jumpParticles.transform.position, jumpParticles.transform.rotation);
-            instance.Initialise();
-        }
+        
     }
 
     /// <summary>
@@ -299,6 +307,12 @@ public class Player : MonoBehaviour
         if (_isGrounded)
         {
             _dashing = true;
+
+            if (dashParticles)
+            {
+                vfxObj instance = Instantiate(dashParticles, transform.position + dashParticles.transform.position, transform.rotation);
+                instance.Initialise();
+            }
         }
         else if (_airCharges > 0)
         {
@@ -308,15 +322,17 @@ public class Player : MonoBehaviour
             _dashing = true;
             _airCharges--;
             StartCoroutine(EndAirDash(AirDashTime));
+
+            if (dashParticles)
+            {
+                vfxObj instance = Instantiate(dashParticles, transform.position + dashParticles.transform.position, transform.rotation);
+                instance.Initialise();
+            }
         }
 
         _dashInput = _moveInput;
 
-        if (dashParticles)
-        {
-            vfxObj instance = Instantiate(dashParticles, transform.position + dashParticles.transform.position, transform.rotation);
-            instance.Initialise();
-        }
+        
     }
 
     protected virtual void Attack()

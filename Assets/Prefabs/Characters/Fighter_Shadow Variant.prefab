@@ -67,7 +67,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &1243991086
+--- !u!114 &1243991087
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -76,16 +76,34 @@ MonoBehaviour:
   m_GameObject: {fileID: 1315014345936125129}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 57abb5e1607a4524196ce9bb8c842894, type: 3}
+  m_Script: {fileID: 11500000, guid: 4a07654633e24fc4cad3e5e04d566c13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Controls: {fileID: 11400000, guid: 6a6a1da93ab3deb48a4080b39885542f, type: 2}
+  attacks:
+  - {fileID: 4813866490001391870, guid: 4cbe2be86ad1b5a48afb59d30442703a, type: 3}
+  - {fileID: 6681311167620282881, guid: e2c6d1c436685234b85c3590591b647d, type: 3}
+  - {fileID: 207020047251202819, guid: 9181ba280c56ba34e9294e5176aae19d, type: 3}
+  inAttackState: 0
+  weaponPoint: {fileID: 0}
+--- !u!114 &6541423690400957466
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1315014345936125129}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17467c119fd2d784b8257a790fc66ad8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Controls: {fileID: 0}
   MaxHealth: 100
   MoveSpeed: 6
   DashMultiplier: 2
   JumpHeight: 3
-  AirDashTime: 0.15
-  AirDashBoost: 2
+  AirDashTime: 1
+  AirDashBoost: 0.15
   MaxAirActions: 1
   Gravity: -39.24
   GroundDistance: 0.1
@@ -110,25 +128,8 @@ MonoBehaviour:
     MinTime: 0
     MaxTime: 1
   canMoveInt: 0
-  invinsibilityTime: 0
---- !u!114 &1243991087
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1315014345936125129}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4a07654633e24fc4cad3e5e04d566c13, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  attacks:
-  - {fileID: 4813866490001391870, guid: 4cbe2be86ad1b5a48afb59d30442703a, type: 3}
-  - {fileID: 6681311167620282881, guid: e2c6d1c436685234b85c3590591b647d, type: 3}
-  - {fileID: 207020047251202819, guid: 9181ba280c56ba34e9294e5176aae19d, type: 3}
-  inAttackState: 0
-  weaponPoint: {fileID: 0}
+  InvincibilityTime: 0
+  parryCollider: {fileID: 7275537495733754109, guid: 4e2744473f86c6a4e91d5c44da12fc7a, type: 3}
 --- !u!1001 &2233423974083953048
 PrefabInstance:
   m_ObjectHideFlags: 0

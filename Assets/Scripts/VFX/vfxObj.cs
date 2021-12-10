@@ -36,6 +36,6 @@ public class vfxObj : MonoBehaviour
     {
         ps.enableEmission = false;
 
-        Destroy(gameObject, 5);
+        Destroy(gameObject, 2);
     }
 }
