@@ -15,12 +15,12 @@ public class VibeCityPlayer : Player
     {
         destination = end;
         zipping = true;
-        canMoveInt++;
     }
 
     protected override void Skill()
     {
         animator.SetTrigger("Special");
+        canMoveInt++;
     }
 
     protected override void Update()
