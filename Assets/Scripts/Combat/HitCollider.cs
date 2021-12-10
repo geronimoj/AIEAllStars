@@ -34,6 +34,8 @@ public class HitCollider : MonoBehaviour
 
     public bool giveInvFrames = false;
 
+    public float lifeStealAmount = 0;
+
     [Header("FX")]
     public vfxObj particles;
     [SerializeField] Follow toFollow;
@@ -101,6 +103,13 @@ public class HitCollider : MonoBehaviour
             {
                 //Make enemy invinsible for short time
                 p.InvincibilityTime = 0.5f;
+            }
+
+            if (lifeStealAmount > 0)
+            {
+                Player us = attacker.GetComponent<Player>();
+                if (us)
+                    us.Heal(lifeStealAmount);
             }
         }
     }

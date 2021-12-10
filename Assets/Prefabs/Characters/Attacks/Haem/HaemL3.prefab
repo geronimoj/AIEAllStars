@@ -66,6 +66,7 @@ MonoBehaviour:
   autoLaunchAway: 0
   followUser: 1
   giveInvFrames: 1
+  lifeStealAmount: 5
   particles: {fileID: 0}
   toFollow: 0
 --- !u!54 &5362377417400633665

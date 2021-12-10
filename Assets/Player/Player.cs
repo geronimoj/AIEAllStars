@@ -23,7 +23,7 @@ public class Player : MonoBehaviour
     public float AirDashTime = 1f;
     public float AirDashBoost = 2f;
     public int MaxAirActions = 1;
-    int _airCharges = 1;
+    protected int _airCharges = 1;
     int _moveInput;
     int _dashInput = 0;
     bool _dashing = false;
@@ -40,7 +40,7 @@ public class Player : MonoBehaviour
     //public LayerMask CharacterMask;
 
     bool _isGrounded;
-    Vector3 _velocity;
+    protected Vector3 _velocity;
 
     CombatController _combatController;
     protected CharacterController _characterController;
@@ -520,6 +520,14 @@ public class Player : MonoBehaviour
     #endregion
 
     #region Misc
+    public void Heal(float amount)
+    {
+        _currentHealth += amount;
+
+        if (_currentHealth > MaxHealth)
+            _currentHealth = MaxHealth;
+    }
+
     public bool CallTimer(TimerData Timer)
     {
         if (!Timer.CallTimer())
