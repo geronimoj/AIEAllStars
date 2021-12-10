@@ -37,7 +37,7 @@ public class InvisibleProj : MonoBehaviour
             if (p == caster)
                 return;
 
-            transform.position = p.transform.position;
+            transform.position.Set(p.transform.position.x, 0, p.transform.position.z);
 
             SummonPillar();
         }
@@ -50,9 +50,10 @@ public class InvisibleProj : MonoBehaviour
 
     void SummonPillar()
     {
-        FirePillar instance = Instantiate(firePillar, transform.position, firePillar.transform.rotation);
-        instance.caster = caster;
+        Vector3 spawnPos = new Vector3(transform.position.x, 0, transform.position.z);
 
+        FirePillar instance = Instantiate(firePillar, spawnPos, firePillar.transform.rotation);
+        instance.caster = caster;
 
         Destroy(gameObject);
     }
