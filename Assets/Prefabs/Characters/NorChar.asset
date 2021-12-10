@@ -15,5 +15,5 @@ MonoBehaviour:
   Name: FireBug
   Image: {fileID: 21300000, guid: 11391dfcf5049c94ead483619439b3ca, type: 3}
   Icon: {fileID: 21300000, guid: f0722681d7c67ad40984dbac5ad831c3, type: 3}
-  Colour: {r: 0, g: 0.8, b: 0.8, a: 1}
+  Colour: {r: 0, g: 0.7, b: 0.7, a: 1}
   Prefab: {fileID: 5323670757909340007, guid: aff5abc47f1c95b41a0bdccbee407141, type: 3}
