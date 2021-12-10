@@ -9,8 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3890489245466322424}
-  - component: {fileID: 7582184114334106394}
   - component: {fileID: 2621084630983885642}
+  - component: {fileID: 3253594855847084291}
   m_Layer: 8
   m_Name: HaemSpecial
   m_TagString: Untagged
@@ -32,19 +32,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
---- !u!65 &7582184114334106394
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2211645473208530047}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 10, z: 3}
-  m_Center: {x: 0, y: 3, z: 0}
 --- !u!114 &2621084630983885642
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -67,3 +54,16 @@ MonoBehaviour:
   giveInvFrames: 0
   particles: {fileID: 0}
   toFollow: 0
+--- !u!135 &3253594855847084291
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2211645473208530047}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1.8
+  m_Center: {x: 0, y: 3.06, z: 0}

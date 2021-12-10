@@ -13,6 +13,11 @@ public class HaemPlayer : Player
     {
         base.Skill();
 
+        
+    }
+
+    public void ShockWave()
+    {
         GotHit(7, 0, Vector3.zero, false);
 
         //summon a shockwave
