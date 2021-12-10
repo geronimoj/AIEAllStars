@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4819316a56b549640988bada36096ffc, type: 3}
-  m_Name: ShadowLeve
+  m_Name: ShadowLevel
   m_EditorClassIdentifier: 
   Name: ShadowStep Bridge
   Image: {fileID: 21300000, guid: af8c39daae6a2064c94705b03229d893, type: 3}

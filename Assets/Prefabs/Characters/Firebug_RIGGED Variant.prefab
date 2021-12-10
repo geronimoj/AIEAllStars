@@ -129,6 +129,19 @@ MonoBehaviour:
   attacks: []
   inAttackState: 0
   weaponPoint: {fileID: 0}
+--- !u!114 &8177845525034897286
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5323670757909340007}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 365727eaaad0ad34a91e328dd8b32762, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawnOffset: {x: 0, y: 1.25, z: -1}
 --- !u!1001 &4981002666170589750
 PrefabInstance:
   m_ObjectHideFlags: 0
