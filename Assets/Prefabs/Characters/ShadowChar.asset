@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4819316a56b549640988bada36096ffc, type: 3}
   m_Name: ShadowChar
   m_EditorClassIdentifier: 
-  Name: ShadowStep
+  Name: Shadowstep
   Image: {fileID: 21300000, guid: af8c39daae6a2064c94705b03229d893, type: 3}
   Icon: {fileID: 21300000, guid: f2edba51607b38d449f30ecfc8a0e1fc, type: 3}
   Colour: {r: 0.7407341, g: 0, b: 1, a: 1}
