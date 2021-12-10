@@ -14,7 +14,7 @@ public class GoldenPhoenixPlayer : Player
             return;
 
         //Play special animation
-        animator.SetTrigger("Special");
+        animator.SetTrigger("Skill");
         //Reduce air charges
         _airCharges--;
         canMoveInt++;
