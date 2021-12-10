@@ -4,15 +4,40 @@ using UnityEngine;
 
 public class VibeCityPlayer : Player
 {
-    // Start is called before the first frame update
-    void Start()
+    private Vector3 destination = Vector3.zero;
+    private bool zipping = false;
+
+    public float zipSpeed = 40;
+
+    public float zipEndDist = 0.2f;
+
+    public void ZipToTarget(Vector3 end)
     {
-        
+        destination = end;
+        zipping = true;
+        canMoveInt++;
     }
 
-    // Update is called once per frame
-    void Update()
+    protected override void Skill()
     {
-        
+        animator.SetTrigger("Special");
+    }
+
+    protected override void Update()
+    {
+        if (zipping)
+        {
+            Vector3 toDest = destination - transform.position;
+
+            if (toDest.magnitude < zipEndDist)
+            {
+                zipping = false;
+                canMoveInt--;
+            }
+            else
+                _characterController.Move(toDest.normalized * (zipSpeed * Time.deltaTime));
+        }
+
+        base.Update();
     }
 }

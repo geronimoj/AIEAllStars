@@ -43,7 +43,7 @@ public class Player : MonoBehaviour
     Vector3 _velocity;
 
     CombatController _combatController;
-    CharacterController _characterController;
+    protected CharacterController _characterController;
 
     protected Animator animator;
 

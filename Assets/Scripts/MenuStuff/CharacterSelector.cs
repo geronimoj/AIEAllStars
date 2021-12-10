@@ -87,6 +87,8 @@ public class CharacterSelector : MonoBehaviour
             GameObject button = Instantiate(_characterButtonPrefab.gameObject, parent);
 
             Button b = button.GetComponent<Button>();
+            SelectedUI ui = b.GetComponent<SelectedUI>();
+            ui.Target = _characters[index];
             //Setup lambda
             if (isP1)
             {
@@ -108,6 +110,8 @@ public class CharacterSelector : MonoBehaviour
             GameObject button = Instantiate(_characterButtonPrefab.gameObject, parent);
 
             Button b = button.GetComponent<Button>();
+            SelectedUI ui = b.GetComponent<SelectedUI>();
+            ui.Target = _maps[index];
             //Setup lambda
             b.onClick.AddListener(() => {GameManager.s_map = _maps[index].Prefab; map.Target = _maps[index]; });
         }

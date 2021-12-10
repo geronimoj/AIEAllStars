@@ -9,5 +9,7 @@ public class SelectableCharacter : ScriptableObject
 
     public Sprite Image = null;
 
+    public Sprite Icon = null;
+
     public GameObject Prefab = null;
 }
