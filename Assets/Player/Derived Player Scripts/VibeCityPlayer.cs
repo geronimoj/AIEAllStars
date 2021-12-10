@@ -19,6 +19,9 @@ public class VibeCityPlayer : Player
 
     protected override void Skill()
     {
+        if (!CanMove)
+            return;
+
         animator.SetTrigger("Special");
         canMoveInt++;
     }
@@ -39,5 +42,10 @@ public class VibeCityPlayer : Player
         }
 
         base.Update();
+    }
+
+    public void FailGrapple()
+    {
+        canMoveInt--;
     }
 }

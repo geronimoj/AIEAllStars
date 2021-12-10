@@ -342,6 +342,9 @@ public class Player : MonoBehaviour
 
     protected virtual void Skill()
     {
+        if (!CanMove)
+            return;
+
         animator.SetTrigger("Skill");
     }
 

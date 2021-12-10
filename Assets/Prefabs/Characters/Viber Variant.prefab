@@ -58,7 +58,7 @@ MonoBehaviour:
   AirDashBoost: 2
   MaxAirActions: 1
   Gravity: -39.24
-  GroundDistance: 0.1
+  GroundDistance: 0.2
   GroundCheck: {fileID: 6949718113878019716}
   GroundMask:
     serializedVersion: 2
@@ -81,8 +81,11 @@ MonoBehaviour:
     MaxTime: 1
   canMoveInt: 0
   InvincibilityTime: 0
+  hitParticles: {fileID: 0}
+  dashParticles: {fileID: 0}
+  jumpParticles: {fileID: 0}
   zipSpeed: 40
-  zipEndDist: 0.5
+  zipEndDist: 1
 --- !u!114 &7102177098852263174
 MonoBehaviour:
   m_ObjectHideFlags: 0
