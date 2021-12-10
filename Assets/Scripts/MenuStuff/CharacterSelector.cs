@@ -57,7 +57,8 @@ public class CharacterSelector : MonoBehaviour
         SpawnPlayerUI(_p1ButtonParent, true);
         SpawnPlayerUI(_p2ButtonParent, false);
         SpawnMapUI(_mapParent);
-        GameManager.s_useAI = false;
+        GameManager.s_useP2AI = false;
+        GameManager.s_useP1AI = false;
 
         s_selectedMap = _maps[0];
         s_p1Selected = _characters[0];
@@ -126,7 +127,9 @@ public class CharacterSelector : MonoBehaviour
     /// Apply to ToggleField to change if the game should use AI
     /// </summary>
     /// <param name="useAI"></param>
-    public void ToggleAI(bool useAI) => GameManager.s_useAI = useAI;
+    public void ToggleAI(bool useAI) => GameManager.s_useP2AI = useAI;
+
+    public void ToggleAIP1(bool useAI) => GameManager.s_useP1AI = useAI;
 
     private void UpdateBoothChar()
     {
