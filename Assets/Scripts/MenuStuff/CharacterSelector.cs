@@ -131,6 +131,34 @@ public class CharacterSelector : MonoBehaviour
 
     public void ToggleAIP1(bool useAI) => GameManager.s_useP1AI = useAI;
 
+    public void RandomMap()
+    {
+        int rand = Random.Range(0, _maps.Length);
+
+        GameManager.s_map = _maps[rand].Prefab; 
+        map.Target = _maps[rand]; 
+        s_selectedMap = _maps[rand]; 
+        OnSelectMap.Invoke();
+    }
+
+    public void RandomPlayer1()
+    {
+        int rand = Random.Range(0, _characters.Length);
+        GameManager.s_p1Char = _characters[rand].Prefab; 
+        p1.Target = _characters[rand]; 
+        s_p1Selected = _characters[rand]; 
+        OnSelectCharacter.Invoke();
+    }
+
+    public void RandomPlayer2()
+    {
+        int rand = Random.Range(0, _characters.Length);
+        GameManager.s_p2Char = _characters[rand].Prefab;
+        p2.Target = _characters[rand];
+        s_p2Selected = _characters[rand];
+        OnSelectCharacter.Invoke();
+    }
+
     private void UpdateBoothChar()
     {
         GameObject obj;
