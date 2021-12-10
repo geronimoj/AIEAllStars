@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4819316a56b549640988bada36096ffc, type: 3}
   m_Name: NorChar
   m_EditorClassIdentifier: 
-  Name: FireBug
+  Name: Firebug
   Image: {fileID: 21300000, guid: 11391dfcf5049c94ead483619439b3ca, type: 3}
   Icon: {fileID: 21300000, guid: f0722681d7c67ad40984dbac5ad831c3, type: 3}
   Colour: {r: 0.5176471, g: 0.7411765, b: 0, a: 1}
