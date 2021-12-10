@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4819316a56b549640988bada36096ffc, type: 3}
-  m_Name: Viber
+  m_Name: VibeChar
   m_EditorClassIdentifier: 
   Name: Viber
   Image: {fileID: 21300000, guid: 7947e1fa0380831418fa6f13f896383c, type: 3}
   Icon: {fileID: 21300000, guid: fab2e9609533c0143a61c8e60f0ed11e, type: 3}
-  Colour: {r: 0, g: 0.5292978, b: 1, a: 1}
+  Colour: {r: 0, g: 0.4237442, b: 0.8, a: 1}
   Prefab: {fileID: 2755054507247575172, guid: bc68eb63b2690934f832fc267cfdf160, type: 3}
