@@ -60,7 +60,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 2
-  enemyStunDuration: 5
+  enemyStunDuration: 1.5
   selfStunDuration: 1
   launchAngle: 0
   launchForce: 1
@@ -72,6 +72,9 @@ MonoBehaviour:
   toFollow: 0
   moveSpeed: 25
   lifeTime: 1
+  direction: {x: 0, y: 0, z: 1}
+  isExplosive: 0
+  explosiveCollider: {fileID: 0}
 --- !u!120 &7653273418200352635
 LineRenderer:
   m_ObjectHideFlags: 0
