@@ -139,8 +139,12 @@ public class Player : MonoBehaviour
         }
         mesh.materials = matArray;
 
+        bool prev = _isGrounded;
         //Check if the player is grounded
         _isGrounded = Physics.CheckSphere(GroundCheck.position, GroundDistance, GroundMask);
+
+        if (prev == true && _isGrounded == false)
+            _dashing = false;
 
         if (!IsAI)
             InputUpdate();
