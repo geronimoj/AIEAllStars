@@ -45,7 +45,7 @@ public class Player : MonoBehaviour
     CombatController _combatController;
     CharacterController _characterController;
 
-    Animator animator;
+    protected Animator animator;
 
     [Header("AI Customisation")]
 
