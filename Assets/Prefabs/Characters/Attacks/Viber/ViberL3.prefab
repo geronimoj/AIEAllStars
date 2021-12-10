@@ -58,10 +58,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 20
-  enemyStunDuration: 0.5
+  enemyStunDuration: 0.7
   selfStunDuration: 0.2
   launchAngle: 45
   launchForce: 10
+  autoLaunchAway: 0
   followUser: 1
   giveInvFrames: 1
   particles: {fileID: 0}
