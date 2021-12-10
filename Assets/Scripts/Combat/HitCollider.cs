@@ -111,11 +111,26 @@ public class HitCollider : MonoBehaviour
             {
                 Player us = attacker.GetComponent<Player>();
                 if (us)
+                {
                     us.Heal(lifeStealAmount);
+
+                    CombatController cc = us.GetComponent<CombatController>();
+                    cc.SetHandParticles(true);
+                    cc.StartCoroutine(WaitBeforeHandDisable(cc));
+                }
             }
 
             //Turn our collider off
             GetComponent<Collider>().enabled = false;
         }
+
     }
+
+    IEnumerator WaitBeforeHandDisable(CombatController cc)
+    {
+        yield return new WaitForSeconds(.5f);
+
+        cc.SetHandParticles(false);
+    }
+
 }

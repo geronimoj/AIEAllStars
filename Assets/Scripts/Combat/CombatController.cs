@@ -89,7 +89,9 @@ public class CombatController : MonoBehaviour
     //The part in the animation where the collider spawns
     public void StartAttack(int attack)
     {
-        SetHandParticles(true);
+        WizardsOfNorPlayer p = player as WizardsOfNorPlayer;
+        if(p)
+            SetHandParticles(true);
 
         //If we can make a valid attack
         if (attacks != null)
@@ -111,10 +113,11 @@ public class CombatController : MonoBehaviour
     //The part of the animation where the collider destroys
     public void EndAttack(int attack)
     {
-
         inAttackState = false;
 
-        SetHandParticles(false);
+        WizardsOfNorPlayer p = player as WizardsOfNorPlayer;
+        if (p)
+            SetHandParticles(false);
 
         if (queueTimer > 0)
         {
@@ -150,7 +153,7 @@ public class CombatController : MonoBehaviour
 
     }
 
-    void SetHandParticles(bool state)
+    public void SetHandParticles(bool state)
     {
         if(attackParticles != null)
             foreach (ParticleSystem ps in attackParticles)
