@@ -13,5 +13,7 @@ MonoBehaviour:
   m_Name: HaemLevel
   m_EditorClassIdentifier: 
   Name: Haem Mountain
-  Image: {fileID: 0}
+  Image: {fileID: 21300000, guid: 10f495410321528418dd89266207ecde, type: 3}
+  Icon: {fileID: 21300000, guid: 10f495410321528418dd89266207ecde, type: 3}
+  Colour: {r: 1, g: 1, b: 1, a: 1}
   Prefab: {fileID: 3076739607325483843, guid: c79075d043217cc4da6559d5331cf035, type: 3}
