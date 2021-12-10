@@ -69,7 +69,7 @@ ModelImporter:
       - time: 0.34186047
         functionName: Fire
         data: 
-        objectReferenceParameter: {instanceID: 0}
+        objectReferenceParameter: {fileID: 7017332799057291454, guid: 1b5392118e01aa84caea074a4a04bdef, type: 3}
         floatParameter: 0
         intParameter: 2
         messageOptions: 0
