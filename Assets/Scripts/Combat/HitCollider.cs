@@ -27,6 +27,9 @@ public class HitCollider : MonoBehaviour
 
     public float launchForce;
 
+    [Tooltip("If true, will not use launch angle and will move away from attacker")]
+    public bool autoLaunchAway = false;
+
     public bool followUser = true;
 
     public bool giveInvFrames = false;
@@ -83,7 +86,12 @@ public class HitCollider : MonoBehaviour
                 return;
 
             //Calculate laucnh force
-            Vector3 angle = transform.forward * Mathf.Sin(launchAngle) + transform.up * Mathf.Cos(launchAngle);
+            Vector3 angle;
+
+            if (autoLaunchAway)
+                angle = p.transform.position - attacker.position;
+            else
+                angle = transform.forward * Mathf.Sin(launchAngle) + transform.up * Mathf.Cos(launchAngle);
             angle.Normalize();
 
             p.GotHit(damage, enemyStunDuration, angle * launchForce);

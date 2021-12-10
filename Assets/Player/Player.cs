@@ -94,6 +94,11 @@ public class Player : MonoBehaviour
 
     SkinnedMeshRenderer mesh;
     Material invincibleGlow;
+
+    [Header("VFX")]
+    public vfxObj hitParticles;
+    public vfxObj dashParticles;
+    public vfxObj jumpParticles;
     #endregion
 
     #region Start/Update
@@ -275,6 +280,12 @@ public class Player : MonoBehaviour
             _velocity.y = Mathf.Sqrt(JumpHeight * -2f * Gravity);
             _airCharges--;
         }
+
+        if (jumpParticles)
+        {
+            vfxObj instance = Instantiate(jumpParticles, transform.position + jumpParticles.transform.position, jumpParticles.transform.rotation);
+            instance.Initialise();
+        }
     }
 
     /// <summary>
@@ -300,6 +311,12 @@ public class Player : MonoBehaviour
         }
 
         _dashInput = _moveInput;
+
+        if (dashParticles)
+        {
+            vfxObj instance = Instantiate(dashParticles, transform.position + dashParticles.transform.position, transform.rotation);
+            instance.Initialise();
+        }
     }
 
     protected virtual void Attack()
@@ -312,7 +329,7 @@ public class Player : MonoBehaviour
         animator.SetTrigger("Skill");
     }
 
-    public void GotHit(float damage, float stunDuration, Vector3 force)
+    public void GotHit(float damage, float stunDuration, Vector3 force, bool playAnim = true)
     {
         //Take damage
         _currentHealth -= damage;
@@ -323,7 +340,14 @@ public class Player : MonoBehaviour
         //Get knockedBack
         _velocity = force;
 
-        animator.SetTrigger("Hit");
+        if(playAnim)
+            animator.SetTrigger("Hit");
+
+        if (hitParticles)
+        {
+            vfxObj instance = Instantiate(hitParticles, transform.position + hitParticles.transform.position, jumpParticles.transform.rotation);
+            instance.Initialise();
+        }
     }
 
     public void StunForDuration(float stunDuration)
