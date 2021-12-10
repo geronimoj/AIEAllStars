@@ -15,5 +15,5 @@ MonoBehaviour:
   Name: Vibe City
   Image: {fileID: 21300000, guid: 7947e1fa0380831418fa6f13f896383c, type: 3}
   Icon: {fileID: 21300000, guid: 7947e1fa0380831418fa6f13f896383c, type: 3}
-  Colour: {r: 1, g: 1, b: 1, a: 1}
+  Colour: {r: 0.4245283, g: 0.4245283, b: 0.4245283, a: 1}
   Prefab: {fileID: 117094779047061434, guid: 5d9e1c7d2a4f869478d8ca9ae1e9087c, type: 3}

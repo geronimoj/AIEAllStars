@@ -15,5 +15,5 @@ MonoBehaviour:
   Name: ShadowStep Bridge
   Image: {fileID: 21300000, guid: af8c39daae6a2064c94705b03229d893, type: 3}
   Icon: {fileID: 21300000, guid: af8c39daae6a2064c94705b03229d893, type: 3}
-  Colour: {r: 1, g: 1, b: 1, a: 1}
+  Colour: {r: 0.4245283, g: 0.4245283, b: 0.4245283, a: 1}
   Prefab: {fileID: 6200956947504025547, guid: 3cd72f5725a1dbb43af5b0d347b4ab07, type: 3}
