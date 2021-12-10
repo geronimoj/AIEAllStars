@@ -520,6 +520,14 @@ public class Player : MonoBehaviour
     #endregion
 
     #region Misc
+    public void Heal(float amount)
+    {
+        _currentHealth += amount;
+
+        if (_currentHealth > MaxHealth)
+            _currentHealth = MaxHealth;
+    }
+
     public bool CallTimer(TimerData Timer)
     {
         if (!Timer.CallTimer())

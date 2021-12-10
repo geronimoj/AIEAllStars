@@ -20,6 +20,9 @@ public class ShadowstepPlayer : Player
         canMoveInt++;
         InvincibilityTime = 10;
         _colInstance = Instantiate(parryCollider, transform.position, parryCollider.transform.rotation);
+
+        _colInstance.GetComponent<ParryCheck>().SetAttacker(gameObject.transform);
+        _colInstance.transform.SetParent(transform);
     }
 
     public void EndParry()
@@ -38,6 +41,21 @@ public class ShadowstepPlayer : Player
         InvincibilityTime = 1;
 
         animator.SetTrigger("Counter");
+    }
+
+    public void CounterAttackSpawn()
+    {
         _colInstance = Instantiate(counterCollider, transform.position, counterCollider.transform.rotation);
+        _colInstance.transform.SetParent(transform);
+
+        StartCoroutine(DestroyColAfterDelay());
+    }
+
+    IEnumerator DestroyColAfterDelay()
+    {
+        yield return new WaitForSeconds(.5f);
+
+        if (_colInstance)
+            Destroy(_colInstance.gameObject);
     }
 }

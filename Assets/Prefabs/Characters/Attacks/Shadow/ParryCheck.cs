@@ -5,6 +5,7 @@ using UnityEngine;
 public class ParryCheck : MonoBehaviour
 {
     protected Transform attacker;
+
     public void SetAttacker(Transform me)
     {
         attacker = me;
