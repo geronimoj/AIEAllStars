@@ -98,7 +98,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a07654633e24fc4cad3e5e04d566c13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attacks: []
+  attacks:
+  - {fileID: 5920567677936516786, guid: 9488d9a3571caec4c98f1848a0953c53, type: 3}
+  - {fileID: 2865457478167489482, guid: 24ae0e56db041964d961da3f70d9a106, type: 3}
+  - {fileID: 207020047251202819, guid: 9181ba280c56ba34e9294e5176aae19d, type: 3}
   inAttackState: 0
   weaponPoint: {fileID: 0}
 --- !u!1 &3940253959081334067
