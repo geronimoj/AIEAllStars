@@ -49,6 +49,8 @@ public class CharacterSelector : MonoBehaviour
     private UnityEngine.Events.UnityEvent OnSelectCharacter = new UnityEngine.Events.UnityEvent();
 
     private UnityEngine.Events.UnityEvent OnSelectMap = new UnityEngine.Events.UnityEvent();
+
+    public SelectableCharacter _randomCharacter;
     /// <summary>
     /// Initialize charcaters
     /// </summary>
@@ -79,6 +81,14 @@ public class CharacterSelector : MonoBehaviour
             GameManager.s_p2Char = _characters[0].Prefab;
         if (!GameManager.s_map)
             GameManager.s_map = _maps[0].Prefab;
+    }
+
+    private void OnDestroy()
+    {
+        if (s_p1Selected == _randomCharacter)
+            RandomPlayer1();
+        if (s_p2Selected == _randomCharacter)
+            RandomPlayer2();
     }
     /// <summary>
     /// Spawns a button for each selectable character
