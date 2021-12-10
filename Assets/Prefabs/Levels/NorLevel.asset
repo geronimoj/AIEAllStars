@@ -15,5 +15,5 @@ MonoBehaviour:
   Name: Magma Cave
   Image: {fileID: 21300000, guid: 11391dfcf5049c94ead483619439b3ca, type: 3}
   Icon: {fileID: 21300000, guid: 11391dfcf5049c94ead483619439b3ca, type: 3}
-  Colour: {r: 0, g: 0.7, b: 0.7, a: 1}
+  Colour: {r: 0.5176471, g: 0.7411765, b: 0, a: 1}
   Prefab: {fileID: 7725296666429449016, guid: 2f96f06692e9df84a8325f4db1e4da36, type: 3}
