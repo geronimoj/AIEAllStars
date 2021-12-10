@@ -177,16 +177,22 @@ public class CharacterSelector : MonoBehaviour
             for (byte i = 0; i < photoBoothL.childCount; i++)
                 Destroy(photoBoothL.GetChild(0).gameObject);
 
-            obj = Instantiate(s_p1Selected.Prefab, photoBoothL);
-            obj.transform.localRotation = Quaternion.identity;
+            if (s_p1Selected.Prefab != null)
+            {
+                obj = Instantiate(s_p1Selected.Prefab, photoBoothL);
+                obj.transform.localRotation = Quaternion.identity;
+            }
         }
         if (s_p2Selected)
         {
             for (byte i = 0; i < photoBoothR.childCount; i++)
                 Destroy(photoBoothR.GetChild(0).gameObject);
 
-            obj = Instantiate(s_p2Selected.Prefab, photoBoothR);
-            obj.transform.localRotation = Quaternion.identity;
+            if (s_p2Selected.Prefab != null)
+            {
+                obj = Instantiate(s_p2Selected.Prefab, photoBoothR);
+                obj.transform.localRotation = Quaternion.identity;
+            }
         }
     }
 
