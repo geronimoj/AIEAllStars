@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: PhoenixChar
   m_EditorClassIdentifier: 
   Name: Phoenix
-  Image: {fileID: 0}
+  Image: {fileID: 21300000, guid: b15b10deb0834b345a0a664038c91199, type: 3}
   Icon: {fileID: 0}
   Colour: {r: 0, g: 0.65795946, b: 1, a: 1}
   Prefab: {fileID: 2573277550419484580, guid: ac884ac4d43ac8f409b34d120ca708db, type: 3}
