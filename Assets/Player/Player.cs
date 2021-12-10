@@ -531,13 +531,16 @@ public class Player : MonoBehaviour
 
     protected void FaceEnemy()
     {
-        if (EnemyIsOnLeft())
+        if (Enemy() != null)
         {
-            FaceLeft();
-        }
-        else
-        {
-            FaceRight();
+            if (EnemyIsOnLeft())
+            {
+                FaceLeft();
+            }
+            else
+            {
+                FaceRight();
+            }
         }
     }
 
