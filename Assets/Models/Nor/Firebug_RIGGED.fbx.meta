@@ -3,7 +3,12 @@ guid: 6814f8d9901ec104c99072a8050875d3
 ModelImporter:
   serializedVersion: 20101
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Firebug
+    second: {fileID: 2100000, guid: dd6b1191a2ed1ba4b8fc4f4dfa2186de, type: 2}
   materials:
     materialImportMode: 1
     materialName: 0

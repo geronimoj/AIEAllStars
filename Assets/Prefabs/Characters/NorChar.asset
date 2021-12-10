@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4819316a56b549640988bada36096ffc, type: 3}
+  m_Name: NorChar
+  m_EditorClassIdentifier: 
+  Name: FireBug
+  Image: {fileID: 21300000, guid: 11391dfcf5049c94ead483619439b3ca, type: 3}
+  Icon: {fileID: 21300000, guid: 11391dfcf5049c94ead483619439b3ca, type: 3}
+  Colour: {r: 1, g: 0.37498978, b: 0, a: 1}
+  Prefab: {fileID: 5323670757909340007, guid: aff5abc47f1c95b41a0bdccbee407141, type: 3}
