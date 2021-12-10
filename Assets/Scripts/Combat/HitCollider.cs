@@ -73,6 +73,8 @@ public class HitCollider : MonoBehaviour
                 partInstance.transform.SetParent(transform);
                 break;
         }
+
+        partInstance.Initialise();
     }
 
     protected virtual void OnTriggerEnter(Collider other)

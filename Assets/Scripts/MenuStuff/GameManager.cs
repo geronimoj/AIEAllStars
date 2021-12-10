@@ -27,7 +27,9 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// Does the game contain AI
     /// </summary>
-    public static bool s_useAI = false;
+    public static bool s_useP2AI = false;
+
+    public static bool s_useP1AI = false;
     /// <summary>
     /// The scores the players have
     /// </summary>
@@ -152,7 +154,7 @@ public class GameManager : MonoBehaviour
         {
             obj = Instantiate(s_p1Char, points[0].transform.position, s_p1Char.transform.rotation);
             _players[0] = obj.GetComponent<Player>();
-            _players[0].IsAI = false;
+            _players[0].IsAI = s_useP1AI;
             _players[0].Controls = _p1Input;
             p1.target = obj.transform;
         }
@@ -161,7 +163,7 @@ public class GameManager : MonoBehaviour
         {
             obj = Instantiate(s_p2Char, points[1].transform.position, s_p1Char.transform.rotation);
             _players[1] = obj.GetComponent<Player>();
-            _players[1].IsAI = s_useAI;
+            _players[1].IsAI = s_useP2AI;
             _players[1].Controls = _p2Input;
             p2.target = obj.transform;
         }
