@@ -49,7 +49,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6bc46fe3d0f9164f8085e81b8e99cf9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Controls: {fileID: 11400000, guid: 6a6a1da93ab3deb48a4080b39885542f, type: 2}
+  Controls: {fileID: 0}
   MaxHealth: 100
   MoveSpeed: 6
   DashMultiplier: 2
@@ -84,8 +84,8 @@ MonoBehaviour:
   hitParticles: {fileID: 1206494771143577732, guid: f752b1f8d247ee8468c2c12dbfb2e48b, type: 3}
   dashParticles: {fileID: 6762457798526618193, guid: 20d4c663f5446c74a9e615e225095692, type: 3}
   jumpParticles: {fileID: 4388340583238369657, guid: 0b75b8cd25280134d84241ac0042ef7d, type: 3}
-  skillJumpForce: 10
-  skillHorizontalForce: 1
+  skillJumpForce: 15
+  skillHorizontalForce: 5
 --- !u!114 &2643516204320503489
 MonoBehaviour:
   m_ObjectHideFlags: 0

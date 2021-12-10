@@ -79,7 +79,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fea921f96e7657e4b9c4390b1ccb814a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Controls: {fileID: 11400000, guid: 6a6a1da93ab3deb48a4080b39885542f, type: 2}
+  Controls: {fileID: 0}
   MaxHealth: 100
   MoveSpeed: 6
   DashMultiplier: 2
@@ -126,9 +126,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a07654633e24fc4cad3e5e04d566c13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attacks: []
+  attacks:
+  - {fileID: 6941037028469071417, guid: 94858a235298fc24c9c7dc94ff34d336, type: 3}
+  - {fileID: 8617748037235540295, guid: ef3df8687c4496d4fb7a3d97b65009e3, type: 3}
   inAttackState: 0
   weaponPoint: {fileID: 0}
+--- !u!114 &8177845525034897286
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5323670757909340007}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 365727eaaad0ad34a91e328dd8b32762, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawnOffset: {x: 0, y: 1.25, z: -1}
 --- !u!1001 &4981002666170589750
 PrefabInstance:
   m_ObjectHideFlags: 0

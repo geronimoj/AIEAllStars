@@ -24,7 +24,7 @@ ModelImporter:
     animationImportWarnings: 
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
-    importAnimatedCustomProperties: 0
+    importAnimatedCustomProperties: 1
     importConstraints: 0
     animationCompression: 1
     animationRotationError: 0.5
@@ -63,6 +63,13 @@ ModelImporter:
         functionName: SkillEnd
         data: 
         objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.44609666
+        functionName: Fire
+        data: 
+        objectReferenceParameter: {fileID: 9169883353639008316, guid: b5eec035ddfaff341949f5fa7d199d29, type: 3}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
