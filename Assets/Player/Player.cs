@@ -194,14 +194,17 @@ public class Player : MonoBehaviour
             {
                 //If not grounded or air dashing, apply gravity
                 _velocity.y += Gravity * Time.deltaTime;
+
+                _velocity.x = Mathf.MoveTowards(_velocity.x, 0, Time.deltaTime * 5);
+                _velocity.z = Mathf.MoveTowards(_velocity.z, 0, Time.deltaTime * 5);
             }
         }
         //If you are grounded...
         else
         {
             //Used to prevent knockback sliding + sticking to the floor during knockback
-            _velocity.x = Mathf.MoveTowards(_velocity.x, 0, Time.deltaTime * 15);
-            _velocity.z = Mathf.MoveTowards(_velocity.z, 0, Time.deltaTime * 15);
+            _velocity.x = Mathf.MoveTowards(_velocity.x, 0, Time.deltaTime * 25);
+            _velocity.z = Mathf.MoveTowards(_velocity.z, 0, Time.deltaTime * 25);
 
             //Reset midair actions
             if (_airCharges != MaxAirActions)

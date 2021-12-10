@@ -13,5 +13,7 @@ MonoBehaviour:
   m_Name: GoldenLevel
   m_EditorClassIdentifier: 
   Name: Phoenix Pirate Ship
-  Image: {fileID: 0}
+  Image: {fileID: 21300000, guid: b15b10deb0834b345a0a664038c91199, type: 3}
+  Icon: {fileID: 21300000, guid: b15b10deb0834b345a0a664038c91199, type: 3}
+  Colour: {r: 1, g: 1, b: 1, a: 1}
   Prefab: {fileID: 3808743996746582585, guid: 3ef5bd03abd178747a8047e4437f3296, type: 3}
