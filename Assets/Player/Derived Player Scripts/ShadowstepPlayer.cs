@@ -4,15 +4,9 @@ using UnityEngine;
 
 public class ShadowstepPlayer : Player
 {
-    // Start is called before the first frame update
-    void Start()
+    protected override void Skill()
     {
-        
-    }
+        base.Skill();
 
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

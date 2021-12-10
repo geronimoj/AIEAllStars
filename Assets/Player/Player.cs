@@ -309,7 +309,7 @@ public class Player : MonoBehaviour
 
     protected virtual void Skill()
     {
-
+        animator.SetTrigger("Skill");
     }
 
     public void GotHit(float damage, float stunDuration, Vector3 force)
