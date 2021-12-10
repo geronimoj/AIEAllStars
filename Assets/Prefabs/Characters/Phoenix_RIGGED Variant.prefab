@@ -99,11 +99,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attacks:
-  - {fileID: 5920567677936516786, guid: 9488d9a3571caec4c98f1848a0953c53, type: 3}
-  - {fileID: 2865457478167489482, guid: 24ae0e56db041964d961da3f70d9a106, type: 3}
-  - {fileID: 207020047251202819, guid: 9181ba280c56ba34e9294e5176aae19d, type: 3}
+  - {fileID: 0}
+  - {fileID: 5891026757144625676, guid: dfa25eaeaf3f62d4bb8c45787a37cb8f, type: 3}
   inAttackState: 0
   weaponPoint: {fileID: 0}
+--- !u!114 &7501972477381097690
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2573277550419484580}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 365727eaaad0ad34a91e328dd8b32762, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawnOffset: {x: 0, y: 1.25, z: -1}
 --- !u!1 &3940253959081334067
 GameObject:
   m_ObjectHideFlags: 0
