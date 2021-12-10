@@ -81,6 +81,9 @@ MonoBehaviour:
     MaxTime: 1
   canMoveInt: 0
   InvincibilityTime: 0
+  hitParticles: {fileID: 1206494771143577732, guid: f752b1f8d247ee8468c2c12dbfb2e48b, type: 3}
+  dashParticles: {fileID: 6762457798526618193, guid: 20d4c663f5446c74a9e615e225095692, type: 3}
+  jumpParticles: {fileID: 4388340583238369657, guid: 0b75b8cd25280134d84241ac0042ef7d, type: 3}
   _maxSpeedAt0HP: 15
 --- !u!114 &1066839159
 MonoBehaviour:
