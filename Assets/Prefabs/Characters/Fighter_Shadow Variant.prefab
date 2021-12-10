@@ -93,7 +93,7 @@ MonoBehaviour:
   GroundMask:
     serializedVersion: 2
     m_Bits: 1024
-  IsAI: 1
+  IsAI: 0
   MoveData:
     MinTime: 0
     MaxTime: 1
@@ -110,6 +110,7 @@ MonoBehaviour:
     MinTime: 0
     MaxTime: 1
   canMoveInt: 0
+  invinsibilityTime: 0
 --- !u!114 &1243991087
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -198,6 +199,14 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 809ba6d9e158c31459b8ca6c2a10d804, type: 3}
       propertyPath: m_Layer
       value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 974348284164443392, guid: 809ba6d9e158c31459b8ca6c2a10d804, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 974348284164443392, guid: 809ba6d9e158c31459b8ca6c2a10d804, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 809ba6d9e158c31459b8ca6c2a10d804, type: 3}

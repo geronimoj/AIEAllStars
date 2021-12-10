@@ -4,15 +4,34 @@ using UnityEngine;
 
 public class HaemPlayer : Player
 {
-    // Start is called before the first frame update
-    void Start()
+    [Header("Skill")]
+    public HitCollider specialCollider;
+
+    HitCollider colInstance;
+
+    protected override void Skill()
     {
+        base.Skill();
+
         
     }
 
-    // Update is called once per frame
-    void Update()
+    public void ShockWave()
     {
-        
+        GotHit(7, 0, Vector3.zero, false);
+
+        //summon a shockwave
+        colInstance = Instantiate(specialCollider, transform.position, specialCollider.transform.rotation);
+        colInstance.SetAttacker(transform);
+
+        StartCoroutine(DestroyColAfterDelay());
+    }
+
+    IEnumerator DestroyColAfterDelay()
+    {
+        yield return new WaitForSeconds(.5f);
+
+        if (colInstance)
+            Destroy(colInstance.gameObject);
     }
 }

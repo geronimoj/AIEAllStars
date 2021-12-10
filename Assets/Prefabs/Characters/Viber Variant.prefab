@@ -80,6 +80,7 @@ MonoBehaviour:
     MinTime: 0
     MaxTime: 1
   canMoveInt: 0
+  invinsibilityTime: 0
 --- !u!114 &7523119504319181496
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -198,6 +199,14 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 866250d5d6c12e242ba37bdaac17676e, type: 3}
       propertyPath: m_Layer
       value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 3804321604526281494, guid: 866250d5d6c12e242ba37bdaac17676e, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3804321604526281494, guid: 866250d5d6c12e242ba37bdaac17676e, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 866250d5d6c12e242ba37bdaac17676e, type: 3}

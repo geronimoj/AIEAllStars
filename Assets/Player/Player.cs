@@ -45,7 +45,7 @@ public class Player : MonoBehaviour
     CombatController _combatController;
     CharacterController _characterController;
 
-    Animator animator;
+    protected Animator animator;
 
     [Header("AI Customisation")]
 
@@ -90,7 +90,10 @@ public class Player : MonoBehaviour
     public int canMoveInt = 0;
     public bool CanMove => canMoveInt <= 0;
 
-    public float invinsibilityTime = 0;
+    public float InvincibilityTime = 0;
+
+    SkinnedMeshRenderer mesh;
+    Material invincibleGlow;
     #endregion
 
     #region Start/Update
@@ -101,10 +104,13 @@ public class Player : MonoBehaviour
         _currentHealth = MaxHealth;
 
         animator = GetComponent<Animator>();
+
+        mesh = GetComponentInChildren<SkinnedMeshRenderer>();
+        invincibleGlow = Resources.Load<Material>("WhiteGlow") as Material;
     }
 
     // Start is called before the first frame update
-    void Start()
+    protected virtual void Start()
     {
         _moveInput = 0;
     }
@@ -112,8 +118,21 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     protected virtual void Update()
     {
-        if (invinsibilityTime > 0)
-            invinsibilityTime -= Time.deltaTime;
+        Material[] matArray = mesh.materials;
+        if (InvincibilityTime > 0)
+        {
+            InvincibilityTime -= Time.deltaTime;
+
+            if (invincibleGlow)
+            {
+                matArray[1] = invincibleGlow;
+            }
+        }
+        else
+        {
+            matArray[1] = null;
+        }
+        mesh.materials = matArray;
 
         //Check if the player is grounded
         _isGrounded = Physics.CheckSphere(GroundCheck.position, GroundDistance, GroundMask);
@@ -290,10 +309,10 @@ public class Player : MonoBehaviour
 
     protected virtual void Skill()
     {
-
+        animator.SetTrigger("Skill");
     }
 
-    public void GotHit(float damage, float stunDuration, Vector3 force)
+    public void GotHit(float damage, float stunDuration, Vector3 force, bool playAnim = true)
     {
         //Take damage
         _currentHealth -= damage;
@@ -304,7 +323,8 @@ public class Player : MonoBehaviour
         //Get knockedBack
         _velocity = force;
 
-        animator.SetTrigger("Hit");
+        if(playAnim)
+            animator.SetTrigger("Hit");
     }
 
     public void StunForDuration(float stunDuration)
@@ -328,36 +348,39 @@ public class Player : MonoBehaviour
     /// </summary>
     private void InputUpdate()
     {
-        //If the player isn't pressing either direction, make sure they aren't moving
-        //Mostly a precaution
-        if (Input.GetKey(Controls.Left) == false && Input.GetKey(Controls.Right) == false)
+        if (Controls != null)
         {
-            _moveInput = 0;
-            FaceEnemy();
-        }
+            //If the player isn't pressing either direction, make sure they aren't moving
+            //Mostly a precaution
+            if (Input.GetKey(Controls.Left) == false && Input.GetKey(Controls.Right) == false)
+            {
+                _moveInput = 0;
+                FaceEnemy();
+            }
 
-        if (Input.GetKey(Controls.Right) || Input.GetKey(Controls.Left))
-        {
-            Move();
-        }
+            if (Input.GetKey(Controls.Right) || Input.GetKey(Controls.Left))
+            {
+                Move();
+            }
 
-        if (Input.GetKeyDown(Controls.Jump))
-        {
-            Jump();
-        }
-        if (Input.GetKeyDown(Controls.Dash))
-        {
-            Dash();
-        }
-        if (Input.GetKeyDown(Controls.Attack))
-        {
-            FaceEnemy();
-            Attack();
-        }
-        if (Input.GetKeyDown(Controls.Skill))
-        {
-            FaceEnemy();
-            Skill();
+            if (Input.GetKeyDown(Controls.Jump))
+            {
+                Jump();
+            }
+            if (Input.GetKeyDown(Controls.Dash))
+            {
+                Dash();
+            }
+            if (Input.GetKeyDown(Controls.Attack))
+            {
+                FaceEnemy();
+                Attack();
+            }
+            if (Input.GetKeyDown(Controls.Skill))
+            {
+                FaceEnemy();
+                Skill();
+            }
         }
     }
 
@@ -469,46 +492,56 @@ public class Player : MonoBehaviour
 
     protected GameObject Enemy()
     {
-        if (gameObject == GameManager.s_instance._players[0].gameObject)
+        if (GameManager.s_instance != null)
         {
-            return GameManager.s_instance._players[1].gameObject;
+            if (gameObject == GameManager.s_instance._players[0].gameObject)
+            {
+                return GameManager.s_instance._players[1].gameObject;
+            }
+            else
+            {
+                return GameManager.s_instance._players[0].gameObject;
+            }
         }
-        else
-        {
-            return GameManager.s_instance._players[0].gameObject;
-        }
+        return null;
     }
 
     protected bool EnemyIsOnLeft()
     {
-        if (Enemy().transform.position.x > transform.position.x)
+        if (Enemy() != null)
         {
-            if (transform.localScale.x != 30)
+            if (Enemy().transform.position.x > transform.position.x)
             {
-                transform.localScale = new Vector3(30, transform.localScale.y, transform.localScale.z);
+                if (transform.localScale.x != 30)
+                {
+                    transform.localScale = new Vector3(30, transform.localScale.y, transform.localScale.z);
+                }
+                return false;
             }
-            return false;
-        }
-        else
-        {
-
-            if (transform.localScale.x != -30)
+            else
             {
-                transform.localScale = new Vector3(-30, transform.localScale.y, transform.localScale.z);
+                if (transform.localScale.x != -30)
+                {
+                    transform.localScale = new Vector3(-30, transform.localScale.y, transform.localScale.z);
+                }
+                return true;
             }
-            return true;
         }
+        return false;
     }
 
     protected void FaceEnemy()
     {
-        if (EnemyIsOnLeft())
+        if (Enemy() != null)
         {
-            FaceLeft();
-        }
-        else
-        {
-            FaceRight();
+            if (EnemyIsOnLeft())
+            {
+                FaceLeft();
+            }
+            else
+            {
+                FaceRight();
+            }
         }
     }
 
@@ -524,29 +557,44 @@ public class Player : MonoBehaviour
 
     void SlideOffHead()
     {
-        Vector3 _ePos = Enemy().transform.position;
-        Vector3 _pPos = transform.position;
-        float _eGrav = Enemy().GetComponent<Player>()._velocity.y;
-        float _pGrav = _velocity.y;
-
-        //If the player's are too close and above one another
-        if (Mathf.Abs(_ePos.x - _pPos.x) <= 1.3 && Mathf.Abs(_ePos.y - _pPos.y) <= 2)
+        if (Enemy() != null)
         {
-            if (transform.position.x == Enemy().transform.position.x)
+            Vector3 _ePos = Enemy().transform.position;
+            Vector3 _pPos = transform.position;
+            float _eGrav = Enemy().GetComponent<Player>()._velocity.y;
+            float _pGrav = _velocity.y;
+
+            //If the player's are too close and above one another
+            if (Mathf.Abs(_ePos.x - _pPos.x) <= 1.3 && Mathf.Abs(_ePos.y - _pPos.y) <= 2)
             {
-                if (transform.position.x > 0)
+                if (transform.position.x == Enemy().transform.position.x)
                 {
-                    //Is the enemy above you?
-                    if (_ePos.y > _pPos.y)
+                    if (transform.position.x > 0)
                     {
-                        _characterController.Move(new Vector3(_eGrav / 2 * Time.deltaTime, 0, 0));
+                        //Is the enemy above you?
+                        if (_ePos.y > _pPos.y)
+                        {
+                            _characterController.Move(new Vector3(_eGrav / 2 * Time.deltaTime, 0, 0));
+                        }
+                        else
+                        {
+                            _characterController.Move(new Vector3(_pGrav * Time.deltaTime, 0, 0));
+                        }
                     }
                     else
                     {
-                        _characterController.Move(new Vector3(_pGrav * Time.deltaTime, 0, 0));
+                        //Is the enemy above you?
+                        if (_ePos.y > _pPos.y)
+                        {
+                            _characterController.Move(new Vector3((_eGrav * -1) / 2 * Time.deltaTime, 0, 0));
+                        }
+                        else
+                        {
+                            _characterController.Move(new Vector3((_pGrav * -1) * Time.deltaTime, 0, 0));
+                        }
                     }
                 }
-                else
+                else if (EnemyIsOnLeft())
                 {
                     //Is the enemy above you?
                     if (_ePos.y > _pPos.y)
@@ -558,29 +606,17 @@ public class Player : MonoBehaviour
                         _characterController.Move(new Vector3((_pGrav * -1) * Time.deltaTime, 0, 0));
                     }
                 }
-            }
-            else if (EnemyIsOnLeft())
-            {
-                //Is the enemy above you?
-                if (_ePos.y > _pPos.y)
-                {
-                    _characterController.Move(new Vector3((_eGrav * -1) / 2 * Time.deltaTime, 0, 0));
-                }
                 else
                 {
-                    _characterController.Move(new Vector3((_pGrav * -1) * Time.deltaTime, 0, 0));
-                }
-            }
-            else
-            {
-                //Is the enemy above you?
-                if (_ePos.y > _pPos.y)
-                {
-                    _characterController.Move(new Vector3(_eGrav / 2 * Time.deltaTime, 0, 0));
-                }
-                else
-                {
-                    _characterController.Move(new Vector3(_pGrav * Time.deltaTime, 0, 0));
+                    //Is the enemy above you?
+                    if (_ePos.y > _pPos.y)
+                    {
+                        _characterController.Move(new Vector3(_eGrav / 2 * Time.deltaTime, 0, 0));
+                    }
+                    else
+                    {
+                        _characterController.Move(new Vector3(_pGrav * Time.deltaTime, 0, 0));
+                    }
                 }
             }
         }

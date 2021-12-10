@@ -1,11 +1,11 @@
 fileFormatVersion: 2
-guid: 15d5e99d2c006d44295e361be8a57ace
+guid: b025a0216cb80de42a2ef23980c15b7d
 ModelImporter:
   serializedVersion: 20101
   internalIDToNameTable:
   - first:
       74: 1827226128182048838
-    second: HaemSpcl
+    second: ShadowSpecial 2
   externalObjects: {}
   materials:
     materialImportMode: 1
@@ -35,7 +35,7 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: HaemSpcl
+      name: ShadowSpecial 2
       takeName: Take 001
       internalID: 0
       firstFrame: 1
@@ -58,18 +58,11 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events:
-      - time: 0.39477348
-        functionName: ShockWave
-        data: 
-        objectReferenceParameter: {instanceID: 0}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
+      events: []
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 1
+      additiveReferencePoseFrame: 0
     isReadable: 0
   meshes:
     lODScreenPercentages: []

@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4819316a56b549640988bada36096ffc, type: 3}
-  m_Name: HaemChar
+  m_Name: GoldenLevel
   m_EditorClassIdentifier: 
-  Name: Haem
-  Image: {fileID: 8400000, guid: 685a7a5f7d477334b8a90607c288d778, type: 2}
-  Prefab: {fileID: 6494838325905606745, guid: 6d0036abc8c40734dae4888f9107e7b6, type: 3}
+  Name: Phoenix Pirate Ship
+  Image: {fileID: 0}
+  Prefab: {fileID: 3808743996746582585, guid: 3ef5bd03abd178747a8047e4437f3296, type: 3}
