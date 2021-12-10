@@ -114,6 +114,7 @@ MonoBehaviour:
   hitParticles: {fileID: 1206494771143577732, guid: f752b1f8d247ee8468c2c12dbfb2e48b, type: 3}
   dashParticles: {fileID: 6762457798526618193, guid: 20d4c663f5446c74a9e615e225095692, type: 3}
   jumpParticles: {fileID: 4388340583238369657, guid: 0b75b8cd25280134d84241ac0042ef7d, type: 3}
+  invisibleProj: {fileID: 5702342759418131054, guid: e20ebeacd31602a47bf2ba2e4a702fa1, type: 3}
 --- !u!114 &2124215068
 MonoBehaviour:
   m_ObjectHideFlags: 0
