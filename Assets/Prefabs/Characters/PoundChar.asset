@@ -15,4 +15,5 @@ MonoBehaviour:
   Name: Pound
   Image: {fileID: 21300000, guid: 0107dfadfbb513d4694454e50d219a6e, type: 3}
   Icon: {fileID: 21300000, guid: ba4b3bca4426f534c8e6f45da608bc87, type: 3}
+  Colour: {r: 1, g: 0.41951597, b: 0, a: 1}
   Prefab: {fileID: 1067362304314284897, guid: 74c526c4058119741ae9f17653851628, type: 3}

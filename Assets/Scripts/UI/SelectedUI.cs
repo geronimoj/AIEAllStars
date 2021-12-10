@@ -11,6 +11,8 @@ public class SelectedUI : MonoBehaviour
 
     public Image _mainImage = null;
 
+    public Image buttonImage = null;
+
     public bool useIcon = false;
 
     private SelectableCharacter _target = null;
@@ -37,5 +39,8 @@ public class SelectedUI : MonoBehaviour
 
         if (_mainImage)
             _mainImage.sprite = useIcon ? _target.Icon : _target.Image;
+
+        if (buttonImage)
+            buttonImage.color = _target.Colour;
     }
 }
