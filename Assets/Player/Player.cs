@@ -90,7 +90,7 @@ public class Player : MonoBehaviour
     public int canMoveInt = 0;
     public bool CanMove => canMoveInt <= 0;
 
-    public float invinsibilityTime = 0;
+    public float InvincibilityTime = 0;
 
     SkinnedMeshRenderer mesh;
     Material invincibleGlow;
@@ -119,9 +119,9 @@ public class Player : MonoBehaviour
     protected virtual void Update()
     {
         Material[] matArray = mesh.materials;
-        if (invinsibilityTime > 0)
+        if (InvincibilityTime > 0)
         {
-            invinsibilityTime -= Time.deltaTime;
+            InvincibilityTime -= Time.deltaTime;
 
             if (invincibleGlow)
             {
@@ -309,7 +309,7 @@ public class Player : MonoBehaviour
 
     protected virtual void Skill()
     {
-
+        animator.SetTrigger("Skill");
     }
 
     public void GotHit(float damage, float stunDuration, Vector3 force)
