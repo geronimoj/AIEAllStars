@@ -53,6 +53,7 @@ MonoBehaviour:
   autoLaunchAway: 1
   followUser: 1
   giveInvFrames: 0
+  lifeStealAmount: 0
   particles: {fileID: 0}
   toFollow: 0
 --- !u!135 &3253594855847084291
@@ -66,7 +67,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 3.25
+  m_Radius: 2.2
   m_Center: {x: 0, y: 3.06, z: 0}
 --- !u!54 &6738845798093049877
 Rigidbody:
