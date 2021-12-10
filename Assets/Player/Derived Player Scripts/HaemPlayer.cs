@@ -14,12 +14,10 @@ public class HaemPlayer : Player
 
     protected override void Skill()
     {
-        //base.Skill();
-
-        if (CurrentHealth < 8)
+        if (CurrentHealth < 10)
             return;
 
-        animator.SetTrigger("Skill");
+        base.Skill();
     }
 
     public void ShockWave()
