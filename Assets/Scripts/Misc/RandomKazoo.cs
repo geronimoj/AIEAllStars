@@ -6,12 +6,14 @@ public class RandomKazoo : MonoBehaviour
 {
     AudioSource audioSource;
     public float TimeTillKazoo;
+    bool HasPlayedKazoo;
 
     // Start is called before the first frame update
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
         TimeTillKazoo = Random.Range(20, 400);
+        HasPlayedKazoo = false;
     }
 
     // Update is called once per frame
@@ -21,7 +23,7 @@ public class RandomKazoo : MonoBehaviour
         {
             TimeTillKazoo -= Time.deltaTime;
         }
-        else
+        else if(!HasPlayedKazoo)
         {
             PlayKazoo();
         }
@@ -31,5 +33,6 @@ public class RandomKazoo : MonoBehaviour
     public void PlayKazoo()
     {
         audioSource.Play();
+        HasPlayedKazoo = true;
     }
 }

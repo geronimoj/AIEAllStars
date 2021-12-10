@@ -265,6 +265,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3209553572901752106, guid: 7f0ff965683dbba4a887385ca8b8a60a, type: 3}
+      propertyPath: m_text
+      value: ATTACK - 5 (NumPad)
+      objectReference: {fileID: 0}
     - target: {fileID: 5155937033164742047, guid: 7f0ff965683dbba4a887385ca8b8a60a, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
@@ -344,6 +348,10 @@ PrefabInstance:
     - target: {fileID: 6682305035138267096, guid: 7f0ff965683dbba4a887385ca8b8a60a, type: 3}
       propertyPath: m_SizeDelta.y
       value: 655.051
+      objectReference: {fileID: 0}
+    - target: {fileID: 7587633840968931799, guid: 7f0ff965683dbba4a887385ca8b8a60a, type: 3}
+      propertyPath: m_text
+      value: ABILITY - 6 (NumPad)
       objectReference: {fileID: 0}
     - target: {fileID: 8008246091790819030, guid: 7f0ff965683dbba4a887385ca8b8a60a, type: 3}
       propertyPath: m_LocalPosition.x
@@ -436,6 +444,10 @@ PrefabInstance:
     - target: {fileID: 8008246091790819034, guid: 7f0ff965683dbba4a887385ca8b8a60a, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8905460727001065178, guid: 7f0ff965683dbba4a887385ca8b8a60a, type: 3}
+      propertyPath: m_text
+      value: DASH - 4 (NumPad)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7f0ff965683dbba4a887385ca8b8a60a, type: 3}
