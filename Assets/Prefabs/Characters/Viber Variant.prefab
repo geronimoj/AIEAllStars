@@ -37,7 +37,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &4473088455023672939
+--- !u!114 &4763246933077505331
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -46,7 +46,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2755054507247575172}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 57abb5e1607a4524196ce9bb8c842894, type: 3}
+  m_Script: {fileID: 11500000, guid: b53e4cb41d18a48459e487b936a06904, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Controls: {fileID: 0}
@@ -80,7 +80,22 @@ MonoBehaviour:
     MinTime: 0
     MaxTime: 1
   canMoveInt: 0
-  invinsibilityTime: 0
+  InvincibilityTime: 0
+  zipSpeed: 40
+  zipEndDist: 0.5
+--- !u!114 &7102177098852263174
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2755054507247575172}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 365727eaaad0ad34a91e328dd8b32762, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawnOffset: {x: 0, y: 1.25, z: 0}
 --- !u!114 &7523119504319181496
 MonoBehaviour:
   m_ObjectHideFlags: 0
