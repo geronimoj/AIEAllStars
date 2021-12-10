@@ -30,7 +30,7 @@ public class ShadowstepPlayer : Player
         if (_colInstance)
             Destroy(_colInstance.gameObject);
 
-        canMoveInt--;
+        canMoveInt = 0;
         InvincibilityTime = 0;
     }
 
@@ -55,7 +55,7 @@ public class ShadowstepPlayer : Player
     {
         yield return new WaitForSeconds(.5f);
 
-        canMoveInt--;
+        canMoveInt = 0;
         if (_colInstance)
             Destroy(_colInstance.gameObject);
     }

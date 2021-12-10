@@ -58,13 +58,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76e6513577a8c8c4588baa08924402eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 0
-  enemyStunDuration: 0
+  damage: 12
+  enemyStunDuration: 0.2
   selfStunDuration: 0
   launchAngle: 0
   launchForce: 0
   autoLaunchAway: 0
-  followUser: 1
+  followUser: 0
   giveInvFrames: 0
   lifeStealAmount: 0
   particles: {fileID: 0}
