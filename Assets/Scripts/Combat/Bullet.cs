@@ -17,7 +17,7 @@ public class Bullet : HitCollider
     protected virtual void Start()
     {
         transform.SetParent(null, true);
-        StartCoroutine(Kill());
+        Destroy(gameObject, lifeTime);
         direction.Normalize();
     }
 
@@ -28,21 +28,18 @@ public class Bullet : HitCollider
         transform.position -= relativeVel * (moveSpeed * Time.deltaTime);
     }
 
-    private IEnumerator Kill()
-    {
-        yield return new WaitForSeconds(lifeTime);
-
-        Destroy(gameObject);
-    }
-
     protected override void OnTriggerEnter(Collider other)
     {
         base.OnTriggerEnter(other);
 
-        if (isExplosive && explosiveCollider)
-        {
-            Instantiate(explosiveCollider.gameObject, transform.position, explosiveCollider.transform.rotation);
-            isExplosive = false;
-        }
+        if (other.CompareTag("Wall") || other.CompareTag("Ground"))
+            if (isExplosive && explosiveCollider)
+            {
+                GameObject obj = Instantiate(explosiveCollider.gameObject, transform.position, explosiveCollider.transform.rotation);
+                obj.GetComponent<HitCollider>().SetAttacker(Attacker);
+                Destroy(obj, 0.5f);
+                isExplosive = false;
+                Destroy(gameObject);
+            }
     }
 }
