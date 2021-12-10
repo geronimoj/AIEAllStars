@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3618146242409552524}
   - component: {fileID: 4331797779830349432}
   - component: {fileID: 4813866490001391870}
+  - component: {fileID: -2674148521611002262}
   m_Layer: 8
   m_Name: ShadowL1
   m_TagString: Untagged
@@ -67,3 +68,19 @@ MonoBehaviour:
   giveInvFrames: 0
   particles: {fileID: 0}
   toFollow: 0
+--- !u!54 &-2674148521611002262
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 943713255980121869}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 3

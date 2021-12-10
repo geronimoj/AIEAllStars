@@ -204,7 +204,7 @@ public class Player : MonoBehaviour
             _velocity.z = Mathf.MoveTowards(_velocity.z, 0, Time.deltaTime * 15);
 
             //Reset midair actions
-            if (_airCharges != 1)
+            if (_airCharges != MaxAirActions)
             {
                 _airCharges = MaxAirActions;
             }
@@ -520,6 +520,14 @@ public class Player : MonoBehaviour
     #endregion
 
     #region Misc
+    public void Heal(float amount)
+    {
+        _currentHealth += amount;
+
+        if (_currentHealth > MaxHealth)
+            _currentHealth = MaxHealth;
+    }
+
     public bool CallTimer(TimerData Timer)
     {
         if (!Timer.CallTimer())

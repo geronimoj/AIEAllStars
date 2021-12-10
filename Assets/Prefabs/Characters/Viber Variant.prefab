@@ -81,9 +81,9 @@ MonoBehaviour:
     MaxTime: 1
   canMoveInt: 0
   InvincibilityTime: 0
-  hitParticles: {fileID: 0}
-  dashParticles: {fileID: 0}
-  jumpParticles: {fileID: 0}
+  hitParticles: {fileID: 1206494771143577732, guid: f752b1f8d247ee8468c2c12dbfb2e48b, type: 3}
+  dashParticles: {fileID: 6762457798526618193, guid: 20d4c663f5446c74a9e615e225095692, type: 3}
+  jumpParticles: {fileID: 4388340583238369657, guid: 0b75b8cd25280134d84241ac0042ef7d, type: 3}
   zipSpeed: 40
   zipEndDist: 1
 --- !u!114 &7102177098852263174

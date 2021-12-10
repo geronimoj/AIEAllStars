@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2129414802542837100}
   - component: {fileID: 813955326946243910}
   - component: {fileID: 35716153409201770}
+  - component: {fileID: -1953547935728119555}
   m_Layer: 8
   m_Name: PoundL1
   m_TagString: Untagged
@@ -62,7 +63,24 @@ MonoBehaviour:
   selfStunDuration: 0.2
   launchAngle: 0
   launchForce: 10
+  autoLaunchAway: 0
   followUser: 1
   giveInvFrames: 0
   particles: {fileID: 0}
   toFollow: 0
+--- !u!54 &-1953547935728119555
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5535326066878466904}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 3
