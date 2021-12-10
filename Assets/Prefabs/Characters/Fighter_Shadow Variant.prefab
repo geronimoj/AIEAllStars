@@ -104,7 +104,7 @@ MonoBehaviour:
   JumpHeight: 3
   AirDashTime: 0.15
   AirDashBoost: 2
-  MaxAirActions: 1
+  MaxAirActions: 2
   Gravity: -39.24
   GroundDistance: 0.1
   GroundCheck: {fileID: 1991126656}
