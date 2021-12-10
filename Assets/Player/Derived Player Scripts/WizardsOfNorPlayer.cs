@@ -8,11 +8,25 @@ public class WizardsOfNorPlayer : Player
 
     public InvisibleProj invisibleProj;
 
+    public float pillarCooldown = 2;
+    float elapsed;
+
+    protected override void Update()
+    {
+        base.Update();
+
+        if(elapsed > 0)
+            elapsed -= Time.deltaTime;
+    }
+
     protected override void Skill()
     {
+        if (elapsed > 0)
+            return;
+
+        elapsed = pillarCooldown;
+
         base.Skill();
-
-
     }
 
     public void SummonProjectile()
