@@ -15,4 +15,5 @@ MonoBehaviour:
   Name: ShadowStep
   Image: {fileID: 21300000, guid: af8c39daae6a2064c94705b03229d893, type: 3}
   Icon: {fileID: 21300000, guid: f2edba51607b38d449f30ecfc8a0e1fc, type: 3}
+  Colour: {r: 0.7407341, g: 0, b: 1, a: 1}
   Prefab: {fileID: 1315014345936125129, guid: d936ed3f8dac11c4c8ba37d790e8751d, type: 3}

@@ -11,5 +11,7 @@ public class SelectableCharacter : ScriptableObject
 
     public Sprite Icon = null;
 
+    public Color Colour = Color.white;
+
     public GameObject Prefab = null;
 }
