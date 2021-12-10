@@ -66,6 +66,20 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
+      - time: 0.1637931
+        functionName: ToggleOn
+        data: 
+        objectReferenceParameter: {fileID: 7766359524996020997, guid: a1862b01cf889f141a2a78f56bb38459, type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.7715517
+        functionName: ToggleOff
+        data: 
+        objectReferenceParameter: {fileID: 7766359524996020997, guid: a1862b01cf889f141a2a78f56bb38459, type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}
