@@ -43,7 +43,7 @@ public class Player : MonoBehaviour
     Vector3 _velocity;
 
     CombatController _combatController;
-    CharacterController _characterController;
+    protected CharacterController _characterController;
 
     protected Animator animator;
 
@@ -94,6 +94,11 @@ public class Player : MonoBehaviour
 
     SkinnedMeshRenderer mesh;
     Material invincibleGlow;
+
+    [Header("VFX")]
+    public vfxObj hitParticles;
+    public vfxObj dashParticles;
+    public vfxObj jumpParticles;
     #endregion
 
     #region Start/Update
@@ -269,12 +274,26 @@ public class Player : MonoBehaviour
         if (_isGrounded)
         {
             _velocity.y = Mathf.Sqrt(JumpHeight * -2f * Gravity);
+
+            if (jumpParticles)
+            {
+                vfxObj instance = Instantiate(jumpParticles, transform.position + jumpParticles.transform.position, jumpParticles.transform.rotation);
+                instance.Initialise();
+            }
         }
         else if (!_isGrounded && _airCharges > 0)
         {
             _velocity.y = Mathf.Sqrt(JumpHeight * -2f * Gravity);
             _airCharges--;
+
+            if (jumpParticles)
+            {
+                vfxObj instance = Instantiate(jumpParticles, transform.position + jumpParticles.transform.position, jumpParticles.transform.rotation);
+                instance.Initialise();
+            }
         }
+
+        
     }
 
     /// <summary>
@@ -288,6 +307,12 @@ public class Player : MonoBehaviour
         if (_isGrounded)
         {
             _dashing = true;
+
+            if (dashParticles)
+            {
+                vfxObj instance = Instantiate(dashParticles, transform.position + dashParticles.transform.position, transform.rotation);
+                instance.Initialise();
+            }
         }
         else if (_airCharges > 0)
         {
@@ -297,9 +322,17 @@ public class Player : MonoBehaviour
             _dashing = true;
             _airCharges--;
             StartCoroutine(EndAirDash(AirDashTime));
+
+            if (dashParticles)
+            {
+                vfxObj instance = Instantiate(dashParticles, transform.position + dashParticles.transform.position, transform.rotation);
+                instance.Initialise();
+            }
         }
 
         _dashInput = _moveInput;
+
+        
     }
 
     protected virtual void Attack()
@@ -325,6 +358,12 @@ public class Player : MonoBehaviour
 
         if(playAnim)
             animator.SetTrigger("Hit");
+
+        if (hitParticles)
+        {
+            vfxObj instance = Instantiate(hitParticles, transform.position + hitParticles.transform.position, jumpParticles.transform.rotation);
+            instance.Initialise();
+        }
     }
 
     public void StunForDuration(float stunDuration)

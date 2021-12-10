@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: Viber
   m_EditorClassIdentifier: 
   Name: Viber
-  Image: {fileID: 0}
+  Image: {fileID: 21300000, guid: 7947e1fa0380831418fa6f13f896383c, type: 3}
+  Icon: {fileID: 21300000, guid: fab2e9609533c0143a61c8e60f0ed11e, type: 3}
   Prefab: {fileID: 2755054507247575172, guid: bc68eb63b2690934f832fc267cfdf160, type: 3}

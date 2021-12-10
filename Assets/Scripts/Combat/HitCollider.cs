@@ -39,7 +39,7 @@ public class HitCollider : MonoBehaviour
     [SerializeField] Follow toFollow;
     vfxObj partInstance;
 
-    Transform attacker;
+    protected Transform attacker;
     public void SetAttacker(Transform me)
     {
         attacker = me;
@@ -72,7 +72,7 @@ public class HitCollider : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    protected virtual void OnTriggerEnter(Collider other)
     {
         //Check if the other is a character, and if so hit them
         Player p = other.GetComponent<Player>();
