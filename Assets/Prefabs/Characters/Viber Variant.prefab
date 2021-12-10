@@ -51,8 +51,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Controls: {fileID: 0}
   MaxHealth: 100
-  MoveSpeed: 6
-  DashMultiplier: 2
+  MoveSpeed: 8
+  DashMultiplier: 3
   JumpHeight: 3
   AirDashTime: 0.15
   AirDashBoost: 2

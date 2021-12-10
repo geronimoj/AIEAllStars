@@ -44,8 +44,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 5.718102, z: 1.2144592}
-  m_Center: {x: 0.0000000671599, y: 4.079052, z: 0.92722994}
+  m_Size: {x: 1, y: 5.263648, z: 1.061132}
+  m_Center: {x: 0.00000005960465, y: 3.8518262, z: 0.95322055}
 --- !u!114 &6681311167620282881
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -58,7 +58,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c166fe29759443a4dbf3b581644b7ae4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 5
+  damage: 8
   enemyStunDuration: 0.5
   selfStunDuration: 0.2
   launchAngle: 120
@@ -66,6 +66,7 @@ MonoBehaviour:
   autoLaunchAway: 0
   followUser: 1
   giveInvFrames: 0
+  lifeStealAmount: 0
   particles: {fileID: 0}
   toFollow: 0
 --- !u!54 &-5180704177565989675
