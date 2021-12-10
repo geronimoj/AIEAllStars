@@ -44,9 +44,11 @@ public class CharacterSelector : MonoBehaviour
 
     public SelectedUI p1, p2, map;
 
-    public Transform photoBoothL, photoBoothR;
+    public Transform photoBoothL, photoBoothR, mapBooth;
 
     private UnityEngine.Events.UnityEvent OnSelectCharacter = new UnityEngine.Events.UnityEvent();
+
+    private UnityEngine.Events.UnityEvent OnSelectMap = new UnityEngine.Events.UnityEvent();
     /// <summary>
     /// Initialize charcaters
     /// </summary>
@@ -67,11 +69,15 @@ public class CharacterSelector : MonoBehaviour
         OnSelectCharacter.AddListener(UpdateBoothChar);
         UpdateBoothChar();
 
+        OnSelectMap.AddListener(UpdateBoothMap);
+
         //Set defaults if null
         if (!GameManager.s_p1Char)
             GameManager.s_p1Char = _characters[0].Prefab;
         if (!GameManager.s_p2Char)
             GameManager.s_p2Char = _characters[0].Prefab;
+        if (!GameManager.s_map)
+            GameManager.s_map = _maps[0].Prefab;
     }
     /// <summary>
     /// Spawns a button for each selectable character
@@ -113,7 +119,7 @@ public class CharacterSelector : MonoBehaviour
             SelectedUI ui = b.GetComponent<SelectedUI>();
             ui.Target = _maps[index];
             //Setup lambda
-            b.onClick.AddListener(() => {GameManager.s_map = _maps[index].Prefab; map.Target = _maps[index]; });
+            b.onClick.AddListener(() => {GameManager.s_map = _maps[index].Prefab; map.Target = _maps[index]; s_selectedMap = _maps[index]; OnSelectMap.Invoke(); });
         }
     }
     /// <summary>
@@ -140,6 +146,17 @@ public class CharacterSelector : MonoBehaviour
 
             obj = Instantiate(s_p2Selected.Prefab, photoBoothR);
             obj.transform.localRotation = Quaternion.identity;
+        }
+    }
+
+    public void UpdateBoothMap()
+    {
+        if (s_selectedMap)
+        {
+            for (byte i = 0; i < mapBooth.childCount; i++)
+                Destroy(mapBooth.GetChild(0).gameObject);
+
+            Instantiate(s_selectedMap.Prefab, mapBooth);
         }
     }
 }
