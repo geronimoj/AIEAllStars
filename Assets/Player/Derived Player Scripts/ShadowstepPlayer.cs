@@ -27,11 +27,11 @@ public class ShadowstepPlayer : Player
 
     public void EndParry()
     {
-        InvincibilityTime = 0;
-        canMoveInt--;
-
         if (_colInstance)
             Destroy(_colInstance.gameObject);
+
+        canMoveInt--;
+        InvincibilityTime = 0;
     }
 
     public void CounterAttack()
@@ -55,6 +55,7 @@ public class ShadowstepPlayer : Player
     {
         yield return new WaitForSeconds(.5f);
 
+        canMoveInt--;
         if (_colInstance)
             Destroy(_colInstance.gameObject);
     }
