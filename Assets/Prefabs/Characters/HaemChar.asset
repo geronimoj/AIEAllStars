@@ -15,5 +15,5 @@ MonoBehaviour:
   Name: Haem
   Image: {fileID: 21300000, guid: 10f495410321528418dd89266207ecde, type: 3}
   Icon: {fileID: 21300000, guid: bb8a2e0f02d52ea4ab68c3eb67a7437f, type: 3}
-  Colour: {r: 1, g: 0, b: 0.16288757, a: 1}
+  Colour: {r: 0.8, g: 0, b: 0.1317646, a: 1}
   Prefab: {fileID: 6494838325905606745, guid: 6d0036abc8c40734dae4888f9107e7b6, type: 3}
