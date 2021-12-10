@@ -452,6 +452,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 11341fe874f163743b4de2931930f165, type: 2}
   - {fileID: 11400000, guid: dd2868eb491ffc543b252ddd60338cdc, type: 2}
   - {fileID: 11400000, guid: f873ed882c6f72b429652b0025b34201, type: 2}
+  - {fileID: 11400000, guid: c1b31892601e11d4385f82a18d59de8d, type: 2}
   p1: {fileID: 858379028}
   p2: {fileID: 858379027}
   map: {fileID: 858379026}
