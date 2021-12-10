@@ -9,6 +9,9 @@ public class HaemPlayer : Player
 
     HitCollider colInstance;
 
+    public vfxObj shockWave;
+    public vfxObj quake;
+
     protected override void Skill()
     {
         //base.Skill();
@@ -28,6 +31,15 @@ public class HaemPlayer : Player
         colInstance.SetAttacker(transform);
 
         StartCoroutine(DestroyColAfterDelay());
+
+        vfxObj instance = null;
+
+        if (!_isGrounded)
+            instance = Instantiate(quake, transform.position + quake.transform.position, quake.transform.rotation);
+        else
+            instance = Instantiate(shockWave, transform.position + shockWave.transform.position, shockWave.transform.rotation);
+
+        instance.Initialise();
     }
 
     IEnumerator DestroyColAfterDelay()
