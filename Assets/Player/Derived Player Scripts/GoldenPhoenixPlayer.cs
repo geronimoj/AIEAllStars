@@ -16,7 +16,8 @@ public class GoldenPhoenixPlayer : Player
         //Play special animation
         animator.SetTrigger("Skill");
         //Reduce air charges
-        _airCharges--;
+        if (!_isGrounded)
+            _airCharges--;
         canMoveInt++;
         _velocity.y = skillJumpForce;
         _velocity.x = Vector3.Dot(transform.forward, Vector3.right) * skillHorizontalForce;
