@@ -17,7 +17,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &819524776294385830
 RectTransform:
   m_ObjectHideFlags: 0
@@ -86,6 +86,7 @@ GameObject:
   - component: {fileID: 6054971218001826602}
   - component: {fileID: 6577828134310986180}
   - component: {fileID: 5101756132217710840}
+  - component: {fileID: 837631078355180381}
   m_Layer: 5
   m_Name: Life_Backing
   m_TagString: Untagged
@@ -151,3 +152,16 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &837631078355180381
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5391734941387814824}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02a52d713ada6fb439ab329ac4a2e287, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  front: {fileID: 4026008556223630257}
