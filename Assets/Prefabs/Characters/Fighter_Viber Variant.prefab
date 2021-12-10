@@ -95,7 +95,7 @@ MonoBehaviour:
   Controls: {fileID: 0}
   MaxHealth: 100
   MoveSpeed: 10
-  DashMultiplier: 4
+  DashMultiplier: 2
   JumpHeight: 3
   AirDashTime: 0.15
   AirDashBoost: 2
