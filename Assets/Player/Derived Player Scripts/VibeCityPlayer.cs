@@ -35,10 +35,13 @@ public class VibeCityPlayer : Player
             if (toDest.magnitude < zipEndDist)
             {
                 zipping = false;
-                canMoveInt--;
+                canMoveInt = 0;
             }
             else
+            {
+                _velocity.y = 0;
                 _characterController.Move(toDest.normalized * (zipSpeed * Time.deltaTime));
+            }
         }
 
         base.Update();
