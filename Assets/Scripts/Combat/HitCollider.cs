@@ -79,7 +79,7 @@ public class HitCollider : MonoBehaviour
             if (p.transform == attacker)
                 return;
 
-            if (p.invinsibilityTime > 0)
+            if (p.InvincibilityTime > 0)
                 return;
 
             //Calculate laucnh force
@@ -91,7 +91,7 @@ public class HitCollider : MonoBehaviour
             if (giveInvFrames)
             {
                 //Make enemy invinsible for short time
-                p.invinsibilityTime = 0.5f;
+                p.InvincibilityTime = 0.5f;
             }
         }
     }
