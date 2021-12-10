@@ -4,12 +4,10 @@ using UnityEngine;
 
 public class ShadowstepPlayer : Player
 {
+    [Header("Skill")]
     public GameObject parryCollider;
 
-    private void Start()
-    {
-        parryCollider.SetActive(false);
-    }
+    Collider _colInstance;
 
     protected override void Skill()
     {
@@ -19,7 +17,7 @@ public class ShadowstepPlayer : Player
     public void StartParry()
     {
         InvincibilityTime = 10;
-        parryCollider.SetActive(true);
+        _colInstance = Instantiate(parryCollider, transform.position, parryCollider.transform.rotation);
     }
 
     public void EndParry()
