@@ -45,7 +45,7 @@ public class ShadowstepPlayer : Player
 
     public void CounterAttackSpawn()
     {
-        _colInstance = Instantiate(counterCollider, transform.position, counterCollider.transform.rotation);
+        _colInstance = Instantiate(counterCollider, transform.position, Quaternion.LookRotation(transform.forward * -1, Vector3.up));
         _colInstance.transform.SetParent(transform);
 
         StartCoroutine(DestroyColAfterDelay());

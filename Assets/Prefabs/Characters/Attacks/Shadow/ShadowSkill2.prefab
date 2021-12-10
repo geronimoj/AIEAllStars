@@ -61,11 +61,12 @@ MonoBehaviour:
   damage: 15
   enemyStunDuration: 0.5
   selfStunDuration: 0.2
-  launchAngle: 10
+  launchAngle: 0
   launchForce: 20
   autoLaunchAway: 0
   followUser: 1
   giveInvFrames: 0
+  lifeStealAmount: 0
   particles: {fileID: 0}
   toFollow: 0
 --- !u!54 &4109720254047826324
