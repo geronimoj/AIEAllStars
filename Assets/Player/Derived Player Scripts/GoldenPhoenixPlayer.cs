@@ -4,15 +4,26 @@ using UnityEngine;
 
 public class GoldenPhoenixPlayer : Player
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
+    public float skillJumpForce = 10;
+
+    public float skillHorizontalForce = 1;
+
+    protected override void Skill()
+    {   //Require air charges to use since this is a jump
+        if (_airCharges == 0 || !CanMove)
+            return;
+
+        //Play special animation
+        animator.SetTrigger("Special");
+        //Reduce air charges
+        _airCharges--;
+        canMoveInt++;
+        _velocity.y = skillJumpForce;
+        _velocity.x = Vector3.Dot(transform.forward, Vector3.right) * skillHorizontalForce;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void SkillEnd()
     {
-        
+        canMoveInt--;
     }
 }
