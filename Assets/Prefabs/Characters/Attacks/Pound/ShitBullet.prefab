@@ -58,7 +58,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76e6513577a8c8c4588baa08924402eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 12
+  damage: 6
   enemyStunDuration: 0.2
   selfStunDuration: 0
   launchAngle: 0
@@ -71,6 +71,9 @@ MonoBehaviour:
   toFollow: 0
   moveSpeed: 20
   lifeTime: 5
+  direction: {x: 0, y: 0, z: 1}
+  isExplosive: 0
+  explosiveCollider: {fileID: 0}
 --- !u!1001 &2861788617837605648
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -11,6 +11,10 @@ public class WizardsOfNorPlayer : Player
     public float pillarCooldown = 2;
     float elapsed;
 
+    [Header("Jump")]
+
+    public HitCollider jumpCollider;
+
     protected override void Update()
     {
         base.Update();
@@ -34,5 +38,21 @@ public class WizardsOfNorPlayer : Player
         InvisibleProj instance = Instantiate(invisibleProj, transform.position, Quaternion.LookRotation(transform.forward, Vector3.up));
 
         instance.caster = this;
+    }
+
+    protected override void Jump()
+    {
+        base.Jump();
+
+        if (!CanMove)
+            return;
+
+        if (jumpCollider)
+        {
+            HitCollider instance = Instantiate(jumpCollider, transform.position, jumpCollider.transform.rotation);
+            instance.SetAttacker(transform);
+
+            Destroy(instance, 0.5f);
+        }
     }
 }
