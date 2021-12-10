@@ -102,8 +102,8 @@ MonoBehaviour:
   MoveSpeed: 6
   DashMultiplier: 2
   JumpHeight: 3
-  AirDashTime: 1
-  AirDashBoost: 0.15
+  AirDashTime: 0.15
+  AirDashBoost: 2
   MaxAirActions: 1
   Gravity: -39.24
   GroundDistance: 0.1
@@ -129,7 +129,11 @@ MonoBehaviour:
     MaxTime: 1
   canMoveInt: 0
   InvincibilityTime: 0
-  parryCollider: {fileID: 7275537495733754109, guid: 4e2744473f86c6a4e91d5c44da12fc7a, type: 3}
+  hitParticles: {fileID: 1206494771143577732, guid: f752b1f8d247ee8468c2c12dbfb2e48b, type: 3}
+  dashParticles: {fileID: 6762457798526618193, guid: 20d4c663f5446c74a9e615e225095692, type: 3}
+  jumpParticles: {fileID: 4388340583238369657, guid: 0b75b8cd25280134d84241ac0042ef7d, type: 3}
+  parryCollider: {fileID: 6820815300718148811, guid: 4e2744473f86c6a4e91d5c44da12fc7a, type: 3}
+  counterCollider: {fileID: 2480111391251817607, guid: 3a184c4cde5b39940ba067fbb47de0e1, type: 3}
 --- !u!1001 &2233423974083953048
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -5,7 +5,8 @@ using UnityEngine;
 public class ShadowstepPlayer : Player
 {
     [Header("Skill")]
-    public GameObject parryCollider;
+    public Collider parryCollider;
+    public Collider counterCollider;
 
     Collider _colInstance;
 
@@ -18,7 +19,7 @@ public class ShadowstepPlayer : Player
     {
         canMoveInt++;
         InvincibilityTime = 10;
-        _colInstance = Instantiate(parryCollider.GetComponent<Collider>(), transform.position, parryCollider.transform.rotation);
+        _colInstance = Instantiate(parryCollider, transform.position, parryCollider.transform.rotation);
     }
 
     public void EndParry()
@@ -28,5 +29,15 @@ public class ShadowstepPlayer : Player
 
         if (_colInstance)
             Destroy(_colInstance.gameObject);
+    }
+
+    public void CounterAttack()
+    {
+        if (_colInstance)
+            Destroy(_colInstance.gameObject);
+        InvincibilityTime = 1;
+
+        animator.SetTrigger("Counter");
+        _colInstance = Instantiate(counterCollider, transform.position, counterCollider.transform.rotation);
     }
 }

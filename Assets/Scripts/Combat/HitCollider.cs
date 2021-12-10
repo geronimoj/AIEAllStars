@@ -40,6 +40,7 @@ public class HitCollider : MonoBehaviour
     vfxObj partInstance;
 
     protected Transform attacker;
+    public Transform Attacker => attacker;
     public void SetAttacker(Transform me)
     {
         attacker = me;
