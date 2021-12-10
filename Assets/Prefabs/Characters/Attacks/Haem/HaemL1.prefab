@@ -58,9 +58,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 5
-  enemyStunDuration: 0.5
+  enemyStunDuration: 0.7
   selfStunDuration: 0
   launchAngle: 0
   launchForce: 12
+  autoLaunchAway: 0
+  followUser: 1
+  giveInvFrames: 0
   particles: {fileID: 0}
   toFollow: 0
