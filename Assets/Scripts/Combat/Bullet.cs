@@ -8,13 +8,13 @@ public class Bullet : HitCollider
 
     public float lifeTime = 5;
 
-    private void Start()
+    protected virtual void Start()
     {
         transform.SetParent(null, true);
         StartCoroutine(Kill());
     }
 
-    private void Update()
+    protected virtual void Update()
     {   //Move the collider
         transform.position -= transform.forward * (moveSpeed * Time.deltaTime);
     }
