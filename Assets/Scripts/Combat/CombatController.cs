@@ -29,6 +29,9 @@ public class CombatController : MonoBehaviour
     [Tooltip("optional point")]
     public Transform weaponPoint;
 
+    [Tooltip("Particles which only emit when attacking")]
+    public ParticleSystem[] attackParticles;
+
     private void Awake()
     {
         animator = GetComponent<Animator>();
@@ -36,6 +39,8 @@ public class CombatController : MonoBehaviour
 
         inAttackState = false;
         queueTimer = 0;
+
+        SetHandParticles(false);
     }
 
     [ContextMenu("Attack")]
@@ -84,6 +89,8 @@ public class CombatController : MonoBehaviour
     //The part in the animation where the collider spawns
     public void StartAttack(int attack)
     {
+        SetHandParticles(true);
+
         //If we can make a valid attack
         if (attacks != null)
             if (attacks.Length > attack)
@@ -106,6 +113,8 @@ public class CombatController : MonoBehaviour
     {
 
         inAttackState = false;
+
+        SetHandParticles(false);
 
         if (queueTimer > 0)
         {
@@ -139,5 +148,17 @@ public class CombatController : MonoBehaviour
     public void FinishAttackChain()
     {
 
+    }
+
+    void SetHandParticles(bool state)
+    {
+        if(attackParticles != null)
+            foreach (ParticleSystem ps in attackParticles)
+            {
+                if (ps)
+                {
+                    ps.enableEmission = state;
+                }
+            }
     }
 }
