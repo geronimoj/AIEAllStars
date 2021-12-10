@@ -204,7 +204,7 @@ public class Player : MonoBehaviour
             _velocity.z = Mathf.MoveTowards(_velocity.z, 0, Time.deltaTime * 15);
 
             //Reset midair actions
-            if (_airCharges != 1)
+            if (_airCharges != MaxAirActions)
             {
                 _airCharges = MaxAirActions;
             }
