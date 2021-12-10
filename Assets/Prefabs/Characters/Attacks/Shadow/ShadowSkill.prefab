@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7967885029122514111}
   - component: {fileID: 6820815300718148811}
+  - component: {fileID: 3288774910902721906}
   m_Layer: 0
   m_Name: ShadowSkill
   m_TagString: Untagged
@@ -44,3 +45,15 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.6733185, y: 2.4469688, z: 1.7190768}
   m_Center: {x: 0.07696152, y: 1.1545128, z: 0.2571721}
+--- !u!114 &3288774910902721906
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7275537495733754109}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6856144bfac28d149a61d782c737d517, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
