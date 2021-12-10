@@ -19,6 +19,9 @@ public class VibeCityPlayer : Player
 
     protected override void Skill()
     {
+        if (!CanMove)
+            return;
+
         animator.SetTrigger("Special");
         canMoveInt++;
     }
