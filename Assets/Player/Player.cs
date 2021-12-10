@@ -39,7 +39,7 @@ public class Player : MonoBehaviour
     //public Transform CharacterCheck;
     //public LayerMask CharacterMask;
 
-    bool _isGrounded;
+    protected bool _isGrounded;
     protected Vector3 _velocity;
 
     CombatController _combatController;
