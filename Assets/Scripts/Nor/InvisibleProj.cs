@@ -37,6 +37,8 @@ public class InvisibleProj : MonoBehaviour
             if (p == caster)
                 return;
 
+            transform.position = p.transform.position;
+
             SummonPillar();
         }
         else
@@ -49,7 +51,7 @@ public class InvisibleProj : MonoBehaviour
     void SummonPillar()
     {
         FirePillar instance = Instantiate(firePillar, transform.position, firePillar.transform.rotation);
-
+        instance.caster = caster;
 
 
         Destroy(gameObject);

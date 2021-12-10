@@ -20,6 +20,8 @@ public class FirePillar : MonoBehaviour
         col.SetAttacker(caster.transform);
 
         StartCoroutine(WaitBeforeExplode());
+
+        Destroy(gameObject, 2);
     }
 
     IEnumerator WaitBeforeExplode()
@@ -32,5 +34,14 @@ public class FirePillar : MonoBehaviour
     void Explode()
     {
         fireCollider.enabled = true;
+
+        StartCoroutine(WaitTillColDisable());
+    }
+
+    IEnumerator WaitTillColDisable()
+    {
+        yield return new WaitForSeconds(0.5f);
+
+        fireCollider.enabled = false;
     }
 }
