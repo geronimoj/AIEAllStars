@@ -89,8 +89,7 @@ public class CombatController : MonoBehaviour
             if (attacks.Length > attack)
                 if (attacks[attack] != null)
                 {
-                    if (currentlyActiveAttack)
-                        Destroy(currentlyActiveAttack.gameObject);
+                    DestroyActiveCol();
 
                     currentlyActiveAttack = Instantiate(attacks[attack], transform.position, Quaternion.LookRotation(transform.forward*-1, Vector3.up));
 
@@ -121,12 +120,20 @@ public class CombatController : MonoBehaviour
                 attackCooldown = currentlyActiveAttack.selfStunDuration;
         }
 
-        if (currentlyActiveAttack)
-        {
-            Destroy(currentlyActiveAttack.gameObject);
-        }
+        DestroyActiveCol();
+
         if (attack == 2)
             FinishAttackChain();
+    }
+
+    public void DestroyActiveCol()
+    {
+        if (currentlyActiveAttack)
+        {
+            Bullet b = currentlyActiveAttack as Bullet;
+            if(!b)
+                Destroy(currentlyActiveAttack.gameObject);
+        }
     }
 
     public void FinishAttackChain()

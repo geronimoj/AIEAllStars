@@ -111,6 +111,9 @@ public class HitCollider : MonoBehaviour
                 if (us)
                     us.Heal(lifeStealAmount);
             }
+
+            //Turn our collider off
+            GetComponent<Collider>().enabled = false;
         }
     }
 }
