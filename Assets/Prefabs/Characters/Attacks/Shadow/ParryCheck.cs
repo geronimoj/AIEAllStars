@@ -4,15 +4,22 @@ using UnityEngine;
 
 public class ParryCheck : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    protected Transform attacker;
+    public void SetAttacker(Transform me)
     {
-        
+        attacker = me;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnTriggerEnter(Collider other)
     {
-        
+        HitCollider _hit = other.GetComponent<HitCollider>();
+    
+        if (_hit)
+        {
+            if (_hit.Attacker == attacker)
+                return;
+    
+            attacker.GetComponent<ShadowstepPlayer>().CounterAttack();
+        }
     }
 }
