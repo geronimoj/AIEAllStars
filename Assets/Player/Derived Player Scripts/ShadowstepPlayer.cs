@@ -17,9 +17,9 @@ public class ShadowstepPlayer : Player
 
     public void StartParry()
     {
-        canMoveInt++;
         InvincibilityTime = 10;
         _colInstance = Instantiate(parryCollider, transform.position, parryCollider.transform.rotation);
+        canMoveInt++;
 
         _colInstance.GetComponent<ParryCheck>().SetAttacker(gameObject.transform);
         _colInstance.transform.SetParent(transform);
