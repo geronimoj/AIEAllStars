@@ -16,13 +16,17 @@ public class ShadowstepPlayer : Player
 
     public void StartParry()
     {
+        canMoveInt++;
         InvincibilityTime = 10;
-        _colInstance = Instantiate(parryCollider, transform.position, parryCollider.transform.rotation);
+        _colInstance = Instantiate(parryCollider.GetComponent<Collider>(), transform.position, parryCollider.transform.rotation);
     }
 
     public void EndParry()
     {
         InvincibilityTime = 0;
-        parryCollider.SetActive(false);
+        canMoveInt--;
+
+        if (_colInstance)
+            Destroy(_colInstance.gameObject);
     }
 }
