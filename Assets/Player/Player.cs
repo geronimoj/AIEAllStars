@@ -308,7 +308,7 @@ public class Player : MonoBehaviour
     /// </summary>
     protected virtual void Dash()
     {
-        if (!CanMove)
+        if (!CanMove || _moveInput == 0)
             return;
 
         if (_isGrounded)
