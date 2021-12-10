@@ -252,6 +252,9 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Escape))
+            GetComponent<SceneLoader>().LoadScene("MainMenu");
+
         if (!_gameOver)
             for (byte i = 0; i < _players.Length; i++)
                 if (_players[i].CurrentHealth <= 0)
