@@ -52,7 +52,7 @@ public class WizardsOfNorPlayer : Player
             HitCollider instance = Instantiate(jumpCollider, transform.position, jumpCollider.transform.rotation);
             instance.SetAttacker(transform);
 
-            Destroy(instance, 0.5f);
+            Destroy(instance.gameObject, 0.5f);
         }
     }
 }
