@@ -97,7 +97,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bd078bd6d99f054ea9e76484f2427d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Controls: {fileID: 11400000, guid: 6a6a1da93ab3deb48a4080b39885542f, type: 2}
+  Controls: {fileID: 0}
   MaxHealth: 100
   MoveSpeed: 6
   DashMultiplier: 2
