@@ -8,21 +8,38 @@ public class Bullet : HitCollider
 
     public float lifeTime = 5;
 
+    public Vector3 direction = Vector3.forward;
+
+    public bool isExplosive = false;
+
+    public HitCollider explosiveCollider = null;
+
     protected virtual void Start()
     {
         transform.SetParent(null, true);
-        StartCoroutine(Kill());
+        Destroy(gameObject, lifeTime);
+        direction.Normalize();
     }
 
     protected virtual void Update()
-    {   //Move the collider
-        transform.position -= transform.forward * (moveSpeed * Time.deltaTime);
+    {
+        Vector3 relativeVel = transform.right * direction.x + transform.up * direction.y + transform.forward * direction.z;
+        //Move the collider
+        transform.position -= relativeVel * (moveSpeed * Time.deltaTime);
     }
 
-    private IEnumerator Kill()
+    protected override void OnTriggerEnter(Collider other)
     {
-        yield return new WaitForSeconds(lifeTime);
+        base.OnTriggerEnter(other);
 
-        Destroy(gameObject);
+        if (other.CompareTag("Wall") || other.CompareTag("Ground"))
+            if (isExplosive && explosiveCollider)
+            {
+                GameObject obj = Instantiate(explosiveCollider.gameObject, transform.position, explosiveCollider.transform.rotation);
+                obj.GetComponent<HitCollider>().SetAttacker(Attacker);
+                Destroy(obj, 0.5f);
+                isExplosive = false;
+                Destroy(gameObject);
+            }
     }
 }
