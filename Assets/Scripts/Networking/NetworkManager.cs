@@ -5,7 +5,7 @@ using Photon.Pun;
 using Photon.Realtime;
 using ExitGames.Client.Photon;
 //Wish it didn't have to be a behaviour
-public class NetworkManager : MonoBehaviourPun
+public class NetworkManager : MonoBehaviour
 {
     #region Static
     public static NetworkManager s_instance = null;
