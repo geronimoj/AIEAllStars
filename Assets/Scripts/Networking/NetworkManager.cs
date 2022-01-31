@@ -12,7 +12,7 @@ public class NetworkManager : MonoBehaviourPun
     /// <summary>
     /// Returns true if we are the master client and connected
     /// </summary>
-    public static bool AmHost => PhotonNetwork.IsConnectedAndReady && PhotonNetwork.IsMasterClient;
+    public static bool AmHost => (PhotonNetwork.IsConnectedAndReady && PhotonNetwork.IsMasterClient) || !PhotonNetwork.IsConnected;
     /// <summary>
     /// Is true while the player is in a room/lobby
     /// </summary>

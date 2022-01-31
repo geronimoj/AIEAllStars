@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using Cinemachine;
+using Photon.Pun;
 
 [RequireComponent(typeof(SceneLoader))]
-public class GameManager : MonoBehaviour
+public class GameManager : MonoBehaviourPun
 {
     public static GameManager s_instance = null;
     /// <summary>
@@ -149,25 +150,64 @@ public class GameManager : MonoBehaviour
 
         if (s_scores == null)
             s_scores = new byte[2];
-        //Spawn player 1
-        if (points[0])
+        //Local or networked game check
+        if (!NetworkManager.InRoom)
         {
-            obj = Instantiate(s_p1Char, points[0].transform.position, s_p1Char.transform.rotation);
-            _players[0] = obj.GetComponent<Player>();
-            _players[0].IsAI = s_useP1AI;
-            _players[0].Controls = _p1Input;
-            p1.target = obj.transform;
+            //Spawn player 1
+            if (points[0])
+            {
+                obj = Instantiate(s_p1Char, points[0].transform.position, s_p1Char.transform.rotation);
+                _players[0] = obj.GetComponent<Player>();
+                _players[0].IsAI = s_useP1AI;
+                _players[0].Controls = _p1Input;
+                p1.target = obj.transform;
+            }
+            //Spawn player 2
+            if (points[1])
+            {
+                obj = Instantiate(s_p2Char, points[1].transform.position, s_p1Char.transform.rotation);
+                _players[1] = obj.GetComponent<Player>();
+                _players[1].IsAI = s_useP2AI;
+                _players[1].Controls = _p2Input;
+                p2.target = obj.transform;
+            }
         }
-        //Spawn player 2
-        if (points[1])
-        {
-            obj = Instantiate(s_p2Char, points[1].transform.position, s_p1Char.transform.rotation);
-            _players[1] = obj.GetComponent<Player>();
-            _players[1].IsAI = s_useP2AI;
-            _players[1].Controls = _p2Input;
-            p2.target = obj.transform;
+        else
+        {   //Host is always P1
+            if (NetworkManager.AmHost)
+            {
+                if (!points[0])
+                {
+                    Debug.LogError("The hosts spawn point doesn't exist. Cannot spawn them");
+                    return;
+                }
+                //Spawn the player their character
+                obj = PhotonNetwork.Instantiate(s_p1Char.name, points[0].transform.position, s_p1Char.transform.rotation);
+                _players[0] = obj.GetComponent<Player>();
+                _players[0].IsAI = false;
+                _players[0].Controls = _p1Input;
+                p1.target = obj.transform;
+            }
+            //Client is always P2
+            else
+            {
+                if (!points[1])
+                {
+                    Debug.LogError("The client spawn point doesn't exist. Cannot spawn them");
+                    return;
+                }
+                //Spawn the player their character
+                obj = PhotonNetwork.Instantiate(s_p2Char.name, points[1].transform.position, s_p2Char.transform.rotation);
+                _players[1] = obj.GetComponent<Player>();
+                _players[1].IsAI = false;
+                //P2 can still use p1 input for consistency
+                _players[1].Controls = _p1Input;
+                p2.target = obj.transform;
+            }
+            //Tell the other player about us
+            PhotonView v = obj.GetComponent<PhotonView>();
+            photonView.RPC("SendOtherPlayer", RpcTarget.Others, v.ViewID, NetworkManager.AmHost);
         }
-
         group.m_Targets = new CinemachineTargetGroup.Target[2] { p1, p2 };
 
         StartCoroutine(GameStart());
@@ -181,12 +221,14 @@ public class GameManager : MonoBehaviour
         OnSetupComplete.Invoke();
 
         for (byte i = 0; i < _players.Length; i++)
-            _players[i].enabled = false;
+            if (_players[i])
+                _players[i].enabled = false;
 
         yield return new WaitForSeconds(_startCountDown);
 
         for (byte i = 0; i < _players.Length; i++)
-            _players[i].enabled = true;
+            if (_players[i])
+                _players[i].enabled = true;
         //Start GameTimer
         StartCoroutine(GameTimer());
     }
@@ -227,22 +269,30 @@ public class GameManager : MonoBehaviour
     /// Call to end the game
     /// </summary>
     private void GameEnd()
-    {
+    {   //Avoid duplicate calls
+        if (_gameOver)
+            return;
+
         _gameOver = true;
-
-        float winnerHealth = _players[0].CurrentHealth;
-        s_winningPlayer = 0;
-        for (byte i = 1; i < _players.Length; i++)
-        {   //If this player has max health
-            if (_players[1].CurrentHealth > winnerHealth)
-            {   //They are the winner
-                s_winningPlayer = i;
-                winnerHealth = _players[i].CurrentHealth;
+        //Let the host perform the winner math
+        if (NetworkManager.AmHost)
+        {
+            float winnerHealth = _players[0].CurrentHealth;
+            s_winningPlayer = 0;
+            for (byte i = 1; i < _players.Length; i++)
+            {   //If this player has max health
+                if (_players[1].CurrentHealth > winnerHealth)
+                {   //They are the winner
+                    s_winningPlayer = i;
+                    winnerHealth = _players[i].CurrentHealth;
+                }
             }
+            //Give the winning player points
+            s_scores[s_winningPlayer]++;
+            //If its a networked game, update the other players score
+            if (NetworkManager.InRoom)
+                photonView.RPC("UpdateScores", RpcTarget.Others, s_scores, s_winningPlayer);
         }
-        //Give the winning player points
-        s_scores[s_winningPlayer]++;
-
         OnGameEnd.Invoke();
         //Start Game end timer
         StartCoroutine(GameEndTimer());
@@ -251,8 +301,8 @@ public class GameManager : MonoBehaviour
     /// Checks if either players have died
     /// </summary>
     private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Escape))
+    {   //If its a networked game, don't allow this functionality
+        if (Input.GetKeyDown(KeyCode.Escape) && !PhotonNetwork.IsConnected)
             GetComponent<SceneLoader>().LoadScene("MainMenu");
 
         if (!_gameOver)
@@ -262,5 +312,27 @@ public class GameManager : MonoBehaviour
                     GameEnd();
                     return;
                 }
+    }
+
+    [PunRPC]
+    private void UpdateScores(byte[] newScores, byte winningPlayer)
+    {   //Store the new scores
+        s_scores = newScores;
+        s_winningPlayer = winningPlayer;
+        //Make sure the game has ended for the client
+        if (!_gameOver)
+            GameEnd();
+    }
+
+    [PunRPC]
+    private void SendOtherPlayer(int viewIndex, bool isHost)
+    {   //Get the photonView
+        PhotonView view = PhotonNetwork.GetPhotonView(viewIndex);
+        //Index for storing stuff
+        int index = isHost ? 1 : 0;
+        //Store the player
+        _players[index] = view.GetComponent<Player>();
+        //Set the second target for the camera
+        group.m_Targets[index].target = view.transform;
     }
 }
