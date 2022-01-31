@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
-
-public class NetworkManager
+using Photon.Realtime;
+using ExitGames.Client.Photon;
+//Wish it didn't have to be a behaviour
+public class NetworkManager : MonoBehaviourPun
 {
     #region Static
+    public static NetworkManager s_instance = null;
     /// <summary>
     /// Returns true if we are the master client and connected
     /// </summary>
@@ -37,6 +40,10 @@ public class NetworkManager
         else
             return IsMine(view);
     }
+    /// <summary>
+    /// Checks if the player is currently alone in the room. If the player is not connected to the servers, returns true
+    /// </summary>
+    public static bool AmAlone => !PhotonNetwork.IsConnected || (InRoom && PhotonNetwork.PlayerList.Length < 2);
 
     public static void ConnectToServers()
     {   //Connect to the photon servers
@@ -46,8 +53,13 @@ public class NetworkManager
 
     public static void DisconnectFromServers()
     {   //Disconnect from the photon servers
-        if (PhotonNetwork.IsConnected)
-            PhotonNetwork.Disconnect();
+        if (!PhotonNetwork.IsConnected)
+            return;
+
+        PhotonNetwork.Disconnect();
+        //Destroy the networkManager when we disconnect
+        Destroy(s_instance.gameObject);
+        s_instance = null;
     }
 
     public static void DisconnectFromRoom()
@@ -56,4 +68,38 @@ public class NetworkManager
             PhotonNetwork.LeaveRoom();
     }
     #endregion
+
+    private void Awake()
+    {   //Store reference to instance
+        s_instance = this;
+        //Connect to photon
+        ConnectToServers();
+        //Don't destroy this. We need it for other network based activities
+        DontDestroyOnLoad(this);
+    }
+
+    private void OnDestroy()
+    {   //Make sure the instance has been propperly nulled
+        s_instance = null;
+    }
+
+    public void CreateRoom(string roomName, bool isPrivate)
+    {   //Create a room with a custom property for isPrivate
+        ExitGames.Client.Photon.Hashtable roomProperties = new ExitGames.Client.Photon.Hashtable();
+        roomProperties.Add(0, isPrivate);
+        //Also make sure the room is not visible if its private
+        PhotonNetwork.CreateRoom(roomName, new RoomOptions() { IsVisible = !isPrivate, MaxPlayers = 2, CustomRoomProperties = roomProperties });
+    }
+
+    public void JoinRoom(string roomName)
+    {
+        PhotonNetwork.JoinRoom(roomName);
+    }
+
+    public void QuickPlay()
+    {   //Search for a room that is not marked as private
+        ExitGames.Client.Photon.Hashtable roomProperties = new ExitGames.Client.Photon.Hashtable();
+        roomProperties.Add(0, false);
+        PhotonNetwork.JoinRandomOrCreateRoom(roomProperties, 2);
+    }
 }
