@@ -76,6 +76,8 @@ public class NetworkManager : MonoBehaviour
         ConnectToServers();
         //Don't destroy this. We need it for other network based activities
         DontDestroyOnLoad(this);
+        //Make sure scenes are synced.
+        PhotonNetwork.AutomaticallySyncScene = true;
     }
 
     private void OnDestroy()

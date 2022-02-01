@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Photon.Pun;
 /// <summary>
 /// Controls the selection of characters for players
 /// </summary>
-public class CharacterSelector : MonoBehaviour
+public class CharacterSelector : MonoBehaviourPun
 {
     /// <summary>
     /// The map that has been selected
@@ -51,6 +52,12 @@ public class CharacterSelector : MonoBehaviour
     private UnityEngine.Events.UnityEvent OnSelectMap = new UnityEngine.Events.UnityEvent();
 
     public SelectableCharacter _randomCharacter;
+
+    private void Awake()
+    {   //When a character is selected, sync it with the client
+        OnSelectCharacter.AddListener(SyncSelectedCharacter);
+        OnSelectMap.AddListener(SyncSelectedMap);
+    }
     /// <summary>
     /// Initialize charcaters
     /// </summary>
@@ -109,11 +116,29 @@ public class CharacterSelector : MonoBehaviour
             //Setup lambda
             if (isP1)
             {
-                b.onClick.AddListener(() => { GameManager.s_p1Char = _characters[index].Prefab; p1.Target = _characters[index]; s_p1Selected = _characters[index]; OnSelectCharacter.Invoke(); });
+                b.onClick.AddListener(() =>
+                {   //If its a networked game, or we are not p1 (host), skip
+                    if (NetworkManager.InRoom && !NetworkManager.AmHost)
+                        return;
+
+                    GameManager.s_p1Char = _characters[index].Prefab;
+                    p1.Target = _characters[index];
+                    s_p1Selected = _characters[index];
+                    OnSelectCharacter.Invoke();
+                });
             }
             else
             {
-                b.onClick.AddListener(() => { GameManager.s_p2Char = _characters[index].Prefab; p2.Target = _characters[index]; s_p2Selected = _characters[index]; OnSelectCharacter.Invoke(); });
+                b.onClick.AddListener(() =>
+                {   //If its networked and we are the host, skip
+                    if (NetworkManager.InRoom && NetworkManager.AmHost)
+                        return;
+
+                    GameManager.s_p2Char = _characters[index].Prefab;
+                    p2.Target = _characters[index];
+                    s_p2Selected = _characters[index];
+                    OnSelectCharacter.Invoke();
+                });
             }
         }
     }
@@ -130,7 +155,16 @@ public class CharacterSelector : MonoBehaviour
             SelectedUI ui = b.GetComponent<SelectedUI>();
             ui.Target = _maps[index];
             //Setup lambda
-            b.onClick.AddListener(() => {GameManager.s_map = _maps[index].Prefab; map.Target = _maps[index]; s_selectedMap = _maps[index]; OnSelectMap.Invoke(); });
+            b.onClick.AddListener(() => 
+            {   //If we are in a networked game but not the host, don't do anything
+                if (NetworkManager.InRoom && !NetworkManager.AmHost)
+                    return;
+
+                GameManager.s_map = _maps[index].Prefab; 
+                map.Target = _maps[index]; 
+                s_selectedMap = _maps[index]; 
+                OnSelectMap.Invoke(); 
+            });
         }
     }
     /// <summary>
@@ -145,18 +179,18 @@ public class CharacterSelector : MonoBehaviour
     {
         int rand = Random.Range(0, _maps.Length);
 
-        GameManager.s_map = _maps[rand].Prefab; 
-        map.Target = _maps[rand]; 
-        s_selectedMap = _maps[rand]; 
+        GameManager.s_map = _maps[rand].Prefab;
+        map.Target = _maps[rand];
+        s_selectedMap = _maps[rand];
         OnSelectMap.Invoke();
     }
 
     public void RandomPlayer1()
     {
         int rand = Random.Range(0, _characters.Length);
-        GameManager.s_p1Char = _characters[rand].Prefab; 
-        p1.Target = _characters[rand]; 
-        s_p1Selected = _characters[rand]; 
+        GameManager.s_p1Char = _characters[rand].Prefab;
+        p1.Target = _characters[rand];
+        s_p1Selected = _characters[rand];
         OnSelectCharacter.Invoke();
     }
 
@@ -210,5 +244,52 @@ public class CharacterSelector : MonoBehaviour
     {
         for (byte i = 0; i < mapBooth.childCount; i++)
             Destroy(mapBooth.GetChild(0).gameObject);
+    }
+
+    private void SyncSelectedCharacter()
+    {   //Only work if in a room
+        if (!NetworkManager.InRoom)
+            return;
+
+        byte i;
+        //Search for the index of our character
+        for (i = 0; i < _characters.Length; i++)
+            if (NetworkManager.AmHost && _characters[i] == s_p1Selected)
+                break;
+            else if (_characters[i] == s_p2Selected)
+                break;
+        //Tell the other player our selected character
+        photonView.RPC("RPCSelectCharacter", RpcTarget.Others, i);
+    }
+
+    [PunRPC]
+    private void RPCSelectCharacter(byte selectedCharIndex)
+    {   //Store the selected character to display
+        if (NetworkManager.AmHost)
+            s_p2Selected = _characters[selectedCharIndex];
+        else
+            s_p1Selected = _characters[selectedCharIndex];
+        //Update the booth
+        UpdateBoothChar();
+    }
+
+    private void SyncSelectedMap()
+    {   //Make sure we are in a room and are the host.
+        if (!NetworkManager.InRoom || !NetworkManager.AmHost)
+            return;
+
+        byte i;
+        //Set i to be the selected maps index
+        for (i = 0; i < _maps.Length; i++)
+            if (s_selectedMap == _maps[i])
+                break;
+    }
+
+    [PunRPC]
+    private void RPCSelectMap(byte mapIndex)
+    {   //Set the map
+        s_selectedMap = _maps[mapIndex];
+        //Update the booth
+        UpdateBoothMap();
     }
 }
