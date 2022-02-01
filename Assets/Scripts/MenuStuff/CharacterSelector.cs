@@ -266,9 +266,17 @@ public class CharacterSelector : MonoBehaviourPun
     private void RPCSelectCharacter(byte selectedCharIndex)
     {   //Store the selected character to display
         if (NetworkManager.AmHost)
+        {
             s_p2Selected = _characters[selectedCharIndex];
+            p2.Target = s_p2Selected;
+            GameManager.s_p2Char = s_p2Selected.Prefab;
+        }
         else
+        {
             s_p1Selected = _characters[selectedCharIndex];
+            p1.Target = s_p1Selected;
+            GameManager.s_p1Char = s_p1Selected.Prefab;
+        }
         //Update the booth
         UpdateBoothChar();
     }
@@ -289,6 +297,8 @@ public class CharacterSelector : MonoBehaviourPun
     private void RPCSelectMap(byte mapIndex)
     {   //Set the map
         s_selectedMap = _maps[mapIndex];
+        map.Target = s_selectedMap;
+        GameManager.s_map = s_selectedMap.Prefab;
         //Update the booth
         UpdateBoothMap();
     }
