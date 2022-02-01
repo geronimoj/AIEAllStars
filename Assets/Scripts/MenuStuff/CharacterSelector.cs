@@ -215,6 +215,7 @@ public class CharacterSelector : MonoBehaviourPun
             {
                 obj = Instantiate(s_p1Selected.Prefab, photoBoothL);
                 obj.transform.localRotation = Quaternion.identity;
+                obj.GetComponent<Player>().Gravity = 0;
             }
         }
         if (s_p2Selected)
@@ -226,6 +227,7 @@ public class CharacterSelector : MonoBehaviourPun
             {
                 obj = Instantiate(s_p2Selected.Prefab, photoBoothR);
                 obj.transform.localRotation = Quaternion.identity;
+                obj.GetComponent<Player>().Gravity = 0;
             }
         }
     }

@@ -91,6 +91,8 @@ public class NetworkManager : MonoBehaviour
         roomProperties.Add(0, isPrivate);
         //Also make sure the room is not visible if its private
         PhotonNetwork.CreateRoom(roomName, new RoomOptions() { IsVisible = !isPrivate, MaxPlayers = 2, CustomRoomProperties = roomProperties });
+
+        Debug.Log("Creating " + (isPrivate ? "private" : "open") + " room");
     }
 
     public void JoinRoom(string roomName)
@@ -102,6 +104,8 @@ public class NetworkManager : MonoBehaviour
     {   //Search for a room that is not marked as private
         ExitGames.Client.Photon.Hashtable roomProperties = new ExitGames.Client.Photon.Hashtable();
         roomProperties.Add(0, false);
-        PhotonNetwork.JoinRandomOrCreateRoom(roomProperties, 2);
+        PhotonNetwork.JoinRandomRoom(roomProperties, 2);
+
+        Debug.Log("Searching for public room");
     }
 }
