@@ -182,7 +182,7 @@ public class GameManager : MonoBehaviourPun
                     return;
                 }
                 //Spawn the player their character
-                obj = PhotonNetwork.Instantiate(s_p1Char.name, points[0].transform.position, s_p1Char.transform.rotation);
+                obj = PhotonNetwork.Instantiate("Characters/" + s_p1Char.name, points[0].transform.position, s_p1Char.transform.rotation);
                 _players[0] = obj.GetComponent<Player>();
                 _players[0].IsAI = false;
                 _players[0].Controls = _p1Input;
@@ -197,7 +197,7 @@ public class GameManager : MonoBehaviourPun
                     return;
                 }
                 //Spawn the player their character
-                obj = PhotonNetwork.Instantiate(s_p2Char.name, points[1].transform.position, s_p2Char.transform.rotation);
+                obj = PhotonNetwork.Instantiate("Characters/" +s_p2Char.name, points[1].transform.position, s_p2Char.transform.rotation);
                 _players[1] = obj.GetComponent<Player>();
                 _players[1].IsAI = false;
                 //P2 can still use p1 input for consistency
@@ -206,7 +206,7 @@ public class GameManager : MonoBehaviourPun
             }
             //Tell the other player about us
             PhotonView v = obj.GetComponent<PhotonView>();
-            photonView.RPC("SendOtherPlayer", RpcTarget.Others, v.ViewID, NetworkManager.AmHost);
+            photonView.RPC("SendOtherPlayer", RpcTarget.Others, v.ViewID, !NetworkManager.AmHost);
         }
         group.m_Targets = new CinemachineTargetGroup.Target[2] { p1, p2 };
 
@@ -307,7 +307,7 @@ public class GameManager : MonoBehaviourPun
 
         if (!_gameOver)
             for (byte i = 0; i < _players.Length; i++)
-                if (_players[i].CurrentHealth <= 0)
+                if (_players[i] && _players[i].CurrentHealth <= 0)
                 {   //Game has ended
                     GameEnd();
                     return;

@@ -137,6 +137,28 @@ MonoBehaviour:
   specialCollider: {fileID: 2621084630983885642, guid: ed52256057d16964d8c63ec0d743f828, type: 3}
   shockWave: {fileID: 5899275095528897394, guid: ee36808d9bd5ef94e8b6f5a8d576b0fd, type: 3}
   quake: {fileID: 4021301572668748214, guid: dac626884e7537d438470419e97ee6f1, type: 3}
+--- !u!114 &4876162009424514371
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6494838325905606745}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1001 &6260888426724160776
 PrefabInstance:
   m_ObjectHideFlags: 0

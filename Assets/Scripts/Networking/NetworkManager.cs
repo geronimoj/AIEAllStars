@@ -56,6 +56,9 @@ public class NetworkManager : MonoBehaviour
         if (!PhotonNetwork.IsConnected)
             return;
 
+        if (PhotonNetwork.InRoom)
+            DisconnectFromRoom();
+
         PhotonNetwork.Disconnect();
         //Destroy the networkManager when we disconnect
         Destroy(s_instance.gameObject);

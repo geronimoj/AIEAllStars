@@ -51,6 +51,11 @@ public class CharacterSelector : MonoBehaviourPun
 
     private UnityEngine.Events.UnityEvent OnSelectMap = new UnityEngine.Events.UnityEvent();
 
+    private bool[] _playerReady = null;
+
+    public Button nextButton = null;
+    public Button startGameButton = null;
+
     public SelectableCharacter _randomCharacter;
 
     private void Awake()
@@ -88,6 +93,8 @@ public class CharacterSelector : MonoBehaviourPun
             GameManager.s_p2Char = _characters[0].Prefab;
         if (!GameManager.s_map)
             GameManager.s_map = _maps[0].Prefab;
+        //Ready players
+        _playerReady = new bool[2];
     }
 
     private void OnDestroy()
@@ -258,15 +265,20 @@ public class CharacterSelector : MonoBehaviourPun
         for (i = 0; i < _characters.Length; i++)
             if (NetworkManager.AmHost && _characters[i] == s_p1Selected)
                 break;
-            else if (_characters[i] == s_p2Selected)
+        //If not host, check p2
+            else if (!NetworkManager.AmHost && _characters[i] == s_p2Selected)
                 break;
+
+        Debug.Log("Character Index: " + i);
         //Tell the other player our selected character
         photonView.RPC("RPCSelectCharacter", RpcTarget.Others, i);
     }
 
     [PunRPC]
     private void RPCSelectCharacter(byte selectedCharIndex)
-    {   //Store the selected character to display
+    {
+        Debug.Log("OtherPlayer Selected Index: " + selectedCharIndex);
+        //Store the selected character to display
         if (NetworkManager.AmHost)
         {
             s_p2Selected = _characters[selectedCharIndex];
@@ -293,6 +305,8 @@ public class CharacterSelector : MonoBehaviourPun
         for (i = 0; i < _maps.Length; i++)
             if (s_selectedMap == _maps[i])
                 break;
+
+        photonView.RPC("RPCSelectMap", RpcTarget.OthersBuffered, i);
     }
 
     [PunRPC]
@@ -303,5 +317,35 @@ public class CharacterSelector : MonoBehaviourPun
         GameManager.s_map = s_selectedMap.Prefab;
         //Update the booth
         UpdateBoothMap();
+    }
+
+    public void ToggleReady(bool ready)
+    {   //If not in a room, ignore
+        if (!NetworkManager.InRoom)
+            return;
+
+        if (NetworkManager.AmHost)
+            _playerReady[0] = ready;
+        else
+            _playerReady[1] = ready;
+
+        photonView.RPC("SyncReady", RpcTarget.OthersBuffered, ready);
+        //If both players are ready, head to map selection
+        if (_playerReady[0] == (_playerReady[1] == true))
+            //Move to the map selection
+            nextButton.onClick.Invoke();
+    }
+
+    [PunRPC]
+    private void SyncReady(bool readyState)
+    {
+        if (NetworkManager.AmHost)
+            _playerReady[1] = readyState;
+        else
+            _playerReady[0] = readyState;
+
+        if (_playerReady[0] == (_playerReady[1] == true))
+            //Move to the map selection
+            nextButton.onClick.Invoke();
     }
 }
