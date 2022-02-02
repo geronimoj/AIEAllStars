@@ -34,6 +34,9 @@ public class HitCollider : MonoBehaviour
 
     public bool giveInvFrames = false;
 
+    [Tooltip("Used by golden pheonix to tell the explosion on their special who the actual owner is. Its getting it mixed up")]
+    public bool networkedOwnerInvert = false;
+
     public float lifeStealAmount = 0;
 
     [Header("FX")]
@@ -44,8 +47,12 @@ public class HitCollider : MonoBehaviour
     protected Transform attacker;
     public Transform Attacker => attacker;
     public void SetAttacker(Transform me)
-    {
+    {   //Null catch assignment
+        if (me == null)
+            return;
+
         attacker = me;
+        Debug.Log(attacker.name);
     }
 
     private void Awake()
@@ -75,6 +82,20 @@ public class HitCollider : MonoBehaviour
         }
 
         partInstance.Initialise();
+
+        if (NetworkManager.InRoom)
+        {
+            int index;
+
+            if (networkedOwnerInvert)
+                index = NetworkManager.AmHost ? 0 : 1;
+            else
+                index = NetworkManager.AmHost ? 1 : 0;
+
+            attacker = GameManager.s_instance._players[index].transform;
+        }
+
+        Debug.Log(attacker.name);
     }
 
     protected virtual void OnTriggerEnter(Collider other)

@@ -28,9 +28,4 @@ public class ThePoundPlayer : Player
         //Base update
         base.Update();
     }
-
-    protected override void Skill()
-    {
-        animator.SetTrigger("Special");
-    }
 }

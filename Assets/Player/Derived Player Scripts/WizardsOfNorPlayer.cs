@@ -23,6 +23,7 @@ public class WizardsOfNorPlayer : Player
             elapsed -= Time.deltaTime;
     }
 
+    [Photon.Pun.PunRPC]
     protected override void Skill()
     {
         if (elapsed > 0)

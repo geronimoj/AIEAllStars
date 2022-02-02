@@ -22,7 +22,7 @@ public class VibeCityPlayer : Player
         if (!CanMove)
             return;
 
-        animator.SetTrigger("Special");
+        base.Skill();
         canMoveInt++;
     }
 

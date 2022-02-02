@@ -375,12 +375,16 @@ public class Player : MonoBehaviourPun, IPunObservable
             photonView.RPC("Attack", RpcTarget.Others);
     }
 
+    [PunRPC]
     protected virtual void Skill()
     {
         if (!CanMove)
             return;
 
         animator.SetTrigger("Skill");
+        //If its networked and we own this character, tell the other player to play an attack animation
+        if (NetworkManager.InRoom && photonView.IsMine)
+            photonView.RPC("Skill", RpcTarget.Others);
     }
 
     public void GotHit(float damage, float stunDuration, Vector3 force, bool playAnim = true)

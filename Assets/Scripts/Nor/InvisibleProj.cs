@@ -52,7 +52,12 @@ public class InvisibleProj : MonoBehaviour
     {
         Vector3 spawnPos = new Vector3(transform.position.x, 0, transform.position.z);
 
-        FirePillar instance = Instantiate(firePillar, spawnPos, firePillar.transform.rotation);
+        FirePillar instance;
+
+        if (NetworkManager.InRoom)
+            instance = Photon.Pun.PhotonNetwork.Instantiate(firePillar.name, spawnPos, firePillar.transform.rotation).GetComponent<FirePillar>();
+        else
+            instance = Instantiate(firePillar, spawnPos, firePillar.transform.rotation);
         instance.caster = caster;
 
         Destroy(gameObject);
