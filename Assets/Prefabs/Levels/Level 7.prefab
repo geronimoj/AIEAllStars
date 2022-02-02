@@ -656,7 +656,7 @@ GameObject:
   - component: {fileID: 1065429502892576683}
   m_Layer: 10
   m_Name: Plane
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -944,6 +944,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 402cc9de1ffef5f47a410b38940feab6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  TimeTillKazoo: 0
 --- !u!1001 &1065429501076231366
 PrefabInstance:
   m_ObjectHideFlags: 0
