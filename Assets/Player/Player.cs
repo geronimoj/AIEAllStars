@@ -366,9 +366,13 @@ public class Player : MonoBehaviourPun, IPunObservable
         }
     }
 
+    [PunRPC]
     protected virtual void Attack()
     {
         _combatController.InputAttack();
+        //If its networked and we own this character, tell the other player to play an attack animation
+        if (NetworkManager.InRoom && photonView.IsMine)
+            photonView.RPC("Attack", RpcTarget.Others);
     }
 
     protected virtual void Skill()

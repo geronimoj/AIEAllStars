@@ -85,6 +85,8 @@ MonoBehaviour:
   dashParticles: {fileID: 6762457798526618193, guid: 20d4c663f5446c74a9e615e225095692, type: 3}
   jumpParticles: {fileID: 4388340583238369657, guid: 0b75b8cd25280134d84241ac0042ef7d, type: 3}
   enableDebug: 0
+  _maxPackageDesync: 0.1
+  _positionResyncRate: 0.1
   skillJumpForce: 15
   skillHorizontalForce: 5
 --- !u!114 &2643516204320503489
@@ -124,7 +126,6 @@ MonoBehaviour:
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents:
-  - {fileID: 0}
   - {fileID: 2206131711763774065}
   sceneViewId: 0
   InstantiationId: 0

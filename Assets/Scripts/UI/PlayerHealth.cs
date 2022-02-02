@@ -22,15 +22,24 @@ public class PlayerHealth : MonoBehaviour
 
     private void Start()
     {
-        target = GameManager.s_instance._players[targetPlayer];
+        GetTarget();
         _healthDisplay = GetComponent<Slider>();
     }
 
     private void LateUpdate()
     {
         if (!target)
+        {   //If we are in a networked room, keep attempting to find the owner of this health bar
+            if (NetworkManager.InRoom)
+                GetTarget();
             return;
+        }
         //Set the fill
         _healthDisplay.value = target.CurrentHealth / target.MaxHealth;
+    }
+
+    private void GetTarget()
+    {
+        target = GameManager.s_instance._players[targetPlayer];
     }
 }
