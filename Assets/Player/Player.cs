@@ -726,6 +726,8 @@ public class Player : MonoBehaviourPun, IPunObservable
             stream.SendNext(_dashInput);
             stream.SendNext(_dashing);
             stream.SendNext(_velocity);
+            //Serialize stat info
+            stream.SendNext(_currentHealth);
         }
         else
         {   //We need something fancier than this.
@@ -734,6 +736,8 @@ public class Player : MonoBehaviourPun, IPunObservable
             _dashInput = (int)stream.ReceiveNext();
             _dashing = (bool)stream.ReceiveNext();
             _velocity = (Vector3)stream.ReceiveNext();
+            //Recieve stat info
+            _currentHealth = (float)stream.ReceiveNext();
             //If the position change is greater than what we expect it to be, then teleport
             //This is a horrible way of estimating how long the delay between the package being sent and recieved is
             if (Vector3.Distance(transform.position, pos) > MoveSpeed * _maxPackageDesync
