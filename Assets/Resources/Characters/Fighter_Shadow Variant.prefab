@@ -86,6 +86,30 @@ MonoBehaviour:
   inAttackState: 0
   weaponPoint: {fileID: 0}
   attackParticles: []
+--- !u!114 &915428618320561836
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1315014345936125129}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents:
+  - {fileID: 0}
+  - {fileID: 6541423690400957466}
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!114 &6541423690400957466
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -133,30 +157,9 @@ MonoBehaviour:
   hitParticles: {fileID: 1206494771143577732, guid: f752b1f8d247ee8468c2c12dbfb2e48b, type: 3}
   dashParticles: {fileID: 6762457798526618193, guid: 20d4c663f5446c74a9e615e225095692, type: 3}
   jumpParticles: {fileID: 4388340583238369657, guid: 0b75b8cd25280134d84241ac0042ef7d, type: 3}
+  enableDebug: 0
   parryCollider: {fileID: 6820815300718148811, guid: 4e2744473f86c6a4e91d5c44da12fc7a, type: 3}
   counterCollider: {fileID: 2480111391251817607, guid: 3a184c4cde5b39940ba067fbb47de0e1, type: 3}
---- !u!114 &915428618320561836
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1315014345936125129}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ObservedComponentsFoldoutOpen: 1
-  Group: 0
-  prefixField: -1
-  Synchronization: 3
-  OwnershipTransfer: 0
-  observableSearch: 2
-  ObservedComponents: []
-  sceneViewId: 0
-  InstantiationId: 0
-  isRuntimeInstantiated: 0
 --- !u!1001 &2233423974083953048
 PrefabInstance:
   m_ObjectHideFlags: 0

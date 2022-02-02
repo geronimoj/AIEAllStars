@@ -38,7 +38,7 @@ public class HitCollider : MonoBehaviour
 
     [Header("FX")]
     public vfxObj particles;
-    [SerializeField] Follow toFollow;
+    [SerializeField] Follow toFollow = Follow.none;
     vfxObj partInstance;
 
     protected Transform attacker;

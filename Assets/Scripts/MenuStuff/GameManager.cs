@@ -197,7 +197,7 @@ public class GameManager : MonoBehaviourPun
                     return;
                 }
                 //Spawn the player their character
-                obj = PhotonNetwork.Instantiate("Characters/" +s_p2Char.name, points[1].transform.position, s_p2Char.transform.rotation);
+                obj = PhotonNetwork.Instantiate("Characters/" + s_p2Char.name, points[1].transform.position, s_p2Char.transform.rotation);
                 _players[1] = obj.GetComponent<Player>();
                 _players[1].IsAI = false;
                 //P2 can still use p1 input for consistency
@@ -304,6 +304,15 @@ public class GameManager : MonoBehaviourPun
     {   //If its a networked game, don't allow this functionality
         if (Input.GetKeyDown(KeyCode.Escape) && !PhotonNetwork.IsConnected)
             GetComponent<SceneLoader>().LoadScene("MainMenu");
+
+        //If we are alone in a networked lobby, return to main menu
+        if (!_gameOver && NetworkManager.InRoom && NetworkManager.AmAlone)
+        {   //Disconnect from photon and return to main menu if the other player leaves
+            NetworkManager.DisconnectFromServers();
+            GetComponent<SceneLoader>().LoadScene("MainMenu");
+            _gameOver = true;
+            return;
+        }
 
         if (!_gameOver)
             for (byte i = 0; i < _players.Length; i++)

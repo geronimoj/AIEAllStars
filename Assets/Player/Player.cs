@@ -1,10 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 [RequireComponent(typeof(CharacterController))]
 [RequireComponent(typeof(CombatController))]
-public class Player : MonoBehaviour
+public class Player : MonoBehaviourPun, IPunObservable
 {
     #region Variables
     public PlayerInput Controls;
@@ -101,6 +102,8 @@ public class Player : MonoBehaviour
     public vfxObj jumpParticles;
     #endregion
 
+    public bool enableDebug = false;
+
     #region Start/Update
     private void Awake()
     {
@@ -178,6 +181,9 @@ public class Player : MonoBehaviour
             if (!_dashing)
             {
                 inputVelocity = Vector3.right * _moveInput * MoveSpeed * Time.deltaTime;
+
+                if (enableDebug)
+                    Debug.Log("Setting inputVelocity");
             }
         }
 
@@ -280,27 +286,31 @@ public class Player : MonoBehaviour
 
         if (_isGrounded)
         {
-            _velocity.y = Mathf.Sqrt(JumpHeight * -2f * Gravity);
+            RPCJump();
 
-            if (jumpParticles)
-            {
-                vfxObj instance = Instantiate(jumpParticles, transform.position + jumpParticles.transform.position, jumpParticles.transform.rotation);
-                instance.Initialise();
-            }
+            if (NetworkManager.InRoom)
+                photonView.RPC("RPCJump", RpcTarget.Others);
         }
         else if (!_isGrounded && _airCharges > 0)
         {
-            _velocity.y = Mathf.Sqrt(JumpHeight * -2f * Gravity);
+            RPCJump();
             _airCharges--;
 
-            if (jumpParticles)
-            {
-                vfxObj instance = Instantiate(jumpParticles, transform.position + jumpParticles.transform.position, jumpParticles.transform.rotation);
-                instance.Initialise();
-            }
+            if (NetworkManager.InRoom)
+                photonView.RPC("RPCJump", RpcTarget.Others);
         }
+    }
 
-        
+    [PunRPC]
+    public void RPCJump()
+    {   //Set jump velocity
+        _velocity.y = Mathf.Sqrt(JumpHeight * -2f * Gravity);
+        //Do particle stuff
+        if (jumpParticles)
+        {
+            vfxObj instance = Instantiate(jumpParticles, transform.position + jumpParticles.transform.position, jumpParticles.transform.rotation);
+            instance.Initialise();
+        }
     }
 
     /// <summary>
@@ -312,34 +322,48 @@ public class Player : MonoBehaviour
             return;
 
         if (_isGrounded)
-        {
-            _dashing = true;
-
-            if (dashParticles)
-            {
-                vfxObj instance = Instantiate(dashParticles, transform.position + dashParticles.transform.position, transform.rotation);
-                instance.Initialise();
-            }
+        {   //I moved the dash code into the rpc to reduce copy paste
+            RPCDash(false, _moveInput);
+            //Tell other player about dash
+            if (NetworkManager.InRoom)
+                photonView.RPC("RPCDash", RpcTarget.Others, false, _moveInput);
         }
         else if (_airCharges > 0)
-        {
-            animator.SetTrigger("Dash");
-            _velocity.y = 0;
-
-            _dashing = true;
+        {   //Reduce air charges
             _airCharges--;
-            StartCoroutine(EndAirDash(AirDashTime));
-
-            if (dashParticles)
-            {
-                vfxObj instance = Instantiate(dashParticles, transform.position + dashParticles.transform.position, transform.rotation);
-                instance.Initialise();
-            }
+            //I moved the dash code into the rpc to reduce copy paste
+            RPCDash(true, _moveInput);
+            //Tell other player about dash
+            if (NetworkManager.InRoom)
+                photonView.RPC("RPCDash", RpcTarget.Others, true, _moveInput);
         }
 
         _dashInput = _moveInput;
+    }
 
-        
+    [PunRPC]
+    public void RPCDash(bool airborne, int dashInput)
+    {
+        _dashing = true;
+        _velocity.y = 0;
+
+        if (airborne)
+        {
+            animator.SetTrigger("Dash");
+            StartCoroutine(EndAirDash(AirDashTime));
+        }
+        //Spawn particle effects
+        if (dashParticles)
+        {
+            vfxObj instance = Instantiate(dashParticles, transform.position + dashParticles.transform.position, transform.rotation);
+            instance.Initialise();
+        }
+        //If we received this from the other player, update the move input to match the dash input
+        if (NetworkManager.InRoom)
+        {   //For sync purposes
+            _dashInput = dashInput;
+            _moveInput = dashInput;
+        }
     }
 
     protected virtual void Attack()
@@ -366,7 +390,7 @@ public class Player : MonoBehaviour
         //Get knockedBack
         _velocity = force;
 
-        if(playAnim)
+        if (playAnim)
             animator.SetTrigger("Hit");
 
         if (hitParticles)
@@ -676,6 +700,90 @@ public class Player : MonoBehaviour
                     }
                 }
             }
+        }
+    }
+    #endregion
+
+    #region Photon
+
+    [Header("Networking")]
+    [SerializeField]
+    [Tooltip("The maximum amount of time that we assume between a package being sent and recieved. Used for determining position resyc")]
+    private float _maxPackageDesync = 0.1f;
+
+    [SerializeField]
+    [Tooltip("How long it takes to resync the position of the character")]
+    private float _positionResyncRate = 0.1f;
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            //Sync position. TransformView was getting positional desync
+            stream.SendNext(transform.position);
+            //Send the move input for dead reckoning
+            stream.SendNext(_moveInput);
+            stream.SendNext(_dashInput);
+            stream.SendNext(_dashing);
+            stream.SendNext(_velocity);
+        }
+        else
+        {   //We need something fancier than this.
+            Vector3 pos = (Vector3)stream.ReceiveNext();
+            _moveInput = (int)stream.ReceiveNext();
+            _dashInput = (int)stream.ReceiveNext();
+            _dashing = (bool)stream.ReceiveNext();
+            _velocity = (Vector3)stream.ReceiveNext();
+            //If the position change is greater than what we expect it to be, then teleport
+            //This is a horrible way of estimating how long the delay between the package being sent and recieved is
+            if (Vector3.Distance(transform.position, pos) > MoveSpeed * _maxPackageDesync
+                //If there is no movement for the player, snap to the correct position
+                || (_moveInput == 0 && _velocity == Vector3.zero))
+                //Begin resyncing position
+                StartCoroutine(ResyncPosition(pos - transform.position));
+            //Once we have move input, rotate the character accordingly
+            switch (_moveInput)
+            {
+                case -1:
+                    FaceLeft();
+                    break;
+
+                case 0:
+                    FaceEnemy();
+                    break;
+
+                case 1:
+                    FaceRight();
+                    break;
+            }
+        }
+    }
+
+    private IEnumerator ResyncPosition(Vector3 posDif)
+    {
+        Vector3 remaining = posDif;
+        //Use a bit of memory to store and avoid additional calculations
+        float multiplier = 1 / _positionResyncRate;
+        while (remaining != Vector3.zero)
+        {   //Calculate how far to move this update
+            //This multiplier method isn't perfectly accurate but it will do
+            Vector3 difApplied = posDif * (Time.deltaTime * multiplier);
+            //If we are going to overshoot the remaining distance, clamp
+            if (difApplied.magnitude > remaining.magnitude)
+            {   //No more remaining distance to travel
+                remaining = Vector3.zero;
+                //Clamp value
+                difApplied = remaining;
+            }
+            else//Otherwise reduce remaining
+                remaining -= difApplied;
+            //Apply the position change
+            transform.position += difApplied;
+            //We can exit early to save a worthless check again later
+            if (remaining == Vector3.zero)
+                break;
+            //Wait a frame
+            yield return null;
         }
     }
     #endregion

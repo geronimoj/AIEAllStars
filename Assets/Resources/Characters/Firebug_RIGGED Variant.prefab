@@ -114,6 +114,7 @@ MonoBehaviour:
   hitParticles: {fileID: 1206494771143577732, guid: f752b1f8d247ee8468c2c12dbfb2e48b, type: 3}
   dashParticles: {fileID: 6762457798526618193, guid: 20d4c663f5446c74a9e615e225095692, type: 3}
   jumpParticles: {fileID: 6895493791552637323, guid: 74618e668fb194649996683583810452, type: 3}
+  enableDebug: 0
   invisibleProj: {fileID: 5702342759418131054, guid: e20ebeacd31602a47bf2ba2e4a702fa1, type: 3}
   pillarCooldown: 3
   jumpCollider: {fileID: 4375550991450253367, guid: ae5d129c975790b468fea01d44a94de8, type: 3}
@@ -155,7 +156,9 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 2124215067}
+  - {fileID: 0}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0

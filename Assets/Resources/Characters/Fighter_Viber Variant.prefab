@@ -98,7 +98,9 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 0}
+  - {fileID: 4763246933077505331}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -149,6 +151,9 @@ MonoBehaviour:
   hitParticles: {fileID: 1206494771143577732, guid: f752b1f8d247ee8468c2c12dbfb2e48b, type: 3}
   dashParticles: {fileID: 6762457798526618193, guid: 20d4c663f5446c74a9e615e225095692, type: 3}
   jumpParticles: {fileID: 4388340583238369657, guid: 0b75b8cd25280134d84241ac0042ef7d, type: 3}
+  enableDebug: 0
+  _maxPackageDesync: 0.1
+  _positionResyncRate: 0.1
   zipSpeed: 40
   zipEndDist: 1
 --- !u!114 &7102177098852263174
