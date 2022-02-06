@@ -52,7 +52,7 @@ public class HitCollider : MonoBehaviour
             return;
 
         attacker = me;
-        Debug.Log(attacker.name);
+        Debug.Log("Attacker set to: " + gameObject.name + " : " + attacker.name);
     }
 
     private void Awake()
@@ -83,19 +83,9 @@ public class HitCollider : MonoBehaviour
 
         partInstance.Initialise();
 
-        if (NetworkManager.InRoom)
-        {
-            int index;
+        GetAttacker();
 
-            if (networkedOwnerInvert)
-                index = NetworkManager.AmHost ? 0 : 1;
-            else
-                index = NetworkManager.AmHost ? 1 : 0;
-
-            attacker = GameManager.s_instance._players[index].transform;
-        }
-
-        Debug.Log(attacker.name);
+        Debug.Log(gameObject.name + " : " + (attacker? attacker.name : "Null"));
     }
 
     protected virtual void OnTriggerEnter(Collider other)
@@ -154,4 +144,18 @@ public class HitCollider : MonoBehaviour
         cc.SetHandParticles(false);
     }
 
+    protected void GetAttacker()
+    {
+        if (NetworkManager.InRoom)
+        {
+            int index;
+
+            if (networkedOwnerInvert)
+                index = NetworkManager.AmHost ? 0 : 1;
+            else
+                index = NetworkManager.AmHost ? 1 : 0;
+
+            attacker = GameManager.s_instance._players[index].transform;
+        }
+    }
 }

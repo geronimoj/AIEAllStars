@@ -15,6 +15,10 @@ public class GrappleHook : Bullet
         base.Start();
 
         _renderer = GetComponent<LineRenderer>();
+
+        if (!attacker)
+            GetAttacker();
+
         _grapplePoint = attacker.GetComponentInChildren<GrapplePoint>().transform;
     }
 
@@ -26,13 +30,17 @@ public class GrappleHook : Bullet
 
     protected override void OnTriggerEnter(Collider other)
     {
+        //If attacker is somehow null, attempt to assign it
+        if (!attacker)
+            GetAttacker();
+
         base.OnTriggerEnter(other);
 
         if (other.transform == attacker)
             return;
         //If we hit a wall or player, zip to them
         if (other.CompareTag("Wall") || other.TryGetComponent<Player>(out Player p))
-        {
+        {   
             attacker.GetComponent<Animator>().SetTrigger("Succeed");
             hitTarget = true;
             attacker.GetComponent<VibeCityPlayer>().ZipToTarget(transform.position);

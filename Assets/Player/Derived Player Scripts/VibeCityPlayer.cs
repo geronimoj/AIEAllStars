@@ -17,6 +17,7 @@ public class VibeCityPlayer : Player
         zipping = true;
     }
 
+    [Photon.Pun.PunRPC]
     protected override void Skill()
     {
         if (!CanMove)
