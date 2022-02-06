@@ -10,12 +10,20 @@ public class FirePillar : MonoBehaviour
 
     public Player caster;
 
+    private bool networkedOwnerInvert = false;
+
     // Start is called before the first frame update
     void Start()
     {
         col = GetComponent<HitCollider>();
 
         fireCollider = GetComponent<Collider>();
+
+        if (col == null)
+            Debug.LogError("Could not find Collider");
+
+        if (caster == null)
+            GetAttacker();
 
         col.SetAttacker(caster.transform);
 
@@ -43,5 +51,19 @@ public class FirePillar : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
 
         fireCollider.enabled = false;
+    }
+    protected void GetAttacker()
+    {
+        if (NetworkManager.InRoom)
+        {
+            int index;
+
+            if (networkedOwnerInvert)
+                index = NetworkManager.AmHost ? 0 : 1;
+            else
+                index = NetworkManager.AmHost ? 1 : 0;
+
+            caster = GameManager.s_instance._players[index];
+        }
     }
 }

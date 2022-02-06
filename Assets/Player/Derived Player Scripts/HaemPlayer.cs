@@ -12,6 +12,7 @@ public class HaemPlayer : Player
     public vfxObj shockWave;
     public vfxObj quake;
 
+    [Photon.Pun.PunRPC]
     protected override void Skill()
     {
         if (CurrentHealth < 10)

@@ -26,8 +26,8 @@ public class WizardsOfNorPlayer : Player
     [Photon.Pun.PunRPC]
     protected override void Skill()
     {
-        if (elapsed > 0)
-            return;
+        if (elapsed > 0 && (photonView.IsMine || !NetworkManager.InRoom))
+                return;
 
         elapsed = pillarCooldown;
 
@@ -35,7 +35,10 @@ public class WizardsOfNorPlayer : Player
     }
 
     public void SummonProjectile()
-    {
+    {   //Don't let clients summon projectiles
+        if (NetworkManager.InRoom && !photonView.IsMine)
+            return;
+
         InvisibleProj instance = Instantiate(invisibleProj, transform.position, Quaternion.LookRotation(transform.forward, Vector3.up));
 
         instance.caster = this;

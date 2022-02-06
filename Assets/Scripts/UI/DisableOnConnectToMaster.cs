@@ -12,12 +12,35 @@ public class DisableOnConnectToMaster : MonoBehaviour
     [Tooltip("Object to enable or disable upon connecting")]
     private GameObject target = null;
 
+    [SerializeField]
+    private float delay = 0;
+
+    private bool doingMyJob = false;
+
     void Update()
     {   //Disable the gameObject when we connect to the server
-        if (Photon.Pun.PhotonNetwork.IsConnectedAndReady)
+        if (!doingMyJob && Photon.Pun.PhotonNetwork.IsConnectedAndReady)
+            StartCoroutine(SetActive());
+    }
+
+    private IEnumerator SetActive()
+    {
+        doingMyJob = true;
+        if (delay <= 0)
+        {
             if (target)
                 target.SetActive(enable);
             else
                 gameObject.SetActive(enable);
+            enable = false;
+            yield break;
+        }
+
+        yield return new WaitForSeconds(delay);
+        if (target)
+            target.SetActive(enable);
+        else
+            gameObject.SetActive(enable);
+        enable = false;
     }
 }

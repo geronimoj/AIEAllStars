@@ -10,11 +10,6 @@ public class ShadowstepPlayer : Player
 
     Collider _colInstance;
 
-    protected override void Skill()
-    {
-        base.Skill();
-    }
-
     public void StartParry()
     {
         InvincibilityTime = 10;
