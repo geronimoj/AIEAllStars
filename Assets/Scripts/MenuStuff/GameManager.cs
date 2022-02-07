@@ -95,6 +95,12 @@ public class GameManager : MonoBehaviourPun
     public float m_startTime = 0;
 
     private bool _gameOver = false;
+    /// <summary>
+    /// Used to determine if a player can spawn themself in a networked lobby
+    /// </summary>
+    private bool _doSpawnPlayer = false;
+    private static bool _otherPlayerReady = false;
+    private GameObject map;
 
     private void Awake()
     {
@@ -104,6 +110,9 @@ public class GameManager : MonoBehaviourPun
     private void Start()
     {
         _gameOver = false;
+        _players = new Player[2];
+        if (s_scores == null)
+            s_scores = new byte[2];
         _loader = GetComponent<SceneLoader>();
         SpawnLevel();
     }
@@ -115,12 +124,21 @@ public class GameManager : MonoBehaviourPun
         if (!s_map)
             s_map = _defaultMap;
         //Spawn map
-        GameObject map = GameObject.Instantiate(s_map, Vector3.zero, s_map.transform.rotation);
+        map = GameObject.Instantiate(s_map, Vector3.zero, s_map.transform.rotation);
         //Get spawn points
         SpawnPoint[] points = map.GetComponentsInChildren<SpawnPoint>();
+        _doSpawnPlayer = true;
 
         if (points.Length < 2)
             Debug.LogError("Not enough spawn points");
+        //If we are in a networked room, we want to wait until everyone has loaded the scene to spawn ourself
+        //to avoid the spawned self being spawned in the old scene on other clients
+        else if (NetworkManager.InRoom)
+        {   
+            StartCoroutine(SpawnSelfNetworked());
+            //Tell the other player we are ready for them to spawn
+            photonView.RPC("OtherPlayerReady", RpcTarget.Others);
+        }
         else//Spawn players
             SpawnPlayers(points);
     }
@@ -146,10 +164,7 @@ public class GameManager : MonoBehaviourPun
         GameObject obj;
         CinemachineTargetGroup.Target p1 = new CinemachineTargetGroup.Target() { weight = 1, radius = 2 };
         CinemachineTargetGroup.Target p2 = new CinemachineTargetGroup.Target() { weight = 1, radius = 2 };
-        _players = new Player[2];
 
-        if (s_scores == null)
-            s_scores = new byte[2];
         //Local or networked game check
         if (!NetworkManager.InRoom)
         {
@@ -313,8 +328,8 @@ public class GameManager : MonoBehaviourPun
             _gameOver = true;
             return;
         }
-
-        if (!_gameOver)
+        //Only let host check for game over
+        if (!_gameOver && NetworkManager.AmHost)
             for (byte i = 0; i < _players.Length; i++)
                 if (_players[i] && _players[i].CurrentHealth <= 0)
                 {   //Game has ended
@@ -335,7 +350,9 @@ public class GameManager : MonoBehaviourPun
 
     [PunRPC]
     private void SendOtherPlayer(int viewIndex, bool isHost)
-    {   //Get the photonView
+    {
+        Debug.Log("Sending myself to the other player");
+        //Get the photonView
         PhotonView view = PhotonNetwork.GetPhotonView(viewIndex);
         //Index for storing stuff
         int index = isHost ? 1 : 0;
@@ -343,5 +360,24 @@ public class GameManager : MonoBehaviourPun
         _players[index] = view.GetComponent<Player>();
         //Set the second target for the camera
         group.m_Targets[index].target = view.transform;
+    }
+    /// <summary>
+    /// For telling the other player you are ready to begin
+    /// </summary>
+    [PunRPC]
+    private void OtherPlayerReady()
+    {
+        _otherPlayerReady = true;
+    }
+
+    private IEnumerator SpawnSelfNetworked()
+    {   //Wait until we are able to spawn our player
+        yield return new WaitUntil(() => _otherPlayerReady && _doSpawnPlayer);
+        //Reset the booleans to false to avoid spawning again somehow
+        _doSpawnPlayer = false;
+        _otherPlayerReady = false;
+        //Spawn ourself
+        SpawnPoint[] points = map.GetComponentsInChildren<SpawnPoint>();
+        SpawnPlayers(points);
     }
 }

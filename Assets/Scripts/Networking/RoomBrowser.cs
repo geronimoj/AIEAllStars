@@ -10,14 +10,20 @@ public class RoomBrowser : MonoBehaviourPunCallbacks
     private Transform _uiParent = null;
 
     [SerializeField]
-    private RoomUI _uiPrefab;
+    private RoomUI _uiPrefab = null;
 
     private List<RoomUI> _spawnedUI = new List<RoomUI>();
+    /// <summary>
+    /// Anti garbage collection measures.
+    /// </summary>
+    private List<RoomInfo> _temp = null;
 
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
         if (roomList == null)
             return;
+        //Store a reference so it doesn't get cleaned up by garbage collection
+        _temp = roomList;
         //Get the list with the longest length
         int length = roomList.Count > _spawnedUI.Count ? roomList.Count : _spawnedUI.Count;
 
@@ -33,7 +39,7 @@ public class RoomBrowser : MonoBehaviourPunCallbacks
             {
                 GameObject obj = Instantiate(_uiPrefab.gameObject, _uiParent);
                 //Store the UI object
-                _spawnedUI.Add(_uiPrefab.GetComponent<RoomUI>());
+                _spawnedUI.Add(obj.GetComponent<RoomUI>());
             }
             //Store the room
             _spawnedUI[i].Room = roomList[i];

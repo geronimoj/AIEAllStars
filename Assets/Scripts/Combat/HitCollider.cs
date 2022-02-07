@@ -52,7 +52,6 @@ public class HitCollider : MonoBehaviour
             return;
 
         attacker = me;
-        Debug.Log("Attacker set to: " + gameObject.name + " : " + attacker.name);
     }
 
     private void Awake()

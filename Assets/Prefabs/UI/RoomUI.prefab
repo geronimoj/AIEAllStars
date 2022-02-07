@@ -153,7 +153,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: QuickPlay
+  m_text: ERROR
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 721813418c61d93468452c95f1e71eb1, type: 2}
   m_sharedMaterial: {fileID: -2372091485090655088, guid: 721813418c61d93468452c95f1e71eb1, type: 2}

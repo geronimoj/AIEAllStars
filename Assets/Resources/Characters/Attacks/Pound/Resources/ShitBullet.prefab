@@ -68,6 +68,7 @@ MonoBehaviour:
   autoLaunchAway: 0
   followUser: 0
   giveInvFrames: 0
+  networkedOwnerInvert: 0
   lifeStealAmount: 0
   particles: {fileID: 0}
   toFollow: 0

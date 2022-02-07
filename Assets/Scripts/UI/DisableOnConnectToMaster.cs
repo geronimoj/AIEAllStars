@@ -15,24 +15,21 @@ public class DisableOnConnectToMaster : MonoBehaviour
     [SerializeField]
     private float delay = 0;
 
-    private bool doingMyJob = false;
-
     void Update()
     {   //Disable the gameObject when we connect to the server
-        if (!doingMyJob && Photon.Pun.PhotonNetwork.IsConnectedAndReady)
+        if (Photon.Pun.PhotonNetwork.IsConnectedAndReady)
             StartCoroutine(SetActive());
     }
 
     private IEnumerator SetActive()
     {
-        doingMyJob = true;
         if (delay <= 0)
         {
             if (target)
                 target.SetActive(enable);
             else
                 gameObject.SetActive(enable);
-            enable = false;
+            this.enabled = false;
             yield break;
         }
 
@@ -41,6 +38,6 @@ public class DisableOnConnectToMaster : MonoBehaviour
             target.SetActive(enable);
         else
             gameObject.SetActive(enable);
-        enable = false;
+        this.enabled = false;
     }
 }

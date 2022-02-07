@@ -73,6 +73,8 @@ public class CharacterSelector : MonoBehaviourPun
         SpawnMapUI(_mapParent);
         GameManager.s_useP2AI = false;
         GameManager.s_useP1AI = false;
+        //Make sure the scores are cleared from any previous games
+        GameManager.s_scores = null;
 
         s_selectedMap = _maps[0];
         s_p1Selected = _characters[0];

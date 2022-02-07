@@ -73,7 +73,10 @@ public class NetworkManager : MonoBehaviour
     #endregion
 
     private void Awake()
-    {   //Store reference to instance
+    {   //If there is already an instance, do change instances. Do nothing basically so we don't break scene connections.
+        if (s_instance)
+            return;
+        //Store reference to instance
         s_instance = this;
         //Connect to photon
         ConnectToServers();

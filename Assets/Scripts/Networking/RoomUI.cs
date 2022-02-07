@@ -32,4 +32,9 @@ public class RoomUI : MonoBehaviour
     {   //Join the room
         NetworkManager.s_instance.JoinRoom(m_room.Name);
     }
+
+    private void Update()
+    {
+        transform.position = transform.position;
+    }
 }
