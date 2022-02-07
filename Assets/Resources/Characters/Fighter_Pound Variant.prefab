@@ -87,7 +87,7 @@ MonoBehaviour:
   enableDebug: 0
   _maxPackageDesync: 0.1
   _positionResyncRate: 0.1
-  _maxSpeedAt0HP: 15
+  _maxSpeedAt0HP: 12
 --- !u!114 &-258584622929093747
 MonoBehaviour:
   m_ObjectHideFlags: 0
