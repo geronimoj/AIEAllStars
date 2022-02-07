@@ -134,7 +134,7 @@ public class GameManager : MonoBehaviourPun
         //If we are in a networked room, we want to wait until everyone has loaded the scene to spawn ourself
         //to avoid the spawned self being spawned in the old scene on other clients
         else if (NetworkManager.InRoom)
-        {   
+        {
             StartCoroutine(SpawnSelfNetworked());
             //Tell the other player we are ready for them to spawn
             photonView.RPC("OtherPlayerReady", RpcTarget.Others);
@@ -222,6 +222,8 @@ public class GameManager : MonoBehaviourPun
             //Tell the other player about us
             PhotonView v = obj.GetComponent<PhotonView>();
             photonView.RPC("SendOtherPlayer", RpcTarget.Others, v.ViewID, !NetworkManager.AmHost);
+            //Start a coroutine to make sure the camreas targets get assigned propperly.
+            StartCoroutine(SetCameraTargets());
         }
         group.m_Targets = new CinemachineTargetGroup.Target[2] { p1, p2 };
 
@@ -328,6 +330,7 @@ public class GameManager : MonoBehaviourPun
             _gameOver = true;
             return;
         }
+
         //Only let host check for game over
         if (!_gameOver && NetworkManager.AmHost)
             for (byte i = 0; i < _players.Length; i++)
@@ -379,5 +382,26 @@ public class GameManager : MonoBehaviourPun
         //Spawn ourself
         SpawnPoint[] points = map.GetComponentsInChildren<SpawnPoint>();
         SpawnPlayers(points);
+    }
+
+    private IEnumerator SetCameraTargets()
+    {   //Wait for camera to be intiialized
+        yield return new WaitUntil(() => group && group.m_Targets.Length == 2);
+
+        byte passes = 0;
+        //Loop until no targets are null
+        while (passes < 2)
+        {
+            passes = 0;
+            //Loop over targets and check for any null targets
+            for (byte i = 0; i < group.m_Targets.Length; i++)
+                if (!group.m_Targets[i].target)
+                    //If a target is null, attempt to assign
+                    group.m_Targets[i].target = _players[i].transform;
+                else//Otherwise increase the passes
+                    passes++;
+            //Wait a cycle
+            yield return null;
+        }
     }
 }
