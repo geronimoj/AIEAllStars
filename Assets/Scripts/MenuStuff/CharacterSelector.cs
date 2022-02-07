@@ -93,8 +93,7 @@ public class CharacterSelector : MonoBehaviourPun
             GameManager.s_p1Char = _characters[0].Prefab;
         if (!GameManager.s_p2Char)
             GameManager.s_p2Char = _characters[0].Prefab;
-        if (!GameManager.s_map)
-            GameManager.s_map = _maps[0].Prefab;
+        GameManager.s_map = _maps[0].Prefab;
         //Ready players
         _playerReady = new bool[2];
     }
@@ -164,15 +163,15 @@ public class CharacterSelector : MonoBehaviourPun
             SelectedUI ui = b.GetComponent<SelectedUI>();
             ui.Target = _maps[index];
             //Setup lambda
-            b.onClick.AddListener(() => 
+            b.onClick.AddListener(() =>
             {   //If we are in a networked game but not the host, don't do anything
                 if (NetworkManager.InRoom && !NetworkManager.AmHost)
                     return;
 
-                GameManager.s_map = _maps[index].Prefab; 
-                map.Target = _maps[index]; 
-                s_selectedMap = _maps[index]; 
-                OnSelectMap.Invoke(); 
+                GameManager.s_map = _maps[index].Prefab;
+                map.Target = _maps[index];
+                s_selectedMap = _maps[index];
+                OnSelectMap.Invoke();
             });
         }
     }
@@ -267,7 +266,7 @@ public class CharacterSelector : MonoBehaviourPun
         for (i = 0; i < _characters.Length; i++)
             if (NetworkManager.AmHost && _characters[i] == s_p1Selected)
                 break;
-        //If not host, check p2
+            //If not host, check p2
             else if (!NetworkManager.AmHost && _characters[i] == s_p2Selected)
                 break;
 
