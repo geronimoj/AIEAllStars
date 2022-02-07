@@ -89,10 +89,8 @@ public class CharacterSelector : MonoBehaviourPun
         OnSelectMap.AddListener(UpdateBoothMap);
 
         //Set defaults if null
-        if (!GameManager.s_p1Char)
-            GameManager.s_p1Char = _characters[0].Prefab;
-        if (!GameManager.s_p2Char)
-            GameManager.s_p2Char = _characters[0].Prefab;
+        GameManager.s_p1Char = _characters[0].Prefab;
+        GameManager.s_p2Char = _characters[0].Prefab;
         GameManager.s_map = _maps[0].Prefab;
         //Ready players
         _playerReady = new bool[2];
