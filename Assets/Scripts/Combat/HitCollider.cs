@@ -83,8 +83,6 @@ public class HitCollider : MonoBehaviour
         partInstance.Initialise();
 
         GetAttacker();
-
-        Debug.Log(gameObject.name + " : " + (attacker? attacker.name : "Null"));
     }
 
     protected virtual void OnTriggerEnter(Collider other)
