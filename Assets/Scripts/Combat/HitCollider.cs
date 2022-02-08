@@ -156,7 +156,7 @@ public class HitCollider : MonoBehaviour
 
             attacker = GameManager.s_instance._players[index].transform;
 
-            Debug.Log("Attacker set to: " + attacker.name);
+            //Debug.Log("Attacker set to: " + attacker.name);
         }
     }
 }
