@@ -37,6 +37,8 @@ public class Bullet : HitCollider
     {
         base.OnTriggerEnter(other);
 
+        Debug.Log("Firer of Bullet: " + (attacker ? attacker.name : "None"));
+
         if (other.CompareTag("Wall") || other.CompareTag("Ground"))
             if (isExplosive && explosiveCollider)
             {

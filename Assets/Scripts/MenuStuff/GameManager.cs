@@ -396,8 +396,11 @@ public class GameManager : MonoBehaviourPun
             //Loop over targets and check for any null targets
             for (byte i = 0; i < group.m_Targets.Length; i++)
                 if (!group.m_Targets[i].target)
-                    //If a target is null, attempt to assign
-                    group.m_Targets[i].target = _players[i].transform;
+                {   //I hate doing an if stack like this but it saves having to check if player is null afterwards in an if elseif
+                    if (_players[i])
+                        //If a target is null, attempt to assign
+                        group.m_Targets[i].target = _players[i].transform;
+                }
                 else//Otherwise increase the passes
                     passes++;
             //Wait a cycle

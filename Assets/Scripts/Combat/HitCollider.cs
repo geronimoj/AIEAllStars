@@ -55,7 +55,10 @@ public class HitCollider : MonoBehaviour
     }
 
     private void Awake()
-    {
+    {   //Get the person who performed the attack in a networked room.
+        //Basically, if we didn't spawn it, it must be the other persons
+        GetAttacker();
+
         if (!particles)
             return;
 
@@ -82,7 +85,6 @@ public class HitCollider : MonoBehaviour
 
         partInstance.Initialise();
 
-        GetAttacker();
     }
 
     protected virtual void OnTriggerEnter(Collider other)
@@ -153,6 +155,8 @@ public class HitCollider : MonoBehaviour
                 index = NetworkManager.AmHost ? 1 : 0;
 
             attacker = GameManager.s_instance._players[index].transform;
+
+            Debug.Log("Attacker set to: " + attacker.name);
         }
     }
 }
