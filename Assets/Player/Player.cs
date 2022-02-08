@@ -734,6 +734,7 @@ public class Player : MonoBehaviourPun, IPunObservable
             stream.SendNext(_dashInput);
             stream.SendNext(_dashing);
             stream.SendNext(_velocity);
+            stream.SendNext(canMoveInt); //We send the canMoveInt as a fix for ShadowStep getting stuck in idle. Also ensures stun is somewhat synced
             //Serialize stat info
             stream.SendNext(_currentHealth);
         }
@@ -744,6 +745,7 @@ public class Player : MonoBehaviourPun, IPunObservable
             _dashInput = (int)stream.ReceiveNext();
             _dashing = (bool)stream.ReceiveNext();
             _velocity = (Vector3)stream.ReceiveNext();
+            canMoveInt = (int)stream.ReceiveNext();
             //Recieve stat info
             _currentHealth = (float)stream.ReceiveNext();
             //If the position change is greater than what we expect it to be, then teleport
