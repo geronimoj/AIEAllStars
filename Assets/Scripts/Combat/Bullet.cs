@@ -24,8 +24,13 @@ public class Bullet : HitCollider
     protected virtual void Update()
     {
         Vector3 relativeVel = transform.right * direction.x + transform.up * direction.y + transform.forward * direction.z;
+        relativeVel *= moveSpeed * Time.deltaTime;
+        //Raycast to check if we would hit the ground
+        if (Physics.Raycast(transform.position, relativeVel.normalized, out RaycastHit hit, relativeVel.magnitude, LayerMask.GetMask("Ground")))
+            //Clamp the distance so it stops on the ground
+            relativeVel = relativeVel.normalized * hit.distance;
         //Move the collider
-        transform.position -= relativeVel * (moveSpeed * Time.deltaTime);
+        transform.position -= relativeVel;
     }
 
     protected override void OnTriggerEnter(Collider other)
