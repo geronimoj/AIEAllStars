@@ -182,7 +182,10 @@ public class CharacterSelector : MonoBehaviourPun
     public void ToggleAIP1(bool useAI) => GameManager.s_useP1AI = useAI;
 
     public void RandomMap()
-    {
+    {   //Disable random map if I am not the host
+        if (!NetworkManager.AmHost)
+            return;
+
         int rand = Random.Range(0, _maps.Length);
 
         GameManager.s_map = _maps[rand].Prefab;
@@ -192,7 +195,11 @@ public class CharacterSelector : MonoBehaviourPun
     }
 
     public void RandomPlayer1()
-    {
+    {   //Don't let the other player mess with each other
+        if (NetworkManager.InRoom)
+            if (!NetworkManager.AmHost)
+                return;
+
         int rand = Random.Range(0, _characters.Length);
         GameManager.s_p1Char = _characters[rand].Prefab;
         p1.Target = _characters[rand];
@@ -201,7 +208,11 @@ public class CharacterSelector : MonoBehaviourPun
     }
 
     public void RandomPlayer2()
-    {
+    {   //Don't let the other player mess with each other
+        if (NetworkManager.InRoom)
+            if (NetworkManager.AmHost)
+                return;
+
         int rand = Random.Range(0, _characters.Length);
         GameManager.s_p2Char = _characters[rand].Prefab;
         p2.Target = _characters[rand];
