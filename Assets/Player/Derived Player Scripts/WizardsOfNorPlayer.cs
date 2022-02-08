@@ -44,13 +44,12 @@ public class WizardsOfNorPlayer : Player
         instance.caster = this;
     }
 
-    protected override void Jump()
+    //Because most of the jump logic was put into the RPC, we don't need to override the base jump class anymore
+    [Photon.Pun.PunRPC]
+    public override void RPCJump()
     {
-        base.Jump();
-
-        if (!CanMove)
-            return;
-
+        base.RPCJump();
+        //Spawn the jump collider from wizards of Nor
         if (jumpCollider)
         {
             HitCollider instance = Instantiate(jumpCollider, transform.position, jumpCollider.transform.rotation);

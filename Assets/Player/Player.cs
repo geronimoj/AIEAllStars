@@ -302,7 +302,7 @@ public class Player : MonoBehaviourPun, IPunObservable
     }
 
     [PunRPC]
-    public void RPCJump()
+    public virtual void RPCJump()
     {   //Set jump velocity
         _velocity.y = Mathf.Sqrt(JumpHeight * -2f * Gravity);
         //Do particle stuff
