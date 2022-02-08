@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Events;
 using Photon.Pun;
 /// <summary>
 /// Controls the selection of characters for players
@@ -47,9 +48,9 @@ public class CharacterSelector : MonoBehaviourPun
 
     public Transform photoBoothL, photoBoothR, mapBooth;
 
-    private UnityEngine.Events.UnityEvent OnSelectCharacter = new UnityEngine.Events.UnityEvent();
+    private readonly UnityEvent OnSelectCharacter = new UnityEvent();
 
-    private UnityEngine.Events.UnityEvent OnSelectMap = new UnityEngine.Events.UnityEvent();
+    private readonly UnityEvent OnSelectMap = new UnityEvent();
 
     private bool[] _playerReady = null;
 

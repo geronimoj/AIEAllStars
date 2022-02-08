@@ -34,7 +34,8 @@ public class vfxObj : MonoBehaviour
 
     public void EndEffect()
     {
-        ps.enableEmission = false;
+        var e = ps.emission;
+        e.enabled = false;
 
         Destroy(gameObject, 2);
     }

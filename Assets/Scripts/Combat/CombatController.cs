@@ -160,7 +160,8 @@ public class CombatController : MonoBehaviour
             {
                 if (ps)
                 {
-                    ps.enableEmission = state;
+                    var e = ps.emission;
+                    e.enabled = state;
                 }
             }
     }
