@@ -196,8 +196,7 @@ public class CharacterSelector : MonoBehaviourPun
 
     public void RandomPlayer1()
     {   //Don't let the other player mess with each other
-        if (NetworkManager.InRoom)
-            if (!NetworkManager.AmHost)
+        if (NetworkManager.InRoom && !NetworkManager.AmHost)
                 return;
 
         int rand = Random.Range(0, _characters.Length);
@@ -209,8 +208,7 @@ public class CharacterSelector : MonoBehaviourPun
 
     public void RandomPlayer2()
     {   //Don't let the other player mess with each other
-        if (NetworkManager.InRoom)
-            if (NetworkManager.AmHost)
+        if (NetworkManager.InRoom && NetworkManager.AmHost)
                 return;
 
         int rand = Random.Range(0, _characters.Length);
