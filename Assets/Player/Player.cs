@@ -92,6 +92,10 @@ public class Player : MonoBehaviourPun, IPunObservable
     public bool CanMove => canMoveInt <= 0;
 
     public float InvincibilityTime = 0;
+    /// <summary>
+    /// The radius of the player in world size
+    /// </summary>
+    public float Radius => _characterController.radius * transform.localScale.x;
 
     SkinnedMeshRenderer mesh;
     Material invincibleGlow;
@@ -387,15 +391,8 @@ public class Player : MonoBehaviourPun, IPunObservable
             photonView.RPC("Skill", RpcTarget.Others);
     }
 
-    [PunRPC]
     public void GotHit(float damage, float stunDuration, Vector3 force, bool playAnim = true)
-    {   //If we hit the other player, tell them they got hit
-        if (NetworkManager.InRoom && !photonView.IsMine)
-        {
-            photonView.RPC("GotHit", RpcTarget.Others, damage, stunDuration, force, playAnim);
-            return;
-        }
-
+    {   
         //Take damage
         _currentHealth -= damage;
 
