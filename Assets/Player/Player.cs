@@ -387,8 +387,15 @@ public class Player : MonoBehaviourPun, IPunObservable
             photonView.RPC("Skill", RpcTarget.Others);
     }
 
+    [PunRPC]
     public void GotHit(float damage, float stunDuration, Vector3 force, bool playAnim = true)
-    {
+    {   //If we hit the other player, tell them they got hit
+        if (NetworkManager.InRoom && !photonView.IsMine)
+        {
+            photonView.RPC("GotHit", RpcTarget.Others, damage, stunDuration, force, playAnim);
+            return;
+        }
+
         //Take damage
         _currentHealth -= damage;
 
