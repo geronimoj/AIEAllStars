@@ -68,7 +68,9 @@ public class CharacterSelector : MonoBehaviourPun
     /// Initialize charcaters
     /// </summary>
     private void Start()
-    {   //Spawn uI
+    {   //Clear rollback master to make sure its empty
+        RollbackMaster.Clear();
+        //Spawn uI
         SpawnPlayerUI(_p1ButtonParent, true);
         SpawnPlayerUI(_p2ButtonParent, false);
         SpawnMapUI(_mapParent);

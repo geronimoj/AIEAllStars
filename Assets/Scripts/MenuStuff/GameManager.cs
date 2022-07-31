@@ -222,6 +222,8 @@ public class GameManager : MonoBehaviourPun
             //Tell the other player about us
             PhotonView v = obj.GetComponent<PhotonView>();
             photonView.RPC("SendOtherPlayer", RpcTarget.Others, v.ViewID, !NetworkManager.AmHost);
+            //Track our object
+            RollbackMaster.TrackObject(v.ViewID, obj);
             //Start a coroutine to make sure the camreas targets get assigned propperly.
             StartCoroutine(SetCameraTargets());
         }
@@ -248,6 +250,8 @@ public class GameManager : MonoBehaviourPun
                 _players[i].enabled = true;
         //Start GameTimer
         StartCoroutine(GameTimer());
+        //Create a rollback notch for the first frame of the game
+        RollbackMaster.ApplyRollback(0f, null);
     }
     /// <summary>
     /// The timer for the game. When it reaches 0, game ends reguardless
@@ -313,6 +317,7 @@ public class GameManager : MonoBehaviourPun
         OnGameEnd.Invoke();
         //Start Game end timer
         StartCoroutine(GameEndTimer());
+        RollbackMaster.Clear();
     }
     /// <summary>
     /// Checks if either players have died
@@ -363,6 +368,8 @@ public class GameManager : MonoBehaviourPun
         _players[index] = view.GetComponent<Player>();
         //Set the second target for the camera
         group.m_Targets[index].target = view.transform;
+        //Track our opponents 
+        RollbackMaster.TrackObject(viewIndex, view.gameObject);
     }
     /// <summary>
     /// For telling the other player you are ready to begin

@@ -3,12 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 /// <summary>
-/// Simulates rollback on a player
-/// </summary>
-public abstract class PlayerRollback<T> : MonoBehaviour where T : BehaviourState
-{
-}
-/// <summary>
 /// Stores all the general information that everyone cares about
 /// </summary>
 public sealed class CoreRollbackInfo : BehaviourState
@@ -146,7 +140,7 @@ public enum ProjectileState
     Dead = 2
 }
 /// <summary>
-/// Stores information about a players input
+/// Stores information about a players input for networking
 /// </summary>
 public struct InputInfo
 {
