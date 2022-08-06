@@ -22,4 +22,18 @@ public class SceneLoader : MonoBehaviour
     /// Closes the app
     /// </summary>
     public void CloseApp() => Application.Quit();
+
+    [ContextMenu("Debug")]
+    void ToByteFromByte()
+    {
+        InputInfo i = new InputInfo();
+
+        byte b = i.ToByte();
+        i.MoveInput = 1;
+        b = i.ToByte();
+        i.jump = true;
+        b = i.ToByte();
+
+        i = InputInfo.FromByte(b);
+    }
 }

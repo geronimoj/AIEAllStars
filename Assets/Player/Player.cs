@@ -5,7 +5,7 @@ using Photon.Pun;
 
 [RequireComponent(typeof(CharacterController))]
 [RequireComponent(typeof(CombatController))]
-public class Player : MonoBehaviourPun, IPunObservable
+public class Player : MonoBehaviourPun, IPunObservable, IPlayerRollback
 {
     #region Variables
     public PlayerInput Controls;
@@ -104,6 +104,10 @@ public class Player : MonoBehaviourPun, IPunObservable
     public vfxObj hitParticles;
     public vfxObj dashParticles;
     public vfxObj jumpParticles;
+
+    private bool _inputChange = false;
+    private bool _simulationMode = false;
+    private InputInfo _inputInfo = default;
     #endregion
 
     public bool enableDebug = false;
@@ -146,17 +150,43 @@ public class Player : MonoBehaviourPun, IPunObservable
         }
         mesh.materials = matArray;
 
+        SimulateMove(Time.deltaTime);
+    }
+
+    protected virtual void LateUpdate()
+    {   //Only perform in networked lobby
+        //We do this in LateUpdate to make sure all inputs from this frame have been recieved
+        if (NetworkManager.InRoom)
+            if (_inputChange)
+            {
+                _inputChange = false;
+                photonView.RPC("RPCRollback", RpcTarget.Others, GameManager.GameTime, _inputInfo.ToByte());
+                //Disable all boolean inputs
+                _inputInfo.dash = false;
+                _inputInfo.jump = false;
+                _inputInfo.attack = false;
+                _inputInfo.skill = false;
+            }
+    }
+    #endregion
+
+    #region Simulation
+    private void SimulateMove(float deltaTime)
+    {
         bool prev = _isGrounded;
         //Check if the player is grounded
         _isGrounded = Physics.CheckSphere(GroundCheck.position, GroundDistance, GroundMask);
 
         if (prev == true && _isGrounded == false)
             _dashing = false;
-
-        if (!IsAI)
-            InputUpdate();
-        else
-            AIUpdate();
+        //Don't update inputs in simulation mode
+        if (!_simulationMode)
+        {
+            if (!IsAI)
+                InputUpdate();
+            else
+                AIUpdate();
+        }
 
         Vector3 inputVelocity = Vector3.zero;
 
@@ -168,7 +198,7 @@ public class Player : MonoBehaviourPun, IPunObservable
                 //If you're still pressing the same direction, keep dashing
                 if (_dashInput == _moveInput)
                 {
-                    inputVelocity = Vector3.right * _moveInput * (MoveSpeed * DashMultiplier) * Time.deltaTime;
+                    inputVelocity = Vector3.right * (_moveInput * (MoveSpeed * DashMultiplier) * deltaTime);
                 }
                 else
                 {
@@ -179,12 +209,12 @@ public class Player : MonoBehaviourPun, IPunObservable
             //Dashing in mid-air
             if (_dashing && !_isGrounded)
             {
-                inputVelocity = Vector3.right * _dashInput * (MoveSpeed * DashMultiplier * AirDashBoost) * Time.deltaTime;
+                inputVelocity = Vector3.right * (_dashInput * (MoveSpeed * DashMultiplier * AirDashBoost) * deltaTime);
             }
             //Regular movement speed
             if (!_dashing)
             {
-                inputVelocity = Vector3.right * _moveInput * MoveSpeed * Time.deltaTime;
+                inputVelocity = Vector3.right * (_moveInput * MoveSpeed * deltaTime);
 
                 if (enableDebug)
                     Debug.Log("Setting inputVelocity");
@@ -207,18 +237,18 @@ public class Player : MonoBehaviourPun, IPunObservable
             if (!_dashing)
             {
                 //If not grounded or air dashing, apply gravity
-                _velocity.y += Gravity * Time.deltaTime;
+                _velocity.y += Gravity * deltaTime;
 
-                _velocity.x = Mathf.MoveTowards(_velocity.x, 0, Time.deltaTime * 5);
-                _velocity.z = Mathf.MoveTowards(_velocity.z, 0, Time.deltaTime * 5);
+                _velocity.x = Mathf.MoveTowards(_velocity.x, 0, deltaTime * 5);
+                _velocity.z = Mathf.MoveTowards(_velocity.z, 0, deltaTime * 5);
             }
         }
         //If you are grounded...
         else
         {
             //Used to prevent knockback sliding + sticking to the floor during knockback
-            _velocity.x = Mathf.MoveTowards(_velocity.x, 0, Time.deltaTime * 25);
-            _velocity.z = Mathf.MoveTowards(_velocity.z, 0, Time.deltaTime * 25);
+            _velocity.x = Mathf.MoveTowards(_velocity.x, 0, deltaTime * 25);
+            _velocity.z = Mathf.MoveTowards(_velocity.z, 0, deltaTime * 25);
 
             //Reset midair actions
             if (_airCharges != MaxAirActions)
@@ -234,9 +264,9 @@ public class Player : MonoBehaviourPun, IPunObservable
         }
 
         //Move downwards with their increased gravity
-        _characterController.Move(_velocity * Time.deltaTime);
+        _characterController.Move(_velocity * deltaTime);
 
-        SlideOffHead();
+        SlideOffHead(deltaTime);
 
         //Clamps the player to z = 0
         inputVelocity = transform.position;
@@ -277,6 +307,12 @@ public class Player : MonoBehaviourPun, IPunObservable
                     break;
             }
         }
+        //moveInput has changed
+        if (moveInput != _moveInput)
+        {   //Input has changed
+            _inputInfo.MoveInput = moveInput;
+            _inputChange = true;
+        }
 
         _moveInput = moveInput;
     }
@@ -287,6 +323,8 @@ public class Player : MonoBehaviourPun, IPunObservable
             return;
 
         _dashing = false;
+        _inputInfo.jump = true;
+        _inputChange = true;
 
         if (_isGrounded)
         {
@@ -310,7 +348,7 @@ public class Player : MonoBehaviourPun, IPunObservable
     {   //Set jump velocity
         _velocity.y = Mathf.Sqrt(JumpHeight * -2f * Gravity);
         //Do particle stuff
-        if (jumpParticles)
+        if (jumpParticles && !_simulationMode)
         {
             vfxObj instance = Instantiate(jumpParticles, transform.position + jumpParticles.transform.position, jumpParticles.transform.rotation);
             instance.Initialise();
@@ -392,7 +430,7 @@ public class Player : MonoBehaviourPun, IPunObservable
     }
 
     public void GotHit(float damage, float stunDuration, Vector3 force, bool playAnim = true)
-    {   
+    {
         //Take damage
         _currentHealth -= damage;
 
@@ -439,6 +477,12 @@ public class Player : MonoBehaviourPun, IPunObservable
             //Mostly a precaution
             if (Input.GetKey(Controls.Left) == false && Input.GetKey(Controls.Right) == false)
             {
+                if (_moveInput != 0)
+                {
+                    _inputInfo.MoveInput = 0;
+                    _inputChange = true;
+                }
+
                 _moveInput = 0;
                 FaceEnemy();
             }
@@ -648,7 +692,7 @@ public class Player : MonoBehaviourPun, IPunObservable
         transform.eulerAngles = new Vector3(0, 90, 0);
     }
 
-    void SlideOffHead()
+    void SlideOffHead(float deltaTime)
     {
         if (Enemy() != null)
         {
@@ -667,11 +711,11 @@ public class Player : MonoBehaviourPun, IPunObservable
                         //Is the enemy above you?
                         if (_ePos.y > _pPos.y)
                         {
-                            _characterController.Move(new Vector3(_eGrav / 2 * Time.deltaTime, 0, 0));
+                            _characterController.Move(new Vector3(_eGrav / 2 * deltaTime, 0, 0));
                         }
                         else
                         {
-                            _characterController.Move(new Vector3(_pGrav * Time.deltaTime, 0, 0));
+                            _characterController.Move(new Vector3(_pGrav * deltaTime, 0, 0));
                         }
                     }
                     else
@@ -679,11 +723,11 @@ public class Player : MonoBehaviourPun, IPunObservable
                         //Is the enemy above you?
                         if (_ePos.y > _pPos.y)
                         {
-                            _characterController.Move(new Vector3((_eGrav * -1) / 2 * Time.deltaTime, 0, 0));
+                            _characterController.Move(new Vector3((_eGrav * -1) / 2 * deltaTime, 0, 0));
                         }
                         else
                         {
-                            _characterController.Move(new Vector3((_pGrav * -1) * Time.deltaTime, 0, 0));
+                            _characterController.Move(new Vector3((_pGrav * -1) * deltaTime, 0, 0));
                         }
                     }
                 }
@@ -692,11 +736,11 @@ public class Player : MonoBehaviourPun, IPunObservable
                     //Is the enemy above you?
                     if (_ePos.y > _pPos.y)
                     {
-                        _characterController.Move(new Vector3((_eGrav * -1) / 2 * Time.deltaTime, 0, 0));
+                        _characterController.Move(new Vector3((_eGrav * -1) / 2 * deltaTime, 0, 0));
                     }
                     else
                     {
-                        _characterController.Move(new Vector3((_pGrav * -1) * Time.deltaTime, 0, 0));
+                        _characterController.Move(new Vector3((_pGrav * -1) * deltaTime, 0, 0));
                     }
                 }
                 else
@@ -704,11 +748,11 @@ public class Player : MonoBehaviourPun, IPunObservable
                     //Is the enemy above you?
                     if (_ePos.y > _pPos.y)
                     {
-                        _characterController.Move(new Vector3(_eGrav / 2 * Time.deltaTime, 0, 0));
+                        _characterController.Move(new Vector3(_eGrav / 2 * deltaTime, 0, 0));
                     }
                     else
                     {
-                        _characterController.Move(new Vector3(_pGrav * Time.deltaTime, 0, 0));
+                        _characterController.Move(new Vector3(_pGrav * deltaTime, 0, 0));
                     }
                 }
             }
@@ -729,52 +773,6 @@ public class Player : MonoBehaviourPun, IPunObservable
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
-        if (stream.IsWriting)
-        {
-            //Sync position. TransformView was getting positional desync
-            stream.SendNext(transform.position);
-            //Send the move input for dead reckoning
-            stream.SendNext(_moveInput);
-            stream.SendNext(_dashInput);
-            stream.SendNext(_dashing);
-            stream.SendNext(_velocity);
-            stream.SendNext(canMoveInt); //We send the canMoveInt as a fix for ShadowStep getting stuck in idle. Also ensures stun is somewhat synced
-            //Serialize stat info
-            stream.SendNext(_currentHealth);
-        }
-        else
-        {   //We need something fancier than this.
-            Vector3 pos = (Vector3)stream.ReceiveNext();
-            _moveInput = (int)stream.ReceiveNext();
-            _dashInput = (int)stream.ReceiveNext();
-            _dashing = (bool)stream.ReceiveNext();
-            _velocity = (Vector3)stream.ReceiveNext();
-            canMoveInt = (int)stream.ReceiveNext();
-            //Recieve stat info
-            _currentHealth = (float)stream.ReceiveNext();
-            //If the position change is greater than what we expect it to be, then teleport
-            //This is a horrible way of estimating how long the delay between the package being sent and recieved is
-            if (Vector3.Distance(transform.position, pos) > MoveSpeed * _maxPackageDesync
-                //If there is no movement for the player, snap to the correct position
-                || (_moveInput == 0 && _velocity == Vector3.zero))
-                //Begin resyncing position
-                StartCoroutine(ResyncPosition(pos - transform.position));
-            //Once we have move input, rotate the character accordingly
-            switch (_moveInput)
-            {
-                case -1:
-                    FaceLeft();
-                    break;
-
-                case 0:
-                    FaceEnemy();
-                    break;
-
-                case 1:
-                    FaceRight();
-                    break;
-            }
-        }
     }
 
     private IEnumerator ResyncPosition(Vector3 posDif)
@@ -804,5 +802,77 @@ public class Player : MonoBehaviourPun, IPunObservable
             yield return null;
         }
     }
+    #endregion
+
+    #region Rollback
+    public void SetState(BehaviourState state)
+    {
+        CoreRollbackInfo core = state as CoreRollbackInfo;
+        //Should never be hit
+        //if (core == null)
+        //    return;
+
+        _velocity = core.m_velocity;
+        transform.position = core.m_worldPosition;
+        _moveInput = core.m_moveInput;
+        //Adjust rotation to match input
+        switch (_moveInput)
+        {
+            case -1:
+                FaceLeft();
+                break;
+
+            case 0:
+                FaceEnemy();
+                break;
+
+            case 1:
+                FaceRight();
+                break;
+        }
+        //Jump
+        if (core.m_jumping)
+            RPCJump();
+    }
+
+    public virtual void Simulate(float delta)
+    {
+        SimulateMove(delta);
+    }
+
+    public BehaviourState CreateState()
+    {
+        return new CoreRollbackInfo(_currentHealth, _velocity, transform.position, (byte)_airCharges, 0f, 0f, (byte)canMoveInt, (sbyte)_moveInput, false);
+    }
+
+    public void RefreshState(BehaviourState state)
+    {
+        CoreRollbackInfo core = state as CoreRollbackInfo;
+
+        core.m_worldPosition = transform.position;
+        core.m_velocity = _velocity;
+        core.m_health = _currentHealth;
+    }
+    /// <summary>
+    /// Applies rollback by updating the players input
+    /// </summary>
+    /// <param name="time"></param>
+    /// <param name="inputInfo"></param>
+    [PunRPC]
+    public void RPCRollback(float time, byte inputInfo)
+    {
+        InputInfo newInput = InputInfo.FromByte(inputInfo);
+
+        RollbackMaster.ApplyRollback(time, () =>
+        {
+            _moveInput = newInput.MoveInput;
+            //Jump
+            if (newInput.jump)
+                RPCJump();
+        });
+    }
+
+    public void SimulateStart() => _simulationMode = true;
+    public void SimulateEnd() => _simulationMode = false;
     #endregion
 }

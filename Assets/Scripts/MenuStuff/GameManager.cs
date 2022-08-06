@@ -8,6 +8,8 @@ using Photon.Pun;
 [RequireComponent(typeof(SceneLoader))]
 public class GameManager : MonoBehaviourPun
 {
+    public static float GameTime => Time.time - s_instance.m_startTime;
+
     public static GameManager s_instance = null;
     /// <summary>
     /// Player 1s Character

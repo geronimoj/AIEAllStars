@@ -10,23 +10,19 @@ public sealed class CoreRollbackInfo : BehaviourState
     /// <summary>
     /// The players current health
     /// </summary>
-    public readonly float m_health;
+    public float m_health;
     /// <summary>
     /// Players move vector 
     /// </summary>
-    public readonly Vector3 m_velocity;
+    public Vector3 m_velocity;
     /// <summary>
     /// Players world position
     /// </summary>
-    public readonly Vector3 m_worldPosition;
-    /// <summary>
-    /// Players rotation
-    /// </summary>
-    public readonly Quaternion m_rotation;
+    public Vector3 m_worldPosition;
     /// <summary>
     /// Remaining number of air charges
     /// </summary>
-    public readonly byte m_airCharges;
+    public byte m_airCharges;
     /// <summary>
     /// Is the player dashing
     /// </summary>
@@ -34,7 +30,7 @@ public sealed class CoreRollbackInfo : BehaviourState
     /// <summary>
     /// The remaining time for a dash
     /// </summary>
-    public readonly float m_remainingDashTime;
+    public float m_remainingDashTime;
     /// <summary>
     /// Does the player have IFrames
     /// </summary>
@@ -42,26 +38,25 @@ public sealed class CoreRollbackInfo : BehaviourState
     /// <summary>
     /// The remaining IFrames
     /// </summary>
-    public readonly float m_remainingIFrames;
+    public float m_remainingIFrames;
     /// <summary>
     /// The amount of stun the player has
     /// </summary>
-    public readonly byte m_stunned;
+    public byte m_stunned;
     /// <summary>
     /// The movement input by the player
     /// </summary>
-    public readonly sbyte m_moveInput;
+    public sbyte m_moveInput;
     /// <summary>
     /// Is the player pressing the jump input
     /// </summary>
-    public readonly bool m_jumping;
+    public bool m_jumping;
 
-    public CoreRollbackInfo(float health, Vector3 velocity, Vector3 pos, Quaternion rotation, byte airActionsRemaining, float remainingDashDuration, float remainingIFrames, byte stunAmount, sbyte moveInput, bool jumping)
+    public CoreRollbackInfo(float health, Vector3 velocity, Vector3 pos, byte airActionsRemaining, float remainingDashDuration, float remainingIFrames, byte stunAmount, sbyte moveInput, bool jumping)
     {
         m_health = health;
         m_velocity = velocity;
         m_worldPosition = pos;
-        m_rotation = rotation;
         m_airCharges = airActionsRemaining;
         m_remainingDashTime = remainingDashDuration;
         m_remainingIFrames = remainingIFrames;
@@ -206,7 +201,7 @@ public struct InputInfo
         //Jump
         ret.jump = (byte)(data & 0b_0001_0000) > 0;
         //Move input        This will flush the first 3 bits of the byte
-        ret.moveInput = (byte)(data ^ 0b_1111_0000);
+        ret.moveInput = (byte)(data & 0b_0000_1111);
 
         return ret;
     }

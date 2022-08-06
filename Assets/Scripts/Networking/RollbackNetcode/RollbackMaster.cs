@@ -136,6 +136,9 @@ public static class RollbackMaster
         {
             times[start] = value.GetTimeFrames();
             start++;
+            //Prepare for simulation
+            foreach (var comp in value.components)
+                comp.SimulateStart();
         }
 
         start = 0;
@@ -203,6 +206,10 @@ public static class RollbackMaster
                 foreach (var t in times)
                     t[start].UpdateSelf();
         }
+        //Simulate has finished.
+        foreach (var value in _playerTimeInfo.Values)
+            foreach (var comp in value.components)
+                comp.SimulateEnd();
     }
 }
 
@@ -239,4 +246,12 @@ public interface IPlayerRollback
     /// <remarks>This should update the given behaviour state such that, calling SetState(state) results in the same data as 
     /// calling SetState(previous) then Simulate(delta) to the time this behaviourState represents</remarks>
     void RefreshState(BehaviourState state);
+    /// <summary>
+    /// Called before starting simulation
+    /// </summary>
+    void SimulateStart();
+    /// <summary>
+    /// Called after simulation
+    /// </summary>
+    void SimulateEnd();
 }
