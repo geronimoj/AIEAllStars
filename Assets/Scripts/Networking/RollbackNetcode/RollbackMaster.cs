@@ -141,71 +141,80 @@ public static class RollbackMaster
                 comp.SimulateStart();
         }
 
-        start = 0;
-        //We are going to use temp to calculate the time steps.
-        //All TimeFrame arrays should always have equal length with equal timestamps
-        var temp = times[0];
-        //Find starting TimeFrame index
-        while (start < temp.Count && temp[start].time < time)
-            start++;
-        //Calculate the total time to simulate
-        float deltaTotal = Time.time - GameManager.s_instance.m_startTime - temp[start].time;
-        //Prepare
-        foreach (var t in times)
-            t[start].Apply();
-
-        float tempDelta = time - temp[start].time;
-        //Apply rollback until we reach where we should create the new start time
-        while (tempDelta > 0f)
+        try
         {
-            float dif;
-            if (tempDelta > TIME_STEP)
-                dif = TIME_STEP;
-            else
-                dif = tempDelta;
-            //Simulate
+            start = 0;
+            //We are going to use temp to calculate the time steps.
+            //All TimeFrame arrays should always have equal length with equal timestamps
+            var temp = times[0];
+            //Find starting TimeFrame index
+            while (start < temp.Count && temp[start].time < time)
+                start++;
+            //Calculate the total time to simulate
+            float deltaTotal = Time.time - GameManager.s_instance.m_startTime - temp[start].time;
+            //Prepare
             foreach (var t in times)
-                t[start].Simulate(dif);
+                t[start].Apply();
 
-            tempDelta -= dif;
-        }
-
-        start++;
-        deltaTotal -= tempDelta;
-        //Apply the changes
-        applyChanges?.Invoke();
-        //We have reached the time we want to create the rollback for
-        foreach(var value in _playerTimeInfo.Values)
-            value.CreatePlayerState(time);
-
-        //Continue simulation up until current time
-        while (deltaTotal > 0.0001f)
-        {
-            bool hasNext = start < temp.Count - 1;
-            float delta = hasNext ? temp[start + 1].time - temp[start].time : deltaTotal;
-            //Apply rollback over this period of time
-            while (delta > 0f)
-            {   //Calculate time step
+            float tempDelta = time - temp[start].time;
+            //Apply rollback until we reach where we should create the new start time
+            while (tempDelta > 0f)
+            {
                 float dif;
-                if (delta > TIME_STEP)
+                if (tempDelta > TIME_STEP)
                     dif = TIME_STEP;
                 else
-                    dif = delta;
+                    dif = tempDelta;
                 //Simulate
                 foreach (var t in times)
                     t[start].Simulate(dif);
 
-                delta -= dif;
-                deltaTotal -= dif;
+                tempDelta -= dif;
             }
 
             start++;
-            //Refresh timeframe data's as the previous change may have changed and we don't want rolling back
-            //specifically to this time to be different than if we simulated from the previous timeFrame
-            if (start < temp.Count)
+            deltaTotal -= tempDelta;
+            //Apply the changes
+            applyChanges?.Invoke();
+            //We have reached the time we want to create the rollback for
+            foreach (var value in _playerTimeInfo.Values)
+                value.CreatePlayerState(time);
+
+            //Continue simulation up until current time
+            while (deltaTotal > 0.0001f)
+            {
+                bool hasNext = start < temp.Count - 1;
+                float delta = hasNext ? temp[start + 1].time - temp[start].time : deltaTotal;
+                //Set to state. Nothing should change since we called UpdateSelf previously
+                //This should only update the inputs to reflect the change
                 foreach (var t in times)
-                    t[start].UpdateSelf();
+                    t[start].Apply();
+                //Apply rollback over this period of time
+                while (delta > 0f)
+                {   //Calculate time step
+                    float dif;
+                    if (delta > TIME_STEP)
+                        dif = TIME_STEP;
+                    else
+                        dif = delta;
+                    //Simulate
+                    foreach (var t in times)
+                        t[start].Simulate(dif);
+
+                    delta -= dif;
+                    deltaTotal -= dif;
+                }
+
+                start++;
+                //Refresh timeframe data's as the previous change may have changed and we don't want rolling back
+                //specifically to this time to be different than if we simulated from the previous timeFrame
+                if (start < temp.Count)
+                    foreach (var t in times)
+                        t[start].UpdateSelf();
+            }
         }
+        catch
+        {}//If something goes wrong, make sure to end the simulation otherwise the player will remain frozen forever
         //Simulate has finished.
         foreach (var value in _playerTimeInfo.Values)
             foreach (var comp in value.components)
