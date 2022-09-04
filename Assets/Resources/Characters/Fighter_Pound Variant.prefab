@@ -85,8 +85,6 @@ MonoBehaviour:
   dashParticles: {fileID: 6762457798526618193, guid: 20d4c663f5446c74a9e615e225095692, type: 3}
   jumpParticles: {fileID: 4388340583238369657, guid: 0b75b8cd25280134d84241ac0042ef7d, type: 3}
   enableDebug: 0
-  _maxPackageDesync: 0.1
-  _positionResyncRate: 0.1
   _maxSpeedAt0HP: 12
 --- !u!114 &-258584622929093747
 MonoBehaviour:

@@ -225,7 +225,7 @@ public class GameManager : MonoBehaviourPun
             PhotonView v = obj.GetComponent<PhotonView>();
             photonView.RPC("SendOtherPlayer", RpcTarget.Others, v.ViewID, !NetworkManager.AmHost);
             //Track our object
-            RollbackMaster.TrackObject(v.ViewID, obj);
+            RollbackMaster.TrackObject(v.ViewID, obj, false);
             //Start a coroutine to make sure the camreas targets get assigned propperly.
             StartCoroutine(SetCameraTargets());
         }
@@ -371,7 +371,7 @@ public class GameManager : MonoBehaviourPun
         //Set the second target for the camera
         group.m_Targets[index].target = view.transform;
         //Track our opponents 
-        RollbackMaster.TrackObject(viewIndex, view.gameObject);
+        RollbackMaster.TrackObject(viewIndex, view.gameObject, false);
     }
     /// <summary>
     /// For telling the other player you are ready to begin

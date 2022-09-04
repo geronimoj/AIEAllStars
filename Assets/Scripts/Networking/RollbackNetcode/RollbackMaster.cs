@@ -115,12 +115,16 @@ public static class RollbackMaster
     /// </summary>
     /// <param name="id"></param>
     /// <param name="toTrack"></param>
-    public static void TrackObject(int id, GameObject toTrack)
+    public static void TrackObject(int id, GameObject toTrack, bool createTimeStamp)
     {   //Start tracking the gameObject
         var info = new PlayerStateInfo(toTrack);
         _playerTimeInfo.Add(id, info);
 
-        info.CreatePlayerState(Time.time - GameManager.s_instance.m_startTime);
+        if (createTimeStamp)
+        {
+            float time = GameManager.GameTime;
+            info.CreatePlayerState(time);
+        }
     }
     /// <summary>
     /// Applies the rollback logic to all characters
@@ -148,15 +152,34 @@ public static class RollbackMaster
             //All TimeFrame arrays should always have equal length with equal timestamps
             var temp = times[0];
             //Find starting TimeFrame index
-            while (start < temp.Count && temp[start].time < time)
+            //There should always be a frame before this one to start the rollback from.
+            int maxStart = temp.Count - 1;
+
+            if (maxStart < 0)
+            {   //There are no previous rollbacks so just create a state now.
+                foreach (var value in _playerTimeInfo.Values)
+                    value.CreatePlayerState(time);
+
+                End();
+                return;
+            }
+
+            while (start < maxStart && temp[start].time < time)
                 start++;
             //Calculate the total time to simulate
-            float deltaTotal = Time.time - GameManager.s_instance.m_startTime - temp[start].time;
+            float deltaTotal = GameManager.GameTime - temp[start].time;
+
             //Prepare
             foreach (var t in times)
                 t[start].Apply();
 
             float tempDelta = time - temp[start].time;
+
+            Debug.LogError("Input Time: " + time + " Last Input Time: " + temp[start].time);
+            Debug.LogError("Rollback Start: " + times[0][start].time + "\nRollback Amount: " + deltaTotal + "\nTo Current: " + tempDelta);
+            float total = 0f;
+            //Reduce the total time to rollback by, by the amount we are about to as this float value will be 0 after the while loop
+            deltaTotal -= tempDelta;
             //Apply rollback until we reach where we should create the new start time
             while (tempDelta > 0f)
             {
@@ -169,11 +192,12 @@ public static class RollbackMaster
                 foreach (var t in times)
                     t[start].Simulate(dif);
 
+                total += dif;
                 tempDelta -= dif;
             }
 
             start++;
-            deltaTotal -= tempDelta;
+            Debug.LogError("Time To Input: " + total + "\n Remaining: " + deltaTotal);
             //Apply the changes
             applyChanges?.Invoke();
             //We have reached the time we want to create the rollback for
@@ -185,10 +209,13 @@ public static class RollbackMaster
             {
                 bool hasNext = start < temp.Count - 1;
                 float delta = hasNext ? temp[start + 1].time - temp[start].time : deltaTotal;
+                Debug.LogError("Forward Rollback: " + deltaTotal);
                 //Set to state. Nothing should change since we called UpdateSelf previously
                 //This should only update the inputs to reflect the change
                 foreach (var t in times)
                     t[start].Apply();
+
+                total = 0f;
                 //Apply rollback over this period of time
                 while (delta > 0f)
                 {   //Calculate time step
@@ -197,13 +224,16 @@ public static class RollbackMaster
                         dif = TIME_STEP;
                     else
                         dif = delta;
+
                     //Simulate
                     foreach (var t in times)
                         t[start].Simulate(dif);
 
+                    total += dif;
                     delta -= dif;
                     deltaTotal -= dif;
                 }
+                Debug.LogError("Delta Applied: " + total);
 
                 start++;
                 //Refresh timeframe data's as the previous change may have changed and we don't want rolling back
@@ -213,12 +243,23 @@ public static class RollbackMaster
                         t[start].UpdateSelf();
             }
         }
-        catch
-        {}//If something goes wrong, make sure to end the simulation otherwise the player will remain frozen forever
-        //Simulate has finished.
-        foreach (var value in _playerTimeInfo.Values)
-            foreach (var comp in value.components)
-                comp.SimulateEnd();
+        catch (Exception e)
+        { Debug.LogException(e); }//If something goes wrong, make sure to end the simulation otherwise the player will remain frozen forever
+
+        End();
+        //Calls SimulateEnd on every player
+        void End()
+        {
+            try
+            {
+                //Simulate has finished.
+                foreach (var value in _playerTimeInfo.Values)
+                    foreach (var comp in value.components)
+                        comp.SimulateEnd();
+            }
+            catch (Exception e)
+            { Debug.LogException(e); }
+        }
     }
 }
 

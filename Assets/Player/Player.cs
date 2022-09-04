@@ -154,13 +154,15 @@ public class Player : MonoBehaviourPun, IPunObservable, IPlayerRollback
     }
 
     protected virtual void LateUpdate()
-    {   //Only perform in networked lobby
+    {   
+        if (!GameManager.s_instance)
+            return;
+        //Only perform in networked lobby
         //We do this in LateUpdate to make sure all inputs from this frame have been recieved
-        if (NetworkManager.InRoom)
-            if (_inputChange)
+        if (NetworkManager.InRoom && _inputChange)
             {
                 _inputChange = false;
-                photonView.RPC("RPCRollback", RpcTarget.Others, GameManager.GameTime, _inputInfo.ToByte());
+                photonView.RPC("RPCRollback", RpcTarget.All, GameManager.GameTime, _inputInfo.ToByte());
                 //Disable all boolean inputs
                 _inputInfo.dash = false;
                 _inputInfo.jump = false;
@@ -171,7 +173,7 @@ public class Player : MonoBehaviourPun, IPunObservable, IPlayerRollback
     #endregion
 
     #region Simulation
-    private void SimulateMove(float deltaTime)
+    protected virtual void SimulateMove(float deltaTime)
     {
         bool prev = _isGrounded;
         //Check if the player is grounded
@@ -330,20 +332,19 @@ public class Player : MonoBehaviourPun, IPunObservable, IPlayerRollback
         {
             RPCJump();
 
-            if (NetworkManager.InRoom)
-                photonView.RPC("RPCJump", RpcTarget.Others);
+            /*if (NetworkManager.InRoom)
+                photonView.RPC("RPCJump", RpcTarget.Others);*/
         }
         else if (!_isGrounded && _airCharges > 0)
         {
             RPCJump();
             _airCharges--;
 
-            if (NetworkManager.InRoom)
-                photonView.RPC("RPCJump", RpcTarget.Others);
+            /*if (NetworkManager.InRoom)
+                photonView.RPC("RPCJump", RpcTarget.Others);*/
         }
     }
 
-    [PunRPC]
     public virtual void RPCJump()
     {   //Set jump velocity
         _velocity.y = Mathf.Sqrt(JumpHeight * -2f * Gravity);
@@ -367,8 +368,8 @@ public class Player : MonoBehaviourPun, IPunObservable, IPlayerRollback
         {   //I moved the dash code into the rpc to reduce copy paste
             RPCDash(false, _moveInput);
             //Tell other player about dash
-            if (NetworkManager.InRoom)
-                photonView.RPC("RPCDash", RpcTarget.Others, false, _moveInput);
+            /*if (NetworkManager.InRoom)
+                photonView.RPC("RPCDash", RpcTarget.Others, false, _moveInput);*/
         }
         else if (_airCharges > 0)
         {   //Reduce air charges
@@ -376,14 +377,13 @@ public class Player : MonoBehaviourPun, IPunObservable, IPlayerRollback
             //I moved the dash code into the rpc to reduce copy paste
             RPCDash(true, _moveInput);
             //Tell other player about dash
-            if (NetworkManager.InRoom)
-                photonView.RPC("RPCDash", RpcTarget.Others, true, _moveInput);
+            /*if (NetworkManager.InRoom)
+                photonView.RPC("RPCDash", RpcTarget.Others, true, _moveInput);*/
         }
 
         _dashInput = _moveInput;
     }
 
-    [PunRPC]
     public void RPCDash(bool airborne, int dashInput)
     {
         _dashing = true;
@@ -408,16 +408,14 @@ public class Player : MonoBehaviourPun, IPunObservable, IPlayerRollback
         }
     }
 
-    [PunRPC]
     protected virtual void Attack()
     {
         _combatController.InputAttack();
         //If its networked and we own this character, tell the other player to play an attack animation
-        if (NetworkManager.InRoom && photonView.IsMine)
-            photonView.RPC("Attack", RpcTarget.Others);
+        /*if (NetworkManager.InRoom && photonView.IsMine)
+            photonView.RPC("Attack", RpcTarget.Others);*/
     }
 
-    [PunRPC]
     protected virtual void Skill()
     {
         if (!CanMove)
@@ -425,8 +423,8 @@ public class Player : MonoBehaviourPun, IPunObservable, IPlayerRollback
 
         animator.SetTrigger("Skill");
         //If its networked and we own this character, tell the other player to play an attack animation
-        if (NetworkManager.InRoom && photonView.IsMine)
-            photonView.RPC("Skill", RpcTarget.Others);
+        /*if (NetworkManager.InRoom && photonView.IsMine)
+            photonView.RPC("Skill", RpcTarget.Others);*/
     }
 
     public void GotHit(float damage, float stunDuration, Vector3 force, bool playAnim = true)
@@ -762,20 +760,22 @@ public class Player : MonoBehaviourPun, IPunObservable, IPlayerRollback
 
     #region Photon
 
-    [Header("Networking")]
+    /*[Header("Networking")]
     [SerializeField]
     [Tooltip("The maximum amount of time that we assume between a package being sent and recieved. Used for determining position resyc")]
     private float _maxPackageDesync = 0.1f;
 
     [SerializeField]
     [Tooltip("How long it takes to resync the position of the character")]
-    private float _positionResyncRate = 0.1f;
+    private float _positionResyncRate = 0.1f;*/
 
-    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    public virtual void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
+        //Keeping this just in case derived classes want to send unimportant information about themself
+        //that cannot be synced through rollback
     }
 
-    private IEnumerator ResyncPosition(Vector3 posDif)
+    /*private IEnumerator ResyncPosition(Vector3 posDif)
     {
         Vector3 remaining = posDif;
         //Use a bit of memory to store and avoid additional calculations
@@ -801,7 +801,7 @@ public class Player : MonoBehaviourPun, IPunObservable, IPlayerRollback
             //Wait a frame
             yield return null;
         }
-    }
+    }*/
     #endregion
 
     #region Rollback
@@ -832,7 +832,7 @@ public class Player : MonoBehaviourPun, IPunObservable, IPlayerRollback
         }
         //Jump
         if (core.m_jumping)
-            RPCJump();
+            Jump();
     }
 
     public virtual void Simulate(float delta)
@@ -861,6 +861,7 @@ public class Player : MonoBehaviourPun, IPunObservable, IPlayerRollback
     [PunRPC]
     public void RPCRollback(float time, byte inputInfo)
     {
+        Debug.LogError("Applying Rollback: Time: " + time);
         InputInfo newInput = InputInfo.FromByte(inputInfo);
 
         RollbackMaster.ApplyRollback(time, () =>

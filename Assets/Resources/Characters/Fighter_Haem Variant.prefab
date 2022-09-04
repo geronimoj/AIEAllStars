@@ -135,8 +135,6 @@ MonoBehaviour:
   dashParticles: {fileID: 6762457798526618193, guid: 20d4c663f5446c74a9e615e225095692, type: 3}
   jumpParticles: {fileID: 4388340583238369657, guid: 0b75b8cd25280134d84241ac0042ef7d, type: 3}
   enableDebug: 0
-  _maxPackageDesync: 0.1
-  _positionResyncRate: 0.1
   specialCollider: {fileID: 2621084630983885642, guid: ed52256057d16964d8c63ec0d743f828, type: 3}
   shockWave: {fileID: 5899275095528897394, guid: ee36808d9bd5ef94e8b6f5a8d576b0fd, type: 3}
   quake: {fileID: 4021301572668748214, guid: dac626884e7537d438470419e97ee6f1, type: 3}
