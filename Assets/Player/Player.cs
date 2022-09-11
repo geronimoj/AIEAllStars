@@ -154,21 +154,21 @@ public class Player : MonoBehaviourPun, IPunObservable, IPlayerRollback
     }
 
     protected virtual void LateUpdate()
-    {   
+    {
         if (!GameManager.s_instance)
             return;
         //Only perform in networked lobby
         //We do this in LateUpdate to make sure all inputs from this frame have been recieved
         if (NetworkManager.InRoom && _inputChange)
-            {
-                _inputChange = false;
-                photonView.RPC("RPCRollback", RpcTarget.All, GameManager.GameTime, _inputInfo.ToByte());
-                //Disable all boolean inputs
-                _inputInfo.dash = false;
-                _inputInfo.jump = false;
-                _inputInfo.attack = false;
-                _inputInfo.skill = false;
-            }
+        {
+            _inputChange = false;
+            photonView.RPC("RPCRollback", RpcTarget.All, GameManager.GameTime, _inputInfo.ToByte());
+            //Disable all boolean inputs
+            _inputInfo.dash = false;
+            _inputInfo.jump = false;
+            _inputInfo.attack = false;
+            _inputInfo.skill = false;
+        }
     }
     #endregion
 
@@ -234,40 +234,39 @@ public class Player : MonoBehaviourPun, IPunObservable, IPlayerRollback
 
         animator.SetBool("Grounded", _isGrounded);
 
-        if (!_isGrounded)
-        {
-            if (!_dashing)
+            if (!_isGrounded)
             {
-                //If not grounded or air dashing, apply gravity
-                _velocity.y += Gravity * deltaTime;
+                if (!_dashing)
+                {
+                    //If not grounded or air dashing, apply gravity
+                    _velocity.y += Gravity * deltaTime;
 
-                _velocity.x = Mathf.MoveTowards(_velocity.x, 0, deltaTime * 5);
-                _velocity.z = Mathf.MoveTowards(_velocity.z, 0, deltaTime * 5);
+                    _velocity.x = Mathf.MoveTowards(_velocity.x, 0, deltaTime * 5);
+                    _velocity.z = Mathf.MoveTowards(_velocity.z, 0, deltaTime * 5);
+                }
             }
-        }
-        //If you are grounded...
-        else
-        {
-            //Used to prevent knockback sliding + sticking to the floor during knockback
-            _velocity.x = Mathf.MoveTowards(_velocity.x, 0, deltaTime * 25);
-            _velocity.z = Mathf.MoveTowards(_velocity.z, 0, deltaTime * 25);
-
-            //Reset midair actions
-            if (_airCharges != MaxAirActions)
+            //If you are grounded...
+            else
             {
-                _airCharges = MaxAirActions;
+                //Used to prevent knockback sliding + sticking to the floor during knockback
+                _velocity.x = Mathf.MoveTowards(_velocity.x, 0, deltaTime * 25);
+                _velocity.z = Mathf.MoveTowards(_velocity.z, 0, deltaTime * 25);
+
+                //Reset midair actions
+                if (_airCharges != MaxAirActions)
+                {
+                    _airCharges = MaxAirActions;
+                }
+
+                //Reset gravity's changes to velocity
+                if (_velocity.y < 0)
+                {
+                    _velocity.y = 0;
+                }
             }
 
-            //Reset gravity's changes to velocity
-            if (_velocity.y < 0)
-            {
-                _velocity.y = 0;
-            }
-        }
-
-        //Move downwards with their increased gravity
-        _characterController.Move(_velocity * deltaTime);
-
+            //Move downwards with their increased gravity
+            _characterController.Move(_velocity * deltaTime);
         SlideOffHead(deltaTime);
 
         //Clamps the player to z = 0
@@ -813,7 +812,10 @@ public class Player : MonoBehaviourPun, IPunObservable, IPlayerRollback
         //    return;
 
         _velocity = core.m_velocity;
+
+        _characterController.enabled = false;
         transform.position = core.m_worldPosition;
+        _characterController.enabled = true;
         _moveInput = core.m_moveInput;
         //Adjust rotation to match input
         switch (_moveInput)
@@ -873,7 +875,13 @@ public class Player : MonoBehaviourPun, IPunObservable, IPlayerRollback
         });
     }
 
-    public void SimulateStart() => _simulationMode = true;
-    public void SimulateEnd() => _simulationMode = false;
+    public void SimulateStart()
+    {
+        _simulationMode = true;
+    }
+    public void SimulateEnd()
+    {
+        _simulationMode = false;
+    }
     #endregion
 }
