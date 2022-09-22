@@ -234,39 +234,39 @@ public class Player : MonoBehaviourPun, IPunObservable, IPlayerRollback
 
         animator.SetBool("Grounded", _isGrounded);
 
-            if (!_isGrounded)
+        if (!_isGrounded)
+        {
+            if (!_dashing)
             {
-                if (!_dashing)
-                {
-                    //If not grounded or air dashing, apply gravity
-                    _velocity.y += Gravity * deltaTime;
+                //If not grounded or air dashing, apply gravity
+                _velocity.y += Gravity * deltaTime;
 
-                    _velocity.x = Mathf.MoveTowards(_velocity.x, 0, deltaTime * 5);
-                    _velocity.z = Mathf.MoveTowards(_velocity.z, 0, deltaTime * 5);
-                }
+                _velocity.x = Mathf.MoveTowards(_velocity.x, 0, deltaTime * 5);
+                _velocity.z = Mathf.MoveTowards(_velocity.z, 0, deltaTime * 5);
             }
-            //If you are grounded...
-            else
+        }
+        //If you are grounded...
+        else
+        {
+            //Used to prevent knockback sliding + sticking to the floor during knockback
+            _velocity.x = Mathf.MoveTowards(_velocity.x, 0, deltaTime * 25);
+            _velocity.z = Mathf.MoveTowards(_velocity.z, 0, deltaTime * 25);
+
+            //Reset midair actions
+            if (_airCharges != MaxAirActions)
             {
-                //Used to prevent knockback sliding + sticking to the floor during knockback
-                _velocity.x = Mathf.MoveTowards(_velocity.x, 0, deltaTime * 25);
-                _velocity.z = Mathf.MoveTowards(_velocity.z, 0, deltaTime * 25);
-
-                //Reset midair actions
-                if (_airCharges != MaxAirActions)
-                {
-                    _airCharges = MaxAirActions;
-                }
-
-                //Reset gravity's changes to velocity
-                if (_velocity.y < 0)
-                {
-                    _velocity.y = 0;
-                }
+                _airCharges = MaxAirActions;
             }
 
-            //Move downwards with their increased gravity
-            _characterController.Move(_velocity * deltaTime);
+            //Reset gravity's changes to velocity
+            if (_velocity.y < 0)
+            {
+                _velocity.y = 0;
+            }
+        }
+
+        //Move downwards with their increased gravity
+        _characterController.Move(_velocity * deltaTime);
         SlideOffHead(deltaTime);
 
         //Clamps the player to z = 0
