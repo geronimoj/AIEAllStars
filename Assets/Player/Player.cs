@@ -108,6 +108,8 @@ public class Player : MonoBehaviourPun, IPunObservable, IPlayerRollback
     private bool _inputChange = false;
     private bool _simulationMode = false;
     private InputInfo _inputInfo = default;
+
+    float _dashTimer = 0f;
     #endregion
 
     public bool enableDebug = false;
@@ -180,7 +182,7 @@ public class Player : MonoBehaviourPun, IPunObservable, IPlayerRollback
         _isGrounded = Physics.CheckSphere(GroundCheck.position, GroundDistance, GroundMask);
 
         if (prev == true && _isGrounded == false)
-            _dashing = false;
+            _dashTimer = 0f;
         //Don't update inputs in simulation mode
         if (!_simulationMode)
         {
@@ -191,6 +193,13 @@ public class Player : MonoBehaviourPun, IPunObservable, IPlayerRollback
         }
 
         Vector3 inputVelocity = Vector3.zero;
+        //Check if dash timer is finished.
+        _dashTimer -= deltaTime;
+
+        if (_dashTimer <= 0)
+            _dashInput = 0;
+
+        _dashing = _dashInput != 0 && (_dashTimer > 0f || _isGrounded);
 
         if (CanMove)
         {
@@ -323,7 +332,8 @@ public class Player : MonoBehaviourPun, IPunObservable, IPlayerRollback
         if (!CanMove)
             return;
 
-        _dashing = false;
+        _dashTimer = 0f;
+        _dashInput = 0;
         _inputInfo.jump = true;
         _inputChange = true;
 
@@ -385,13 +395,13 @@ public class Player : MonoBehaviourPun, IPunObservable, IPlayerRollback
 
     public void RPCDash(bool airborne, int dashInput)
     {
-        _dashing = true;
+        //_dashInput = dashInput;
         _velocity.y = 0;
 
         if (airborne)
         {
             animator.SetTrigger("Dash");
-            StartCoroutine(EndAirDash(AirDashTime));
+            //StartCoroutine(EndAirDash(AirDashTime));
         }
         //Spawn particle effects
         if (dashParticles)
@@ -400,11 +410,11 @@ public class Player : MonoBehaviourPun, IPunObservable, IPlayerRollback
             instance.Initialise();
         }
         //If we received this from the other player, update the move input to match the dash input
-        if (NetworkManager.InRoom)
+        /*if (NetworkManager.InRoom)
         {   //For sync purposes
             _dashInput = dashInput;
             _moveInput = dashInput;
-        }
+        }*/
     }
 
     protected virtual void Attack()
@@ -451,7 +461,7 @@ public class Player : MonoBehaviourPun, IPunObservable, IPlayerRollback
     {
         canMoveInt++;
 
-        _dashing = false;
+        _dashInput = 0;
 
         StartCoroutine(WaitBeforeUnStun(stunDuration));
     }
@@ -510,7 +520,7 @@ public class Player : MonoBehaviourPun, IPunObservable, IPlayerRollback
         }
     }
 
-    IEnumerator EndAirDash(float dashTime)
+    /*IEnumerator EndAirDash(float dashTime)
     {
         yield return new WaitForSeconds(dashTime);
 
@@ -519,7 +529,7 @@ public class Player : MonoBehaviourPun, IPunObservable, IPlayerRollback
             _dashing = false;
             _dashInput = 0;
         }
-    }
+    }*/
     #endregion
 
     #region AI
@@ -817,6 +827,8 @@ public class Player : MonoBehaviourPun, IPunObservable, IPlayerRollback
         transform.position = core.m_worldPosition;
         _characterController.enabled = true;
         _moveInput = core.m_moveInput;
+        _dashTimer = core.m_remainingDashTime;
+
         //Adjust rotation to match input
         switch (_moveInput)
         {
@@ -844,7 +856,7 @@ public class Player : MonoBehaviourPun, IPunObservable, IPlayerRollback
 
     public BehaviourState CreateState()
     {
-        return new CoreRollbackInfo(_currentHealth, _velocity, transform.position, (byte)_airCharges, 0f, 0f, (byte)canMoveInt, (sbyte)_moveInput, false);
+        return new CoreRollbackInfo(_currentHealth, _velocity, transform.position, (byte)_airCharges, _dashTimer, 0f, (byte)canMoveInt, (sbyte)_moveInput, _inputInfo.jump);
     }
 
     public void RefreshState(BehaviourState state)
@@ -854,6 +866,7 @@ public class Player : MonoBehaviourPun, IPunObservable, IPlayerRollback
         core.m_worldPosition = transform.position;
         core.m_velocity = _velocity;
         core.m_health = _currentHealth;
+        core.m_remainingDashTime = _dashTimer;
     }
     /// <summary>
     /// Applies rollback by updating the players input
@@ -871,7 +884,10 @@ public class Player : MonoBehaviourPun, IPunObservable, IPlayerRollback
             _moveInput = newInput.MoveInput;
             //Jump
             if (newInput.jump)
-                RPCJump();
+                Jump();
+            //Dash
+            if (newInput.dash)
+                Dash();
         });
     }
 
